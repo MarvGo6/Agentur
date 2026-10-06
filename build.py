@@ -107,36 +107,67 @@ def paket_summe(b):
 
 
 # ------------------------------------------------------------------ Seiten
+def galerie(items):
+    return "".join(f'''<article class="show"><a class="show-img" href="/vorschau/{b["slug"]}/" aria-label="Live-Vorschau {e(b["name"])} öffnen">{frame(b["slug"])}</a>
+<div class="show-meta"><div><span class="pill">{b["branche"]}</span><h3>{b["name"]}</h3></div><span class="price-mini">{eur(paket_summe(b))}<small>im 1. Jahr</small></span></div>
+<div class="show-links"><a href="/vorschau/{b["slug"]}/">Live-Vorschau →</a><a href="/beispiele/{b["slug"]}/">Kundenweg &amp; Preis</a></div></article>''' for b in items)
+
+
+VERGLEICH = [
+    ("Festpreis vorab", "–", "teilweise", "selten", "✓"),
+    ("Texte und Struktur inklusive", "–", "teilweise", "✓", "✓"),
+    ("Ladezeit unter 1 Sekunde", "–", "teilweise", "teilweise", "✓"),
+    ("Branchen-Kundenweg statt Vorlage", "–", "–", "teilweise", "✓"),
+    ("SEO und Google Ads aus einer Hand", "–", "selten", "✓", "✓"),
+    ("Monatlicher Bericht in Anfragen", "–", "–", "teilweise", "✓"),
+    ("Website und Domain gehören Ihnen", "–", "✓", "teilweise", "✓"),
+    ("Ohne Cookie-Banner möglich", "–", "teilweise", "selten", "✓"),
+]
+
+
+def vergleich():
+    rows = "".join(f'<tr><td>{r[0]}</td>' + "".join(f'<td class="c{" us" if i == 3 else ""}">{v}</td>' for i, v in enumerate(r[1:])) + "</tr>" for r in VERGLEICH)
+    return f'''<div class="tablewrap compare"><table><thead><tr><th></th><th class="c">Baukasten</th><th class="c">Freelancer</th><th class="c">Klassische Agentur</th><th class="c us">{NAME}</th></tr></thead><tbody>{rows}</tbody></table></div>'''
+
+
 def startseite():
     leist = "".join(f'<a class="card" href="/leistungen/{l["slug"]}/">{ICON[l["key"]]}<h3>{l["titel"]}</h3><p>{l["kurz"]}</p><span class="more">Mehr erfahren →</span></a>' for l in LEISTUNGEN)
-    bran = "".join(f'<a class="card" href="/branchen/{b["slug"]}/"><div class="thumb">{BRANCHE[b["draw"]]}</div><h3>{b["titel"]}</h3><p>{b["lead"][:118].rsplit(" ",1)[0]} …</p></a>' for b in BRANCHEN)
-    beis = "".join(f'<a class="card" href="/beispiele/{b["slug"]}/"><span class="pill">{b["branche"]}</span><h3 style="margin-top:12px">{b["name"]}</h3><p>{b["teaser"]}</p><span class="more">{eur(paket_summe(b))} im ersten Jahr →</span></a>' for b in BEISPIELE[:3])
+    bran = "".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)
     body = f"""
-<section class="hero"><div class="wrap grid"><div>
-<span class="kicker">Agentur für digitales Wachstum</span>
-<h1>Mehr Anfragen für Betriebe, die vor Ort gute Arbeit machen.</h1>
-<p class="lead">Wir bauen Websites, die schnell laden und überzeugen, bringen Sie bei Google nach oben und schalten Anzeigen, die sich rechnen. Feste Preise, klare Zahlen, ein Ansprechpartner.</p>
-<div class="actions"><a class="btn" href="/kontakt/">Kostenloses Erstgespräch</a><a class="btn ghost" href="/beispiele/">Beispiele ansehen</a></div>
-</div><div>{HERO}</div></div></section>
+<section class="hero hero-xl"><div class="wrap grid"><div>
+<span class="kicker">Websites · SEO · Google Ads für lokale Betriebe</span>
+<h1>Websites, die Kunden bringen – nicht nur gut aussehen.</h1>
+<p class="lead">Wir bauen den Weg von der Google-Suche bis zur Anfrage: eine schnelle Website mit klaren Antworten, Sichtbarkeit bei Google und Anzeigen, die sich rechnen. Zum Festpreis, mit einem Ansprechpartner.</p>
+<div class="actions"><a class="btn" href="/kontakt/">Kostenloses Erstgespräch</a><a class="btn ghost" href="#vorschau">Beispiel-Websites ansehen</a></div>
+<ul class="assure"><li>Festpreis vorab</li><li>Entwurf 7 Tage nach Auftrag</li><li>Website gehört Ihnen</li><li>Pflege monatlich kündbar</li></ul>
+</div><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></section>
+<section class="ribbon"><div class="wrap"><span>Gebaut für</span>{bran}<a href="/branchen/">und viele mehr →</a></div></section>
+<section id="vorschau"><div class="wrap"><div class="head"><span class="kicker">Vorschau-Websites</span><h2>Sehen Sie, was Sie bekommen – bevor Sie etwas bezahlen.</h2><p>Sechs vollständig gestaltete Beispiel-Websites für typische Betriebe. Jede folgt dem Kundenweg ihrer Branche: was Kunden suchen, vergleichen und brauchen, um anzufragen. Klicken Sie sich durch – auch auf dem Handy.</p></div>
+<div class="gallery">{galerie(BEISPIELE)}</div></div></section>
 <section class="band"><div class="wrap grid4">
-<div><div class="num">2–4</div><p>Wochen bis Ihre neue Website online ist</p></div>
-<div><div class="num">&lt;1 s</div><p>Ladezeit auf dem Handy als Standard</p></div>
-<div><div class="num">0</div><p>Tracking-Cookies auf unseren Websites</p></div>
+<div><div class="num">7 Tage</div><p>bis Sie den ersten Entwurf Ihrer Website im Browser sehen</p></div>
+<div><div class="num">&lt;1 s</div><p>Ladezeit auf dem Handy – Standard bei jeder Website</p></div>
+<div><div class="num">0</div><p>Tracking-Cookies, kein Cookie-Banner nötig</p></div>
 <div><div class="num">1</div><p>Ansprechpartner für Website, SEO und Anzeigen</p></div>
 </div></section>
-<section><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles, was zwischen einer Suche und einer Anfrage passiert</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid4">{leist}</div></div></section>
-<section class="band"><div class="wrap grid2" style="align-items:center"><div>
-<span class="kicker">Warum es oft nicht klappt</span><h2>Die meisten Websites sind Visitenkarten. Ihre Kunden brauchen Antworten.</h2>
-<p>Wer heute einen Dachdecker, eine Kanzlei oder einen Pflegedienst sucht, vergleicht drei Anbieter in fünf Minuten – meist auf dem Handy. Gewinnen tut, wer schnell gefunden wird, sofort Vertrauen weckt und den nächsten Schritt leicht macht.</p>
-<p>Genau diesen Weg bauen wir: von der Suche über den Vergleich bis zur Anfrage. Für jede Branche anders, weil Ihre Kunden anders entscheiden.</p>
+<section><div class="wrap grid2" style="align-items:center"><div>
+<span class="kicker">Warum viele Websites nichts bringen</span><h2>Ihre Kunden vergleichen drei Anbieter in fünf Minuten.</h2>
+<p class="lead" style="font-size:1.1rem">Meist auf dem Handy, oft abends. Gewinnt, wer zuerst gefunden wird, sofort Vertrauen weckt und den nächsten Schritt leicht macht: Termin buchen, Fotos schicken, Rückruf anfordern.</p>
+<p>Die bestplatzierten Betriebe in Berlin, Hamburg, München und Köln machen genau das. Sie zeigen Preise statt „auf Anfrage“, Öffnungszeiten und Notdienst ganz oben, echte Menschen statt Stockfotos – und eine Anfrage, die keine zwei Minuten dauert. Diese Muster bauen wir für Ihren Betrieb nach.</p>
 <a class="more" href="/ablauf/">So arbeiten wir →</a></div>
-<div class="card"><p class="quote">„Wir verkaufen keine Klicks und keine Rankings. Wir bauen den Weg, auf dem aus Suchenden Kunden werden.“</p></div></div></section>
-<section><div class="wrap"><div class="head"><span class="kicker">Branchen</span><h2>Wir kennen die Fragen Ihrer Kunden</h2></div><div class="grid3">{bran}<a class="card" href="/kontakt/" style="display:flex;flex-direction:column;justify-content:center"><h3>Ihre Branche fehlt?</h3><p>Wir arbeiten für viele lokale Dienstleister. Erzählen Sie uns, wie Ihre Kunden entscheiden.</p><span class="more">Gespräch anfragen →</span></a></div></div></section>
-<section class="band"><div class="wrap"><div class="head"><span class="kicker">Beispiele</span><h2>So sieht das konkret aus</h2><p>Durchgerechnete Beispiele mit Kundenweg, Umsetzung und Preis – damit Sie wissen, worauf Sie sich einlassen.</p></div><div class="grid3">{beis}</div><p style="margin-top:22px"><a class="more" href="/beispiele/">Alle sechs Beispiele →</a></p></div></section>
-<section><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>In vier Schritten zu mehr Anfragen</h2></div>
-<ol class="steps"><li><h3>Erstgespräch</h3><p>20 Minuten, kostenlos. Wir hören zu und sagen ehrlich, ob wir helfen können.</p></li><li><h3>Angebot mit Festpreis</h3><p>Innerhalb von zwei Werktagen, mit klarem Ziel und ohne Kleingedrucktes.</p></li><li><h3>Umsetzung</h3><p>Website in zwei bis vier Wochen, Kampagnen und SEO parallel.</p></li><li><h3>Monatliche Zahlen</h3><p>Anfragen, Anrufe, Kosten – verständlich aufbereitet.</p></li></ol></div></section>
-{cta()}"""
-    write("/", f"{NAME} – Websites, SEO & Google Ads für lokale Betriebe", "Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflege und Praxen. Feste Preise, klare Zahlen, ein Ansprechpartner.", body, prio=1.0, crumbs=[("/", "Start")])
+<div class="journey-mini">
+<div><b>1 · Suche</b><span>„Dachdecker Notdienst Musterstadt“</span></div>
+<div><b>2 · Vergleich</b><span>Sterne, Fotos, Referenzen in der Nähe</span></div>
+<div><b>3 · Vertrauen</b><span>Preise, Ablauf, Gesichter, Antworten</span></div>
+<div><b>4 · Anfrage</b><span>Fotos schicken, Rückruf in 24 h</span></div>
+<p>Für jede Branche bauen wir diesen Weg anders – siehe <a href="/beispiele/">Kundenweg-Beispiele</a>.</p></div></div></section>
+<section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid4">{leist}</div></div></section>
+<section><div class="wrap"><div class="head"><span class="kicker">Vergleich</span><h2>Was uns von Baukasten und Agentur unterscheidet</h2></div>{vergleich()}</div></section>
+<section class="band"><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>Von null zur fertigen Website in drei Wochen</h2>
+<div class="promise"><b>Unsere Zusage:</b> Sie sehen den kompletten Entwurf im Browser, bevor die zweite Rechnungshälfte fällig wird. Passt etwas nicht, überarbeiten wir ihn, bevor es weitergeht.</div></div>
+<ol class="steps"><li><h3>Erstgespräch · Tag 1</h3><p>20 Minuten, kostenlos. Wir hören zu und sagen ehrlich, ob wir helfen können.</p></li><li><h3>Festpreis-Angebot · Tag 3</h3><p>Mit Ziel, Umfang und Zeitplan. Ohne Kleingedrucktes.</p></li><li><h3>Entwurf · Tag 10</h3><p>Die Startseite live im Browser – auf Ihrem Handy testen, Feedback geben.</p></li><li><h3>Start · Tag 21</h3><p>Website online, Google-Profil optimiert, Messung aktiv. Danach: monatliche Zahlen.</p></li></ol></div></section>
+{cta("Wie würde Ihre Website aussehen?", "Im Erstgespräch skizzieren wir Ihren Kundenweg – und Sie bekommen eine ehrliche Einschätzung, auch wenn wir danach nicht zusammenarbeiten.")}"""
+    write("/", f"{NAME} – Websites, SEO & Google Ads für lokale Betriebe", "Websites, die Kunden bringen: schnelle Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflege und Praxen. Mit Vorschau-Websites, Festpreis und einem Ansprechpartner.", body, prio=1.0, crumbs=[("/", "Start")])
 
 
 def leistungen():
@@ -166,14 +197,14 @@ def branchen():
         bsp = next(x for x in BEISPIELE if x["slug"] == b["beispiel"])
         body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">{b["titel"]}</span><h1>{b["h1"]}</h1><p class="lead">{b["lead"]}</p><div class="actions"><a class="btn" href="/kontakt/">Erstgespräch anfragen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Beispiel ansehen</a></div></div><div>{BRANCHE[b["draw"]]}</div></div></section>
 <section class="band"><div class="wrap grid2"><div><h2>Kommt Ihnen das bekannt vor?</h2><ul class="ticks">{"".join(f"<li>{x}</li>" for x in b["probleme"])}</ul></div><div><h2>Was wir dagegen tun</h2>{ticks(b["loesung"])}</div></div></section>
-<section><div class="wrap grid2" style="align-items:center"><div class="card"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div><div><span class="kicker">Durchgerechnet</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><a class="more" href="/beispiele/{bsp["slug"]}/">Kundenweg und Paket ansehen →</a></div></div></section>{cta()}"""
+<section><div class="wrap grid2" style="align-items:center"><div><a href="/vorschau/{bsp["slug"]}/" class="show-img">{frame(bsp["slug"])}</a><div class="card" style="margin-top:18px"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div></div><div><span class="kicker">Beispiel-Website</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn" href="/vorschau/{bsp["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>{cta()}"""
         write(p, b["h1"], b["lead"], body, prio=0.8, crumbs=[("/", "Start"), ("/branchen/", "Branchen"), (p, b["titel"])])
 
 
 def beispiele():
-    cards = "".join(f'<a class="card" href="/beispiele/{b["slug"]}/"><div class="thumb">{BRANCHE[b["draw"]]}</div><span class="pill">{b["branche"]}</span><h3 style="margin-top:12px">{b["name"]}</h3><p>{b["teaser"]}</p><span class="more">{eur(paket_summe(b))} im ersten Jahr →</span></a>' for b in BEISPIELE)
+    cards = galerie(BEISPIELE)
     write("/beispiele/", "Beispiele mit Kundenweg und Preis", "Sechs durchgerechnete Beispiele: Kundenweg, Umsetzung, Paket und Preis für Friseur, Dachdecker, Steuerberater, Pflegedienst, Bestatter und Tierarzt.",
-          f'<section class="hero"><div class="wrap"><span class="kicker">Beispiele</span><h1>Sechs Betriebe, sechs Kundenwege</h1><p class="lead">Jedes Beispiel erzählt, wie ein Kunde sucht, vergleicht und sich entscheidet – und was wir an jeder Stelle bauen. Mit echtem Paketpreis.</p><p class="note">Die Betriebe sind erfundene Beispiele, damit Sie Ablauf und Kosten realistisch einschätzen können. Preise entsprechen unserer aktuellen Preisliste.</p></div></section><section style="padding-top:0"><div class="wrap grid3">{cards}</div></section>{cta()}',
+          f'<section class="hero"><div class="wrap"><span class="kicker">Beispiele</span><h1>Sechs Betriebe, sechs Kundenwege</h1><p class="lead">Jedes Beispiel erzählt, wie ein Kunde sucht, vergleicht und sich entscheidet – und was wir an jeder Stelle bauen. Mit echtem Paketpreis – und einer vollständigen Vorschau-Website zum Durchklicken.</p><p class="note">Die Betriebe sind erfundene Beispiele, damit Sie Ablauf und Kosten realistisch einschätzen können. Preise entsprechen unserer aktuellen Preisliste.</p></div></section><section style="padding-top:0"><div class="wrap gallery">{cards}</div></section>{cta()}',
           prio=0.9, crumbs=[("/", "Start"), ("/beispiele/", "Beispiele")])
     for b in BEISPIELE:
         p = f"/beispiele/{b['slug']}/"
@@ -185,9 +216,9 @@ def beispiele():
                ticks(b["umsetzung"]) + f'<p><strong>Aufgabe des Betriebs:</strong> {b["aufgabe"]}</p>',
                f'<div class="tablewrap"><table><thead><tr><th>Baustein</th><th class="r">Betrag</th></tr></thead><tbody>{rows}</tbody><tfoot><tr><td>Erstes Jahr gesamt</td><td class="r">{eur(paket_summe(b))}</td></tr></tfoot></table></div>{hinweis}',
                f"<p>{b['erwartung']}</p>"]
-        chapters = "".join(f'<div class="chapter"><div><div class="n">{i+1:02d}</div><span class="kicker" style="margin-top:8px">{KAPITEL[i]}</span></div><div>{c if c.startswith("<") else "<p>"+c+"</p>"}</div></div>' for i, c in enumerate(kap))
+        chapters = "".join(f'<div class="chapter" id="kapitel-{i+1}"><div><div class="n">{i+1:02d}</div><span class="kicker" style="margin-top:8px">{KAPITEL[i]}</span></div><div>{c if c.startswith("<") else "<p>"+c+"</p>"}</div></div>' for i, c in enumerate(kap))
         nxt = BEISPIELE[(BEISPIELE.index(b) + 1) % len(BEISPIELE)]
-        body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">Beispiel · {b["branche"]}</span><h1>{b["name"]}</h1><p class="lead">{b["teaser"]}</p><p><span class="pill">{b["ort"]}</span> <span class="pill">{eur(paket_summe(b))} im ersten Jahr</span></p></div><div>{BRANCHE[b["draw"]]}</div></div></section>
+        body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">Beispiel · {b["branche"]}</span><h1>{b["name"]}</h1><p class="lead">{b["teaser"]}</p><p><span class="pill">{b["ort"]}</span> <span class="pill">{eur(paket_summe(b))} im ersten Jahr</span></p><div class="actions"><a class="btn" href="/vorschau/{b["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="#kapitel-3">Zum Kundenweg</a></div></div><div class="showcase small"><a href="/vorschau/{b["slug"]}/" class="sc-desk">{frame(b["slug"], eager=True)}</a><a href="/vorschau/{b["slug"]}/" class="sc-phone">{frame(b["slug"], mobil=True, eager=True)}</a></div></div></section>
 <section style="padding-top:0"><div class="wrap">{chapters}<p class="note">Erfundenes Beispiel zur Veranschaulichung. Ergebnisse hängen von Markt, Wettbewerb und Mitarbeit ab und sind nicht garantiert.</p><p style="margin-top:22px"><a class="more" href="/beispiele/{nxt["slug"]}/">Nächstes Beispiel: {nxt["name"]} ({nxt["branche"]}) →</a></p></div></section>{cta("Wie sieht Ihr Kundenweg aus?", "Im Erstgespräch skizzieren wir ihn gemeinsam – kostenlos.")}"""
         write(p, f"Beispiel {b['branche']}: {b['name']}", b["teaser"], body, prio=0.7,
               crumbs=[("/", "Start"), ("/beispiele/", "Beispiele"), (p, b["branche"])])
