@@ -189,3 +189,119 @@ U.add_chart(ch, "F4")
 
 wb.save("Finanzmodell.xlsx")
 print("gespeichert")
+
+
+# ================================================================== 1-Mio-Plan 2027
+import million as MI
+P = wb.create_sheet("1-Mio-Plan 2027", 1)
+P["A1"] = "1-Mio-Plan 2027 – Monatsplanung mit Vertriebsteam"; P["A1"].font = H1
+P["A2"] = "Blaue Werte sind Eingaben. Vertriebskapazität treibt die Abschlüsse, Kosten folgen aus Lieferstunden, Team, Werbung und Gemeinkosten."; P["A2"].font = Font(name=F, italic=True)
+a = MI.A
+inp = [("p_web", "Ø Website-Auftrag", EUR), ("p_pflege", "Pflege & Hosting / Monat", EUR), ("p_seo", "SEO / Monat", EUR), ("p_ads", "Ads-Betreuung / Monat", EUR),
+       ("p_ads_setup", "Ads-Einrichtung", EUR), ("p_prog", "Wachstumsprogramm / Monat", EUR), ("p_rec_setup", "Recruiting-Paket Einrichtung", EUR), ("p_rec", "Recruiting-Paket / Monat", EUR),
+       ("mix_web", "Anteil Website-Deals", PCT), ("mix_prog", "Anteil Programm-Deals", PCT), ("mix_rec", "Anteil Recruiting-Deals", PCT), ("att_seo", "Website-Deals mit SEO", PCT), ("att_ads", "Website-Deals mit Ads", PCT),
+       ("ch_pflege", "Kündigung Pflege / Monat", PCT), ("ch_seo", "Kündigung SEO / Monat", PCT), ("ch_ads", "Kündigung Ads / Monat", PCT), ("ch_prog", "Kündigung Programm / Monat", PCT), ("ch_rec", "Kündigung Recruiting / Monat", PCT),
+       ("deals_closer", "Abschlüsse je eingearbeitetem Closer / Monat", NUM1), ("deals_gruender", "Abschlüsse Gründer / Monat", NUM1),
+       ("closer_fix", "Fixkosten je angestelltem Closer", EUR), ("sdr_fix", "Fixkosten je Terminierer (SDR)", EUR), ("provision", "Provision auf Umsatz", PCT),
+       ("anteil_paid", "Anteil Deals über Werbung", PCT), ("cac_paid", "Werbekosten je Deal (CAC)", EUR),
+       ("h_web", "Stunden je Website", NUM1), ("h_seo", "Stunden je SEO-Kunde / Monat", NUM1), ("h_ads", "Stunden je Ads-Kunde / Monat", NUM1), ("h_prog", "Stunden je Programm-Kunde / Monat", NUM1),
+       ("h_rec_setup", "Stunden je Recruiting-Einrichtung", NUM1), ("h_rec", "Stunden je Recruiting-Kunde / Monat", NUM1), ("h_pflege", "Stunden je Pflege-Kunde / Monat", NUM1),
+       ("h_satz", "Mischsatz Lieferung je Stunde", EUR), ("overhead_start", "Gemeinkosten Januar", EUR), ("overhead_end", "Gemeinkosten Dezember", EUR), ("gruender", "Gründergehalt / Monat", EUR)]
+PR = {}
+P["A4"], P["B4"] = "Annahme", "Wert"
+for c in "AB": P[f"{c}4"].font, P[f"{c}4"].fill = HEADF, HEAD
+for i, (k, lab, fmt) in enumerate(inp, start=5):
+    P[f"A{i}"] = lab; P[f"A{i}"].font = NORM
+    c = P[f"B{i}"]; c.value = a[k]; c.font = BLUE; c.number_format = fmt
+    PR[k] = f"$B${i}"
+r0 = 5 + len(inp)
+for j, v in enumerate(a["ramp"]):
+    P[f"A{r0+j}"] = f"Leistung neuer Closer im Monat {j+1}"; c = P[f"B{r0+j}"]; c.value = v; c.font = BLUE; c.number_format = PCT
+    PR[f"r{j+1}"] = f"$B${r0+j}"
+for k in ("deals_closer", "cac_paid", "mix_prog"): P[PR[k].replace("$", "")].fill = KEY
+st = r0 + 4
+P[f"A{st}"] = "Kundenbestand Ende 2026"; P[f"A{st}"].font = BOLD
+for j, (k, lab) in enumerate([("pflege", "Pflege"), ("seo", "SEO"), ("ads", "Ads"), ("prog", "Programm"), ("rec", "Recruiting")], start=1):
+    P[f"A{st+j}"] = lab; c = P[f"B{st+j}"]; c.value = MI.START[k]; c.font = BLUE; PR["s_" + k] = f"$B${st+j}"
+
+# Monatsraster ab Spalte D
+H = 4
+P.cell(H, 4, "Kennzahl").font = HEADF; P.cell(H, 4).fill = HEAD
+for m in range(12):
+    c = P.cell(H, 5 + m, MI.MONATE[m] + " 27"); c.font, c.fill = HEADF, HEAD
+c = P.cell(H, 17, "Summe 2027"); c.font, c.fill = HEADF, HEAD
+lines = ["vertrieb", "sdr", "angest", "neu", "aequiv", "deals", "n_web", "n_seo", "n_ads", "n_prog", "n_rec", None,
+         "k_pflege", "k_seo", "k_ads", "k_prog", "k_rec", None, "mrr", "einmal", "umsatz", None,
+         "stunden", "fte", "k_lief", "k_vertrieb", "k_werbung", "k_overhead", "k_gruender", "kosten", None, "erg", "kasse"]
+labels = {"vertrieb": "Personen im Vertrieb (inkl. Gründer)", "sdr": "Terminierer (SDR)", "angest": "Angestellte Closer", "neu": "davon neu", "aequiv": "Eingearbeitete Closer-Äquivalente",
+          "deals": "Abschlüsse gesamt", "n_web": "neue Website-Kunden", "n_seo": "neue SEO-Kunden", "n_ads": "neue Ads-Kunden", "n_prog": "neue Programm-Kunden", "n_rec": "neue Recruiting-Kunden",
+          "k_pflege": "Aktive Pflege-Kunden", "k_seo": "Aktive SEO-Kunden", "k_ads": "Aktive Ads-Kunden", "k_prog": "Aktive Programm-Kunden", "k_rec": "Aktive Recruiting-Kunden",
+          "mrr": "MRR", "einmal": "Einmalumsatz", "umsatz": "Umsatz", "stunden": "Lieferstunden", "fte": "Liefer-Vollzeitstellen (140 h)", "k_lief": "Kosten Lieferung",
+          "k_vertrieb": "Kosten Vertrieb (Fix + Provision)", "k_werbung": "Werbebudget", "k_overhead": "Gemeinkosten", "k_gruender": "Gründergehalt", "kosten": "Kosten gesamt",
+          "erg": "Ergebnis vor Steuern", "kasse": "Kasse kumuliert"}
+RW = {}; row = H
+for key in lines:
+    row += 1
+    if key: RW[key] = row
+def ref(k, col): return f"{col}{RW[k]}"
+def b(k): return f"$B${PR[k][3:]}" if False else PR[k]
+row = H
+for key in lines:
+    row += 1
+    if key is None:
+        for c in range(4, 18): P.cell(row, c).fill = SUB
+        continue
+    P.cell(row, 4, labels[key]).font = BOLD if key in ("deals", "mrr", "umsatz", "kosten", "erg", "kasse") else NORM
+    for m in range(12):
+        col = L(5 + m); pc = L(4 + m) if m else None; pc2 = L(3 + m) if m > 1 else None
+        if key == "vertrieb": f = MI.CLOSER[m]
+        elif key == "sdr": f = MI.SDR[m]
+        elif key == "angest": f = f"=MAX(0,{col}{RW['vertrieb']}-1)"
+        elif key == "neu": f = f"=MAX(0,{col}{RW['angest']}-{pc}{RW['angest']})" if pc else f"={col}{RW['angest']}"
+        elif key == "aequiv":
+            f = f"={col}{RW['angest']}-(1-{PR['r1']})*{col}{RW['neu']}"
+            if pc: f += f"-(1-{PR['r2']})*{pc}{RW['neu']}"
+            if pc2: f += f"-(1-{PR['r3']})*{pc2}{RW['neu']}"
+        elif key == "deals": f = f"={PR['deals_gruender']}+{col}{RW['aequiv']}*{PR['deals_closer']}"
+        elif key == "n_web": f = f"={col}{RW['deals']}*{PR['mix_web']}"
+        elif key == "n_seo": f = f"={col}{RW['n_web']}*{PR['att_seo']}"
+        elif key == "n_ads": f = f"={col}{RW['n_web']}*{PR['att_ads']}"
+        elif key == "n_prog": f = f"={col}{RW['deals']}*{PR['mix_prog']}"
+        elif key == "n_rec": f = f"={col}{RW['deals']}*{PR['mix_rec']}"
+        elif key.startswith("k_") and key[2:] in ("pflege", "seo", "ads", "prog", "rec"):
+            s = key[2:]; neu = {"pflege": "n_web", "seo": "n_seo", "ads": "n_ads", "prog": "n_prog", "rec": "n_rec"}[s]
+            prev = f"{pc}{RW[key]}" if pc else PR["s_" + s]
+            f = f"={prev}*(1-{PR['ch_' + s]})+{col}{RW[neu]}"
+        elif key == "mrr": f = f"={col}{RW['k_pflege']}*{PR['p_pflege']}+{col}{RW['k_seo']}*{PR['p_seo']}+{col}{RW['k_ads']}*{PR['p_ads']}+{col}{RW['k_prog']}*{PR['p_prog']}+{col}{RW['k_rec']}*{PR['p_rec']}"
+        elif key == "einmal": f = f"={col}{RW['n_web']}*{PR['p_web']}+{col}{RW['n_ads']}*{PR['p_ads_setup']}+{col}{RW['n_rec']}*{PR['p_rec_setup']}"
+        elif key == "umsatz": f = f"={col}{RW['mrr']}+{col}{RW['einmal']}"
+        elif key == "stunden": f = (f"={col}{RW['n_web']}*{PR['h_web']}+{col}{RW['k_seo']}*{PR['h_seo']}+{col}{RW['k_ads']}*{PR['h_ads']}+{col}{RW['k_prog']}*{PR['h_prog']}"
+                                    f"+{col}{RW['n_rec']}*{PR['h_rec_setup']}+{col}{RW['k_rec']}*{PR['h_rec']}+{col}{RW['k_pflege']}*{PR['h_pflege']}")
+        elif key == "fte": f = f"={col}{RW['stunden']}/140"
+        elif key == "k_lief": f = f"={col}{RW['stunden']}*{PR['h_satz']}"
+        elif key == "k_vertrieb": f = f"={col}{RW['angest']}*{PR['closer_fix']}+{col}{RW['sdr']}*{PR['sdr_fix']}+{col}{RW['umsatz']}*{PR['provision']}"
+        elif key == "k_werbung": f = f"={col}{RW['deals']}*{PR['anteil_paid']}*{PR['cac_paid']}"
+        elif key == "k_overhead": f = f"={PR['overhead_start']}+({PR['overhead_end']}-{PR['overhead_start']})*{m}/11"
+        elif key == "k_gruender": f = f"={PR['gruender']}"
+        elif key == "kosten": f = f"=SUM({col}{RW['k_lief']}:{col}{RW['k_gruender']})"
+        elif key == "erg": f = f"={col}{RW['umsatz']}-{col}{RW['kosten']}"
+        elif key == "kasse": f = f"={pc}{RW['kasse']}+{col}{RW['erg']}" if pc else f"={col}{RW['erg']}"
+        c = P.cell(row, 5 + m, f)
+        c.font = BLUE if key in ("vertrieb", "sdr") else (BOLD if key in ("deals", "mrr", "umsatz", "kosten", "erg", "kasse") else NORM)
+        c.number_format = EUR if key in ("mrr", "einmal", "umsatz", "k_lief", "k_vertrieb", "k_werbung", "k_overhead", "k_gruender", "kosten", "erg", "kasse") else NUM1
+    if key in ("deals", "n_web", "n_seo", "n_ads", "n_prog", "n_rec", "einmal", "umsatz", "stunden", "k_lief", "k_vertrieb", "k_werbung", "k_overhead", "k_gruender", "kosten", "erg"):
+        c = P.cell(row, 17, f"=SUM(E{row}:P{row})"); c.font = BOLD; c.number_format = P.cell(row, 16).number_format
+for kk in ("umsatz", "erg"): P.cell(RW[kk], 17).fill = KEY
+P.column_dimensions["A"].width = 44; P.column_dimensions["B"].width = 12; P.column_dimensions["C"].width = 3; P.column_dimensions["D"].width = 36
+for m in range(13): P.column_dimensions[L(5 + m)].width = 11
+P.freeze_panes = "E5"
+# Kennzahlen in der Übersicht
+U.cell(4, 6 + 0, None)
+ur = 5 + len(kpis) + 2 + MONATE + 3
+U.cell(ur, 1, "1-Mio-Plan 2027").font = H1
+for i, (lab, f, fmt) in enumerate([("Umsatz 2027", f"='1-Mio-Plan 2027'!Q{RW['umsatz']}", EUR), ("Ergebnis 2027 vor Steuern", f"='1-Mio-Plan 2027'!Q{RW['erg']}", EUR),
+                                   ("MRR Dezember 2027", f"='1-Mio-Plan 2027'!P{RW['mrr']}", EUR), ("Tiefster Kassenstand", f"=MIN(0,MIN('1-Mio-Plan 2027'!E{RW['kasse']}:P{RW['kasse']}))", EUR),
+                                   ("Abschlüsse 2027", f"='1-Mio-Plan 2027'!Q{RW['deals']}", NUM1), ("Liefer-Vollzeitstellen Dezember", f"='1-Mio-Plan 2027'!P{RW['fte']}", NUM1)], start=ur + 1):
+    U.cell(i, 1, lab).font = NORM; c = U.cell(i, 2, f); c.font = GREEN; c.number_format = fmt
+wb.save("Finanzmodell.xlsx")
+print("1-Mio-Plan ergänzt")

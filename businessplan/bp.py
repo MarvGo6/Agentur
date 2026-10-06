@@ -83,6 +83,120 @@ def szen_table():
 z = ziel("Basis")
 prog_einzeln = P["web_wachstum"] + 12 * P["pflege_wachstum"] + 12 * P["seo_plus"] + P["ads_setup"] + 12 * P["ads"]
 
+# ---------------------------------------------------------------- Ausbaustufe 1 Mio. € (Kapitel 09/10)
+import million as MI
+MR = MI.rechne()
+MJ = sum(x["umsatz"] for x in MR); MERG = sum(x["ergebnis"] for x in MR); MKASSE = min(x["kasse"] for x in MR)
+MDEALS = sum(x["deals"] for x in MR); MA = MI.A
+BASIS_2027 = sum(x["umsatz"] for x in B[3:15])   # Basis-Szenario: Start Okt 2026 → Monate 4–15 = 2027
+
+def mio_bars():
+    W, H, l, t, r, b = 640, 260, 62, 16, 20, 34
+    ymax = 240000
+    bw = (W - l - r) / 12
+    sy = lambda v: t + (1 - v / ymax) * (H - t - b)
+    g = []
+    for v in range(0, ymax + 1, 60000):
+        g.append(f'<line x1="{l}" x2="{W-r}" y1="{sy(v):.1f}" y2="{sy(v):.1f}" stroke="#e4ddd0"/><text x="{l-8}" y="{sy(v)+4:.1f}" text-anchor="end">{eur(v)}</text>')
+    for i, x in enumerate(MR):
+        x0 = l + i * bw + 5; w = bw - 10
+        y_m = sy(x["mrr"]); y_t = sy(x["umsatz"])
+        g.append(f'<rect x="{x0:.1f}" y="{y_m:.1f}" width="{w:.1f}" height="{sy(0)-y_m:.1f}" fill="#1a8a68" rx="2"/>'
+                 f'<rect x="{x0:.1f}" y="{y_t:.1f}" width="{w:.1f}" height="{max(0, y_m-y_t-2):.1f}" fill="#c26a2e" rx="2"/>'
+                 f'<text x="{x0+w/2:.1f}" y="{H-b+16}" text-anchor="middle">{x["monat"]}</text>')
+    g.append(f'<text x="{W-r}" y="{sy(MR[-1]["umsatz"])-6:.1f}" text-anchor="end" fill="#1c2220" font-weight="600">{e0(MR[-1]["umsatz"])} im Dezember</text>')
+    leg = ('<div class="legend"><span><i style="background:#1a8a68"></i>wiederkehrend (MRR)</span><span><i style="background:#c26a2e"></i>einmalig (Websites, Einrichtungen)</span></div>')
+    return f'<svg viewBox="0 0 {W} {H}" class="chart" font-size="10.5" fill="#4a524f" font-family="Inter,sans-serif">{"".join(g)}</svg>{leg}'
+
+def mio_cum():
+    W, H, l, t, r, b = 640, 200, 62, 14, 120, 30
+    ymax = 1200000
+    sx = lambda i: l + i / 11 * (W - l - r); sy = lambda v: t + (1 - v / ymax) * (H - t - b)
+    cum, pts = 0, []
+    for i, x in enumerate(MR):
+        cum += x["umsatz"]; pts.append((sx(i), sy(cum)))
+    g = [f'<line x1="{l}" x2="{W-r}" y1="{sy(v):.1f}" y2="{sy(v):.1f}" stroke="#e4ddd0"/><text x="{l-8}" y="{sy(v)+4:.1f}" text-anchor="end">{v/1e6:.1f} Mio.</text>' for v in range(0, ymax + 1, 300000)]
+    g.append(f'<line x1="{l}" x2="{W-r}" y1="{sy(1e6):.1f}" y2="{sy(1e6):.1f}" stroke="#1c2220" stroke-dasharray="4 4"/><text x="{W-r+6}" y="{sy(1e6)+4:.1f}" fill="#1c2220">Ziel 1 Mio. €</text>')
+    g.append('<polyline points="' + " ".join(f"{x:.1f},{y:.1f}" for x, y in pts) + '" fill="none" stroke="#1a8a68" stroke-width="2.4"/>')
+    g.append(f'<circle cx="{pts[-1][0]:.1f}" cy="{pts[-1][1]:.1f}" r="4" fill="#1a8a68" stroke="#fff" stroke-width="2"/><text x="{pts[-1][0]+8:.1f}" y="{pts[-1][1]-6:.1f}" fill="#1c2220" font-weight="600">{e0(MJ)}</text>')
+    for i in (0, 3, 6, 9, 11): g.append(f'<text x="{sx(i):.1f}" y="{H-b+16}" text-anchor="middle">{MR[i]["monat"]}</text>')
+    return f'<svg viewBox="0 0 {W} {H}" class="chart" font-size="10.5" fill="#4a524f" font-family="Inter,sans-serif">{"".join(g)}</svg>'
+
+def mio_quartale():
+    out = ""
+    for q in range(4):
+        s = MR[q*3:q*3+3]; z = s[-1]
+        out += (f"<tr><td>Q{q+1} 2027</td><td class=r>{sum(x['deals'] for x in s):.0f}</td><td class=r>{e0(sum(x['umsatz'] for x in s))}</td><td class=r>{e0(sum(x['kosten'] for x in s))}</td>"
+                f"<td class=r>{e0(sum(x['ergebnis'] for x in s))}</td><td class=r>{e0(zd['mrr'])}</td><td class=r>{zd['closer']} / {zd['sdr']}</td><td class=r>{zd['fte']:.1f}</td></tr>")
+    return out
+
+def mio_sens():
+    rows = ""
+    for dc in (4, 5, 5.5, 6, 7):
+        cells = ""
+        for cac in (600, 900, 1200):
+            a = dict(MA); a["deals_closer"] = dc; a["cac_paid"] = cac; r = MI.rechne(a)
+            u = sum(x["umsatz"] for x in r); ok = u >= 1e6
+            cells += f'<td class=r style="{"color:#0f5c4a;font-weight:600" if ok else "color:#b0602a"}">{u/1e6:.2f} Mio. · {e0(sum(x["ergebnis"] for x in r))}</td>'
+        rows += f"<tr><td>{str(dc).replace('.', ',')} Abschlüsse</td>{cells}</tr>"
+    return rows
+
+def team_tab():
+    plan = [("Jan", "Gründer verkauft und liefert; 1 Terminierer (SDR); Freelancer für Design/Text"),
+            ("Feb", "1. angestellter Closer"), ("Apr", "2. Closer; 1. Projektmanager:in Lieferung (Festanstellung)"),
+            ("Mai", "3. Closer; Webentwickler:in; Steuerberater + Umwandlung in GmbH"),
+            ("Jul", "4. Closer; SEO-Spezialist:in; Teamleitung Vertrieb aus den Closern"),
+            ("Aug", "5. Closer; Ads- & Recruiting-Spezialist:in"),
+            ("Okt", "6. Closer; Teamleitung Lieferung; 2. Projektmanager:in"),
+            ("Dez", f"Team: Gründer, 6 Closer, 7 Terminierer, ca. {MR[-1]['fte']:.0f} Vollzeitstellen Lieferung (angestellt + Freelancer)")]
+    return "".join(f"<tr><td>{m} 2027</td><td>{t}</td></tr>" for m, t in plan)
+
+zd = MR[-1]
+MIO = f"""
+<section class="page"><h2><small class="kicker" style="display:inline-block;font-family:Inter,sans-serif;margin-right:8pt;vertical-align:middle">09</small>Ausbaustufe: 1 Mio. € Umsatz in 2027</h2>
+<p>Das Basis-Szenario führt zu einem gesunden Ein-Personen-Betrieb mit rund {e0(BASIS_2027)} Umsatz im Jahr 2027. <strong>1 Mio. € in 2027 sind das rund {MJ/BASIS_2027:.0f}-Fache</strong> – das ist kein „mehr vom Gleichen“, sondern ein anderes Unternehmen: ein Vertriebsteam, ein Lieferteam und eine standardisierte Produktion. Dieses Kapitel zeigt, wie das gerechnet aussieht und unter welchen Bedingungen es realistisch ist.</p>
+<div class="kpis"><div class="kpi"><b>{e0(MJ)}</b>Umsatz 2027 im Plan</div><div class="kpi"><b>{MDEALS:.0f}</b>Abschlüsse im Jahr</div><div class="kpi"><b>{e0(zd['mrr'])}</b>MRR im Dezember</div><div class="kpi"><b>{e0(MERG)}</b>Ergebnis vor Steuern</div></div>
+<h3>Die fünf Hebel</h3>
+<ol><li><strong>Vertrieb als Team statt Nebenbei:</strong> Bis Oktober sechs Closer und sieben Terminierer. Jeder eingearbeitete Closer schließt {str(MA['deals_closer']).replace('.', ',')} Aufträge im Monat ab (rund 22 Gespräche bei 25 % Abschlussquote).</li>
+<li><strong>Die Vorschau-Website als Türöffner:</strong> Jeder interessierte Betrieb bekommt innerhalb von 48 Stunden eine persönliche Vorschau seiner neuen Website – mit dem Generator weitgehend automatisiert. Das senkt die Hürde vom Gespräch zum Auftrag deutlich und unterscheidet {NAME} von jedem Wettbewerber.</li>
+<li><strong>Höherer Auftragswert:</strong> Ø {eur(MA['p_web'])} je Website statt {eur(G['preis_web'])}, weil mehr Betriebe Website Wachstum mit Karriere- und Ortsseiten nehmen.</li>
+<li><strong>Neues Produkt Recruiting-Paket:</strong> Für Pflege, Handwerk und Praxen ist Personal der größte Engpass. Einrichtung {eur(MA['p_rec_setup'])}, danach {MA['p_rec']} € im Monat (Karriereseite, 60-Sekunden-Bewerbung, Recruiting-Anzeigen). Anteil im Plan: {MA['mix_rec']:.0%} der Abschlüsse.</li>
+<li><strong>Bezahlte Kundengewinnung:</strong> Die Hälfte der Abschlüsse kommt über Werbung (Google, Meta, LinkedIn) mit {eur(MA['cac_paid'])} Werbekosten je Auftrag – die andere Hälfte über Terminierer, Partner und Empfehlungen.</li></ol>
+<h3>Umsatz pro Monat</h3>{mio_bars()}
+<h3>Kumulierter Umsatz 2027</h3>{mio_cum()}
+</section>
+
+<section class="page"><h2><small class="kicker" style="display:inline-block;font-family:Inter,sans-serif;margin-right:8pt;vertical-align:middle">10</small>1-Mio-Plan: Team, Zahlen, Bedingungen</h2>
+<h3>Quartale 2027</h3>
+<table><thead><tr><th>Quartal</th><th class=r>Abschlüsse</th><th class=r>Umsatz</th><th class=r>Kosten</th><th class=r>Ergebnis*</th><th class=r>MRR Ende</th><th class=r>Closer / SDR</th><th class=r>Liefer-VZ</th></tr></thead><tbody>{mio_quartale()}</tbody>
+<tfoot><tr><td><b>2027</b></td><td class=r><b>{MDEALS:.0f}</b></td><td class=r><b>{e0(MJ)}</b></td><td class=r><b>{e0(sum(x['kosten'] for x in MR))}</b></td><td class=r><b>{e0(MERG)}</b></td><td></td><td></td><td></td></tr></tfoot></table>
+<p class="small">* vor Steuern, nach Gründergehalt ({eur(MA['gruender'])}/Monat). Kosten enthalten Lieferung ({MA['h_satz']} €/h Mischsatz), Vertrieb (Fixum + {MA['provision']:.0%} Provision), Werbung und Gemeinkosten. Vollständige Monatsrechnung im Blatt „1-Mio-Plan 2027“ der Excel-Datei.</p>
+<h3>Teamaufbau</h3><table><tbody>{team_tab()}</tbody></table>
+<h3>Vertriebstrichter im Dezember</h3>
+<p>{zd['deals']:.0f} Abschlüsse im Monat brauchen bei 25 % Abschlussquote rund {zd['deals']/0.25:.0f} Verkaufsgespräche. Die Hälfte entsteht aus Werbung (≈ {e0(zd['k_werbung'])} Budget), die andere aus Terminierern: bei 10 % Terminquote rund {zd['deals']/0.25/2/0.1:.0f} qualifizierte Kontakte pro Monat, also ca. {zd['deals']/0.25/2/0.1/max(1,zd['sdr'])/20:.0f} pro Terminierer und Arbeitstag.</p>
+<h3>Wie sicher ist das Ziel? (Umsatz 2027 · Ergebnis)</h3>
+<table><thead><tr><th>Abschlüsse je Closer/Monat</th><th class=r>Werbekosten 600 €/Deal</th><th class=r>900 €/Deal (Plan)</th><th class=r>1.200 €/Deal</th></tr></thead><tbody>{mio_sens()}</tbody></table>
+<p>Die entscheidende Größe ist die <strong>Abschlussleistung je Closer</strong>. Unter 5 Abschlüssen pro Monat wird 1 Mio. € verfehlt, das Unternehmen bleibt aber profitabel. Die Werbekosten verändern vor allem das Ergebnis, kaum den Umsatz.</p>
+<h3>Kapitalbedarf und Finanzierung</h3>
+<ul><li>Im Modell liegt der tiefste Kassenstand bei <strong>{e0(MKASSE)}</strong> (April), weil Gehälter vor dem Umsatz kommen.</li>
+<li>Nicht modelliert sind Zahlungsziele (14–30 Tage), Recruitingkosten, Hardware und Einarbeitung. <strong>Empfohlene Liquiditätsreserve: 50.000–60.000 €</strong>.</li>
+<li>Finanzierung: eigene Rücklagen aus 2026, Gründungskredit (z. B. KfW ERP-Förderkredit Gründung/StartGeld) oder ein Kontokorrentrahmen der Hausbank. Alternativ Closer mit niedrigerem Fixum und höherer Provision einstellen – das senkt den Kapitalbedarf, erschwert aber die Suche.</li></ul>
+<h3>Voraussetzungen, bevor eingestellt wird</h3>
+<table><thead><tr><th>Prüfpunkt</th><th>Muss erfüllt sein</th><th>Sonst</th></tr></thead><tbody>
+<tr><td>Ende Q4 2026</td><td>Gründer schließt selbst ≥ 4 Aufträge/Monat ab, Abschlussquote ≥ 25 %</td><td>Angebot und Gespräch verbessern, noch niemanden einstellen</td></tr>
+<tr><td>Ende Februar</td><td>Erster Closer erreicht ≥ 50 % Ziel; Vorschau-Website in 48 h ist Routine</td><td>Einarbeitung verlängern, Zielgruppe schärfen</td></tr>
+<tr><td>Ende Q1</td><td>Werbekosten ≤ 1.200 € je Auftrag; Lieferung termingerecht</td><td>Werbung pausieren, Terminierer ausbauen</td></tr>
+<tr><td>Ende Q2</td><td>Umsatz ≥ 160.000 € kumuliert; Kündigungen ≤ Plan</td><td>Auf 3–4 Closer begrenzen, Ziel auf 600–800 T€ setzen</td></tr>
+<tr><td>Ende Q3</td><td>MRR ≥ 70.000 €; Teamleitungen besetzt</td><td>Einstellungsstopp, Fokus auf Profitabilität</td></tr></tbody></table>
+<h3>Organisation und Recht für die Ausbaustufe</h3>
+<ul><li><strong>GmbH</strong> statt Einzelunternehmen (Haftung bei Personal und Verträgen, Gesellschaftsvertrag, 25.000 € Stammkapital, davon 12.500 € bei Gründung einzuzahlen) – alternativ UG mit späterer Umwandlung.</li>
+<li>Regelbesteuerung, monatliche Umsatzsteuer-Voranmeldung, laufende Buchhaltung über einen Steuerberater.</li>
+<li>Arbeitsverträge mit klaren Provisionsregeln, AV-Verträge mit allen Kunden, Datenschutzkonzept für Kunden- und Bewerberdaten, Betriebshaftpflicht und Vermögensschadenhaftpflicht.</li>
+<li>Ohne Gesicht bleibt möglich: Closer und Teamleitungen treten im Kundenkontakt auf, der Gründer führt das Unternehmen. Im Impressum und Handelsregister steht der Geschäftsführer mit Namen.</li></ul>
+<div class="box warn"><strong>Ehrliche Einordnung:</strong> 1 Mio. € im ersten vollen Jahr ist ambitioniert. Agenturen dieser Größe brauchen meist zwei bis drei Jahre. Der Plan ist erreichbar, wenn die Vertriebsmaschine bis März nachweislich funktioniert. Ohne diesen Nachweis ist das Basis-Szenario der bessere Weg – mit deutlich weniger Risiko und ohne Fremdkapital.</div>
+</section>
+"""
+
 HTML = f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Businessplan {NAME}</title>
 <style>
 @font-face{{font-family:Fraunces;src:url(../static/fonts/fraunces.woff2)}}@font-face{{font-family:Inter;src:url(../static/fonts/inter.woff2)}}
@@ -99,7 +213,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 .warn{{background:#f8ece2;border-left-color:#b0602a}}
 .kpis{{display:grid;grid-template-columns:repeat(4,1fr);gap:8pt;margin:10pt 0}}.kpi{{border:1px solid #ddd5c6;border-radius:6pt;padding:8pt}}.kpi b{{display:block;font:600 16pt Fraunces,serif;color:#b0602a}}
 .cols{{display:grid;grid-template-columns:1fr 1fr;gap:16pt}}
-.chart{{width:100%;height:auto;margin:6pt 0}}
+.chart{{width:100%;height:auto;margin:6pt 0}}.legend{{display:flex;gap:16pt;font-size:8.5pt;color:#4a524f;margin:-2pt 0 8pt}}.legend i{{display:inline-block;width:9pt;height:9pt;border-radius:2pt;margin-right:5pt;vertical-align:-1pt}}
 .cover{{display:flex;flex-direction:column;justify-content:space-between;min-height:245mm}}
 .cover h1{{font-size:38pt;margin:0;color:#0f5c4a}}.small{{font-size:8.5pt;color:#4a524f}}
 </style></head><body>
@@ -119,7 +233,8 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <h3>Ziel und Ergebnis der Planung</h3>
 <p>Ziel sind <strong>10.000 € monatlich wiederkehrender Umsatz (MRR)</strong>. Im Basis-Szenario wird das in <strong>Monat {z}</strong> erreicht, nach 24 Monaten liegt der MRR bei {e0(B[23]['mrr'])}. Konservativ gerechnet sind es nach 24 Monaten {e0(R['Konservativ'][23]['mrr'])}, optimistisch {e0(R['Optimistisch'][23]['mrr'])}.</p>
 {line_chart()}
-<div class="box">Weil Websites einmalig bezahlt werden und Freelancer nur bei Bedarf eingekauft werden, ist das Ergebnis ab dem ersten Monat positiv. Es wird <strong>kein Startkapital</strong> benötigt. Der eigentliche Engpass ist nicht Geld, sondern die Kundengewinnung in den ersten sechs Monaten.</div></section>
+<div class="box">Weil Websites einmalig bezahlt werden und Freelancer nur bei Bedarf eingekauft werden, ist das Ergebnis ab dem ersten Monat positiv. Es wird <strong>kein Startkapital</strong> benötigt. Der eigentliche Engpass ist nicht Geld, sondern die Kundengewinnung in den ersten sechs Monaten.</div>
+<div class="box warn"><strong>Ausbaustufe 2027:</strong> Mit Vertriebsteam, Lieferteam und Recruiting-Paket sind im Plan <strong>{e0(MJ)} Umsatz in 2027</strong> möglich (Kapitel 09 und 10). Das erfordert ca. 50.000–60.000 € Liquiditätsreserve und einen nachweislich funktionierenden Vertrieb bis März 2027.</div></section>
 
 <section class="page"><h2><small class="kicker" style="display:inline-block;font-family:Inter,sans-serif;margin-right:8pt;vertical-align:middle">02</small>Angebot</h2>
 <p>Das Angebot ist bewusst nicht auf eine einzelne Leistung festgelegt. Alle Bausteine verfolgen dasselbe Ziel: mehr passende Anfragen – von Kunden oder von Bewerbern.</p>
@@ -234,7 +349,8 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <h3>Die ersten 30 Tage</h3>
 <ol><li>Name final festlegen, Domain sichern, Gewerbe anmelden, Finanzamt-Fragebogen</li><li>Impressum mit echten Daten, Website von Vorschau auf öffentlich schalten</li><li>Google-Unternehmensprofil für die Agentur (Service-Area ohne Adresse)</li><li>Erste Branche wählen (Empfehlung: Dachdecker & Solar oder Pflegedienste)</li><li>Liste mit 100 Betrieben, Vorlage für die Kurzanalyse</li><li>20 Analysen pro Woche versenden und nachfassen</li><li>Angebots-, Vertrags- und AV-Vorlagen fertigstellen</li><li>2–3 Partner ansprechen</li></ol></section>
 
-<section class="page"><h2><small class="kicker" style="display:inline-block;font-family:Inter,sans-serif;margin-right:8pt;vertical-align:middle">09</small>Risiken, Grenzen und Hebel</h2>
+{MIO}
+<section class="page"><h2><small class="kicker" style="display:inline-block;font-family:Inter,sans-serif;margin-right:8pt;vertical-align:middle">11</small>Risiken, Grenzen und Hebel</h2>
 <h3>Risiken und Gegenmaßnahmen</h3>
 <table><thead><tr><th>Risiko</th><th>Wirkung</th><th>Gegenmaßnahme</th></tr></thead><tbody>
 <tr><td>Langsamer Vertriebsstart</td><td>Ziel verschiebt sich um Monate (konservativ: nach Monat 24)</td><td>Feste Vertriebszeit pro Woche, Prüfpunkt Monat 3, Branchenwechsel</td></tr>
