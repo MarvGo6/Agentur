@@ -40,7 +40,7 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
 <title>{e(full_title)}</title><meta name="description" content="{e(desc)}">{robots}
 <link rel="canonical" href="{DOMAIN}{path}"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="{e(full_title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{DOMAIN}{path}"><meta property="og:locale" content="de_DE">
-<meta name="theme-color" content="#0f5c4a"><link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#f2f0eb"><link rel="preload" href="/fonts/intertight.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head><body>{bar}<a class="skip" href="#inhalt">Zum Inhalt</a>
@@ -49,11 +49,11 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
 <nav class="nav" aria-label="Hauptnavigation">{nav}<button class="theme" aria-label="Hell/Dunkel umschalten">◐</button><a class="btn" href="/kontakt/">Erstgespräch</a></nav></div></header>
 <main id="inhalt">{crumb_html}{body}</main>
 <footer><div class="wrap"><div class="cols">
-<div><a class="logo" href="/">{LOGO}{NAME}</a><p style="margin-top:12px">{e(C["tagline"])}</p><p>Remote aus Deutschland für ganz Deutschland.</p></div>
+<div><a class="logo" href="/">{LOGO}{NAME}</a><p style="margin-top:16px;max-width:22em">{e(C["tagline"])}</p><p>Remote aus Deutschland für ganz Deutschland.<br><a href="mailto:{C["email"]}" style="display:inline;color:inherit;text-decoration:underline">{C["email"]}</a></p></div>
 <div><p class="fh">Leistungen</p>{"".join(f'<a href="/leistungen/{l["slug"]}/">{l["titel"]}</a>' for l in LEISTUNGEN)}</div>
 <div><p class="fh">Branchen</p>{"".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}</div>
 <div><p class="fh">Agentur</p><a href="/beispiele/">Beispiele</a><a href="/ablauf/">Ablauf</a><a href="/preise/">Preise</a><a href="/faq/">Häufige Fragen</a><a href="/kontakt/">Kontakt</a></div>
-</div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a></span></div></div></footer>
+</div><div class="ft-mark" aria-hidden="true">{NAME}<span>.</span></div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a></span></div></div></footer>
 <script src="/main.js" defer></script></body></html>"""
 
 
@@ -65,8 +65,8 @@ def write(path, title, desc, body, prio=0.6, **kw):
         PAGES.append((path, prio))
 
 
-def cta(titel="Lassen Sie uns 20 Minuten sprechen", text="Kostenlos und unverbindlich. Sie erfahren, wo Ihr größter Hebel liegt – auch wenn wir danach nicht zusammenarbeiten."):
-    return f'<section><div class="wrap"><div class="cta"><div><h2>{titel}</h2><p>{text}</p></div><a class="btn" href="/kontakt/">Erstgespräch anfragen</a></div></div></section>'
+def cta(titel="Reden wir 20 Minuten.", text="Kostenlos und unverbindlich. Sie erfahren, wo Ihr größter Hebel liegt – auch wenn wir danach nicht zusammenarbeiten."):
+    return f'<section class="cta-x"><div class="wrap"><div><p class="kicker">Nächster Schritt</p><h2>{titel}</h2></div><div><p>{text}</p><a class="btn" href="/kontakt/">Erstgespräch anfragen <span class="ar">→</span></a></div></div></section>'
 
 
 def faq_html(items):
@@ -145,23 +145,6 @@ def galerie(items):
 <div class="show-links"><a href="/vorschau/{b["slug"]}/">Live-Vorschau →</a><a href="/beispiele/{b["slug"]}/">Kundenweg &amp; Preis</a></div></article>''' for b in items)
 
 
-VERGLEICH = [
-    ("Festpreis vorab", "–", "teilweise", "selten", "✓"),
-    ("Texte und Struktur inklusive", "–", "teilweise", "✓", "✓"),
-    ("Ladezeit unter 1 Sekunde", "–", "teilweise", "teilweise", "✓"),
-    ("Branchen-Kundenweg statt Vorlage", "–", "–", "teilweise", "✓"),
-    ("SEO und Google Ads aus einer Hand", "–", "selten", "✓", "✓"),
-    ("Monatlicher Bericht in Anfragen", "–", "–", "teilweise", "✓"),
-    ("Website und Domain gehören Ihnen", "–", "✓", "teilweise", "✓"),
-    ("Ohne Cookie-Banner möglich", "–", "teilweise", "selten", "✓"),
-]
-
-
-def vergleich():
-    rows = "".join(f'<tr><td>{r[0]}</td>' + "".join(f'<td class="c{" us" if i == 3 else ""}">{v}</td>' for i, v in enumerate(r[1:])) + "</tr>" for r in VERGLEICH)
-    return f'''<div class="tablewrap compare"><table><thead><tr><th>Leistung</th><th class="c">Baukasten</th><th class="c">Freelancer</th><th class="c">Klassische Agentur</th><th class="c us">{NAME}</th></tr></thead><tbody>{rows}</tbody></table></div>'''
-
-
 CJ_STUFEN = [
     ("1", "Bedarf", "Das Dach tropft, der Pony ist zu lang, der Vater braucht Pflege.", "Noch keine Entscheidung – aber ab jetzt wird gesucht.", ""),
     ("2", "Suche bei Google, Maps &amp; KI", "„Dachdecker in der Nähe“ bei Google – oder „Welcher Friseur in Musterstadt ist gut?“ bei ChatGPT. Fast immer auf dem Handy.", "Wer hier nicht oben steht oder von der KI nicht genannt wird, wird nicht gesehen.", "google"),
@@ -172,62 +155,60 @@ CJ_STUFEN = [
 
 
 def customer_journey():
-    stufen = "".join(f'''<li class="cj-step{" hl" if hl else ""}"><span class="cj-dot">{n}</span>{'<span class="cj-tag">' + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + '</span>' if hl else ''}<h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>''' for n, t, tut, key, hl in CJ_STUFEN)
+    stufen = "".join(f'<li class="cj-step{" hl" if hl else ""}"><span class="cj-n">{int(n):02d}{"<span class=cj-tag>· " + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</span>" if hl else ""}</span><h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>' for n, t, tut, key, hl in CJ_STUFEN)
     return f'''<section class="cj" id="customer-journey"><div class="wrap">
-<div class="head"><span class="kicker">Customer Journey</span><h2>So entscheiden Ihre Kunden heute – in fünf Schritten.</h2>
-<p>Bevor jemand bei Ihnen anruft, hat er gesucht, verglichen und Ihre Website angesehen. Meist in wenigen Minuten, meist auf dem Handy. An zwei Stellen verlieren Betriebe die meisten Kunden: <b>bei der Suche</b>, wenn sie bei Google nicht oben stehen oder von KI-Assistenten wie ChatGPT nicht genannt werden – und <b>auf der Website</b>, wenn sie nicht überzeugt.</p></div>
+<div class="sec-head"><span class="idx"><b>(01)</b> Kundenweg</span><h2>Bevor jemand anruft, hat er sich <em>längst entschieden.</em></h2>
+<p>Gesucht, verglichen, Ihre Website angesehen – meist in wenigen Minuten, meist auf dem Handy. Zwei Stellen entscheiden: ob man Sie bei Google und in KI-Antworten findet, und ob Ihre Website dann überzeugt.</p></div>
 <ol class="cj-line">{stufen}</ol>
-<p class="cj-next">So sieht dieser Weg in der Praxis aus: <a href="#vorschau">7 fertige Beispiel-Websites ansehen ↓</a> · <a href="/beispiele/">Kundenwege mit Preisen →</a></p></div></section>
-<section class="cj-why"><div class="wrap grid2">
-<div class="cj-card"><span class="kicker">Warum oben stehen entscheidet</span><h3>Seite 2 ist unsichtbar.</h3>
-<div class="cj-stats"><div><b>27,6 %</b><span>aller Klicks gehen an das erste Suchergebnis</span></div><div><b>0,63 %</b><span>klicken überhaupt auf Seite 2</span></div><div><b>76 %</b><span>der „in der Nähe“-Suchenden besuchen innerhalb eines Tages einen Betrieb</span></div></div>
+<div class="split-row" style="margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line)"><div><p class="kicker">Sichtbarkeit</p><h3>Seite 2 ist <em class="serif">unsichtbar.</em></h3>
+<p>Bei lokalen Suchen zeigt Google zuerst eine Karte mit drei Betrieben. Wer dort und in den ersten Treffern steht, bekommt den Großteil der Anfragen. Deshalb arbeiten wir an Google-Profil, Bewertungen und einer Seite für jede Leistung und jeden Ort.</p><a class="more" href="/leistungen/seo/">Wie wir Sie nach oben bringen</a></div>
 <div class="serp" aria-hidden="true"><div class="serp-q">dachdecker in der nähe</div><div class="serp-map"><i style="left:22%;top:40%"></i><i class="me" style="left:52%;top:55%"></i><i style="left:74%;top:30%"></i></div>
 <div class="serp-r me"><b>Ihr Betrieb</b><span class="st">★★★★★ 4,9 (126)</span><span>Geöffnet · Anrufen · Website · Route</span></div>
 <div class="serp-r"><b>Mitbewerber A</b><span class="st">★★★★☆ 4,3 (41)</span></div><div class="serp-r"><b>Mitbewerber B</b><span class="st">★★★★☆ 4,1 (18)</span></div>
-<div class="serp-more">… Seite 2: hier sucht fast niemand mehr</div></div>
-<p>Bei lokalen Suchen zeigt Google zuerst die Karte mit drei Betrieben. Wer dort und in den ersten organischen Treffern steht, bekommt den Großteil der Anfragen – alle anderen teilen sich den Rest. Deshalb arbeiten wir an Google-Profil, Bewertungen und Seiten für jede Leistung und jeden Ort.</p>
-<a class="more" href="/leistungen/seo/">Wie wir Sie nach oben bringen →</a></div>
-<div class="cj-card dark"><span class="kicker">Warum die Website so wichtig ist</span><h3>Google bringt Besucher. Die Website macht daraus Kunden.</h3>
-<div class="cj-stats"><div><b>93 %</b><span>lesen Bewertungen, bevor sie einen Betrieb besuchen oder beauftragen</span></div><div><b>+32 %</b><span>mehr Absprünge, wenn eine Seite 3 statt 1 Sekunde lädt</span></div></div>
-<ul class="cj-vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Unter einer Sekunde, gebaut für das Handy</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul>
-<a class="more" href="#vorschau">Fertige Beispiel-Websites ansehen ↓</a></div>
-<div class="cj-card cj-ki"><div><span class="kicker">Neu: Suche mit KI</span><h3>Immer öfter fragt der Kunde nicht Google, sondern ChatGPT.</h3>
-<div class="cj-stats"><div><b>50 %</b><span>der Deutschen nutzen zumindest manchmal einen KI-Chat statt der klassischen Suche</span></div><div><b>45 %</b><span>der Verbraucher haben KI schon nach einer Empfehlung für einen lokalen Betrieb gefragt</span></div></div>
-<p>ChatGPT, Gemini und die KI-Übersicht bei Google nennen meist nur zwei, drei Betriebe – und begründen ihre Wahl. Sie stützen sich dabei auf dieselben Signale wie Google: ein gepflegtes Google-Profil, viele gute Bewertungen und eine Website, die Leistungen, Orte, Preise und Ablauf klar und maschinenlesbar beschreibt. Genau daran arbeiten wir – damit Sie in der Trefferliste <b>und</b> in der KI-Antwort auftauchen.</p>
-<a class="more" href="/leistungen/seo/">Sichtbar bei Google und KI →</a></div>
+<div class="serp-more">Seite 2 – hier sucht fast niemand mehr.</div></div></div>
+<div class="facts"><div><b>27,6 %<sup>1</sup></b><span>aller Klicks gehen an das erste Suchergebnis</span></div><div><b>0,63 %<sup>1</sup></b><span>klicken überhaupt auf Seite 2</span></div><div><b>93 %<sup>3</sup></b><span>lesen Bewertungen, bevor sie einen Betrieb wählen</span></div><div><b>+32 %<sup>4</sup></b><span>mehr Absprünge, wenn die Seite 3 statt 1 Sekunde lädt</span></div></div>
+<div class="split-row"><div><p class="kicker">Überzeugung</p><h3>Google bringt Besucher. <em class="serif">Die Website macht daraus Kunden.</em></h3>
+<p>76 % der Menschen, die „in der Nähe“ suchen, besuchen noch am selben Tag einen Betrieb.<sup>2</sup> Ob es Ihrer ist, entscheidet sich in Sekunden auf dem Handy.</p><a class="more" href="#vorschau">Fertige Beispiel-Websites ansehen</a></div>
+<ul class="vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Unter einer Sekunde, gebaut für das Handy</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul></div>
+<div class="split-row"><div><p class="kicker">Neu: Suche mit KI</p><h3>Immer öfter fragt der Kunde nicht Google, <em class="serif">sondern ChatGPT.</em></h3>
+<p>Die Hälfte der Deutschen nutzt zumindest manchmal einen KI-Chat statt der klassischen Suche.<sup>5</sup> ChatGPT, Gemini und Googles KI-Übersicht nennen meist nur zwei, drei Betriebe – und stützen sich auf dieselben Signale: gepflegtes Profil, gute Bewertungen und eine Website, die Leistungen, Orte und Preise klar beschreibt.</p><a class="more" href="/leistungen/seo/">Sichtbar bei Google und KI</a></div>
 <div class="ai-chat" aria-hidden="true"><div class="ai-q">Welcher Dachdecker in Musterstadt ist zuverlässig und macht auch Photovoltaik?</div>
 <div class="ai-a"><span class="ai-l">KI-Assistent</span><p>Empfehlenswert sind zum Beispiel:</p><ol><li class="me"><b>Ihr Betrieb</b> – Meisterbetrieb, 4,9 Sterne aus 126 Bewertungen, Dach und PV aus einer Hand, Festpreis-Angebot in 5 Tagen.</li><li><b>Mitbewerber A</b> – 4,3 Sterne, vor allem Reparaturen.</li></ol><span class="ai-src">Quellen: Google-Profil · ihr-betrieb.de · Bewertungen</span></div></div></div>
-</div><div class="wrap"><p class="cj-src">Quellen: Backlinko, Analyse von 4 Mio. Google-Ergebnissen · Think with Google, mobile „in der Nähe“-Suchen · BrightLocal, Local Consumer Review Survey 2025 · Google/SOASTA, Mobile-Ladezeiten 2017 · Bitkom, Umfrage zu KI-Chats und Internetsuche 2025 · BrightLocal, Local Consumer Review Survey 2026 (KI-Empfehlungen). Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
+<p class="cj-src">1 Backlinko, Analyse von 4 Mio. Google-Ergebnissen · 2 Think with Google, mobile „in der Nähe“-Suchen · 3 BrightLocal, Local Consumer Review Survey 2025 · 4 Google/SOASTA, mobile Ladezeiten · 5 Bitkom, KI-Chats und Internetsuche 2025. Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
 '''
 
 
-def startseite():
-    leist = "".join(f'<a class="card" href="/leistungen/{l["slug"]}/">{ICON[l["key"]]}<h3>{l["titel"]}</h3><p>{l["kurz"]}</p><span class="more">Mehr erfahren →</span></a>' for l in LEISTUNGEN)
-    bran = "".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)
-    body = f"""
-<section class="hero hero-xl"><div class="wrap grid"><div>
-<span class="kicker">Websites · SEO · Google Ads für lokale Betriebe</span>
-<h1>Websites, die Kunden bringen – nicht nur gut aussehen.</h1>
-<p class="lead">Wir bauen den Weg von der Google-Suche bis zur Anfrage: eine schnelle Website mit klaren Antworten, Sichtbarkeit bei Google und Anzeigen, die sich rechnen. Zum Festpreis, mit einem Ansprechpartner.</p>
-<div class="actions"><a class="btn" href="/kontakt/">Kostenloses Erstgespräch</a><a class="btn ghost" href="#vorschau">Beispiel-Websites ansehen</a></div>
-<ul class="assure"><li>Festpreis vorab</li><li>Entwurf 7 Tage nach Auftrag</li><li>Website gehört Ihnen</li><li>Pflege monatlich kündbar</li></ul>
-</div><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></section>
-<section class="ribbon"><div class="wrap"><span>Gebaut für</span>{bran}<a href="/branchen/">und viele mehr →</a></div></section>
-{customer_journey()}
-<section id="vorschau"><div class="wrap"><div class="head"><span class="kicker">Vorschau-Websites</span><h2>Sehen Sie, was Sie bekommen – bevor Sie etwas bezahlen.</h2><p>Sieben vollständig gestaltete Beispiel-Websites für typische Betriebe. Jede folgt dem Kundenweg ihrer Branche: was Kunden suchen, vergleichen und brauchen, um anzufragen. Klicken Sie sich durch – auch auf dem Handy.</p></div>
-<div class="gallery">{galerie(BEISPIELE)}</div></div></section>
+def arbeiten():
+    out = []
+    for i, b in enumerate(BEISPIELE, 1):
+        out.append(f'''<article class="work-item"><a href="/vorschau/{b["slug"]}/">{frame(b["slug"])}</a>
+<div class="work-meta"><span class="wm-n">{i:02d}</span><h3>{b["name"]}</h3><span class="wm-p">{eur(paket_summe(b))} · 1. Jahr</span><span class="wm-b">{b["branche"]}</span><a class="wm-l" href="/beispiele/{b["slug"]}/">Kundenweg &amp; Preis</a></div></article>''')
+    return "".join(out)
 
-<section class="band"><div class="wrap grid4">
-<div><div class="num">7 Tage</div><p>bis Sie den ersten Entwurf Ihrer Website im Browser sehen</p></div>
-<div><div class="num">&lt;1 s</div><p>Ladezeit auf dem Handy – Standard bei jeder Website</p></div>
-<div><div class="num">0</div><p>Tracking-Cookies, kein Cookie-Banner nötig</p></div>
-<div><div class="num">1</div><p>Ansprechpartner für Website, SEO und Anzeigen</p></div>
-</div></section>
-<section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid3">{leist}</div></div></section>
-<section><div class="wrap"><div class="head"><span class="kicker">Vergleich</span><h2>Was uns von Baukasten und Agentur unterscheidet</h2></div>{vergleich()}</div></section>
-<section class="band"><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>Von null zur fertigen Website in drei Wochen</h2>
-<div class="promise"><b>Unsere Zusage:</b> Sie sehen den kompletten Entwurf im Browser, bevor die zweite Rechnungshälfte fällig wird. Passt etwas nicht, überarbeiten wir ihn, bevor es weitergeht.</div></div>
-<ol class="steps"><li><h3>Erstgespräch · Tag 1</h3><p>20 Minuten, kostenlos. Wir hören zu und sagen ehrlich, ob wir helfen können.</p></li><li><h3>Festpreis-Angebot · Tag 3</h3><p>Mit Ziel, Umfang und Zeitplan. Ohne Kleingedrucktes.</p></li><li><h3>Entwurf · Tag 10</h3><p>Die Startseite live im Browser – auf Ihrem Handy testen, Feedback geben.</p></li><li><h3>Start · Tag 21</h3><p>Website online, Google-Profil optimiert, Messung aktiv. Danach: monatliche Zahlen.</p></li></ol></div></section>
+
+def startseite():
+    svc = "".join(f'<li><a href="/leistungen/{l["slug"]}/"><span class="n">{i:02d}</span><span class="t">{l["titel"]}</span><span class="d">{l["kurz"]}</span><span class="a" aria-hidden="true">→</span></a></li>' for i, l in enumerate(LEISTUNGEN, 1))
+    mq = "".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)
+    body = f"""
+<section class="h-hero"><div class="wrap">
+<p class="kicker">Websites · Lokale SEO · Google Ads · Recruiting</p>
+<h1>Websites, die das Telefon <em>klingeln</em> lassen.</h1>
+<div class="h-row"><p class="lead">Für Handwerk, Kanzleien, Pflege und Praxen bauen wir den ganzen Weg von der Suche bis zur Anfrage. Schnell, gut auffindbar, zum Festpreis – und Sie sehen das Ergebnis, bevor Sie bezahlen.</p>
+<div class="actions"><a class="btn" href="/kontakt/">Erstgespräch vereinbaren <span class="ar">→</span></a><a class="link" href="#vorschau">Arbeiten ansehen</a></div>
+<dl class="h-facts"><div><dt>Erster Entwurf</dt><dd>nach 7 Tagen</dd></div><div><dt>Ladezeit</dt><dd>unter 1 Sekunde</dd></div><div><dt>Preis</dt><dd>fest, vorab</dd></div><div><dt>Eigentum</dt><dd>gehört Ihnen</dd></div></dl></div></div>
+<div class="h-stage"><div class="wrap"><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></div>
+</section>
+<div class="marquee" aria-label="Branchen"><div class="mq-track">{mq}{mq.replace('<a ', '<a tabindex="-1" aria-hidden="true" ')}</div></div>
+{customer_journey()}
+<section id="vorschau"><div class="wrap"><div class="sec-head"><span class="idx"><b>(02)</b> Arbeiten</span><h2>Sehen, was Sie bekommen – <em>bevor Sie bezahlen.</em></h2>
+<p>Sieben vollständige Websites für typische Betriebe. Jede mit eigenem Aufbau, eigener Schrift und dem Kundenweg ihrer Branche. Zum Durchklicken, auch auf dem Handy.</p></div>
+<div class="work">{arbeiten()}</div></div></section>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(03)</b> Leistungen</span><h2>Alles zwischen Suche <em>und Anfrage.</em></h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><ul class="svc">{svc}</ul></div></section>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> Zusagen</span><h2>Woran Sie uns <em>messen können.</em></h2></div>
+<div class="pledges"><div><b>7 Tage</b><span>bis Sie den ersten Entwurf Ihrer Website im Browser sehen</span></div><div><b>&lt;1 s</b><span>Ladezeit auf dem Handy – Standard bei jeder Website</span></div><div><b>0</b><span>Tracking-Cookies, kein Cookie-Banner nötig</span></div><div><b>1</b><span>Ansprechpartner für Website, SEO und Anzeigen</span></div></div>
+<p class="promise"><b>Unsere Zusage:</b> Sie sehen den kompletten Entwurf im Browser, bevor die zweite Rechnungshälfte fällig wird. Passt etwas nicht, überarbeiten wir ihn, bevor es weitergeht.</p></div></section>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(05)</b> Ablauf</span><h2>In drei Wochen <em>online.</em></h2></div>
+<ol class="tl"><li><span class="d">Tag 1</span><h3>Erstgespräch</h3><p>20 Minuten, kostenlos. Wir hören zu und sagen ehrlich, ob wir helfen können.</p></li><li><span class="d">Tag 3</span><h3>Festpreis-Angebot</h3><p>Mit Ziel, Umfang und Zeitplan. Ohne Kleingedrucktes.</p></li><li><span class="d">Tag 10</span><h3>Entwurf</h3><p>Die Startseite live im Browser – auf Ihrem Handy testen, Feedback geben.</p></li><li><span class="d">Tag 21</span><h3>Start</h3><p>Website online, Google-Profil optimiert, Messung aktiv. Danach: monatliche Zahlen.</p></li></ol></div></section>
 {cta("Wie würde Ihre Website aussehen?", "Im Erstgespräch skizzieren wir Ihren Kundenweg – und Sie bekommen eine ehrliche Einschätzung, auch wenn wir danach nicht zusammenarbeiten.")}"""
     write("/", f"{NAME} – Websites, SEO & Google Ads für lokale Betriebe", "Websites, die Kunden bringen: schnelle Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflege und Praxen. Mit Vorschau-Websites, Festpreis und einem Ansprechpartner.", body, prio=1.0, crumbs=[("/", "Start")])
 
