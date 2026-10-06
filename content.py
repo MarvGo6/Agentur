@@ -45,6 +45,18 @@ LEISTUNGEN = [
 
 # ---------------------------------------------------------------- Branchen
 BRANCHEN = [
+ {"slug": "friseur", "draw": "friseur", "titel": "Friseure", "beispiel": "friseur",
+  "h1": "Volle Terminbücher – auch dienstags um elf",
+  "lead": "Neukundinnen suchen „Friseur in der Nähe“, schauen Fotos und Preise an und buchen abends online. Wer dort überzeugt, füllt die Lücken unter der Woche.",
+  "probleme": ["Samstags ausgebucht, unter der Woche Leerlauf", "Kein Online-Termin – Anfragen gehen abends verloren", "Google-Profil mit alten Fotos und falschen Öffnungszeiten", "Instagram kostet Zeit, bringt aber kaum Buchungen"],
+  "loesung": ["Online-Terminbuchung direkt auf der Website", "Preisliste und Vorher-nachher-Galerie", "Google-Profil mit aktuellen Fotos und Leistungen", "Bewertungs-QR-Code an der Kasse", "Erinnerung nach sechs Wochen für Stammkundinnen"],
+  "zahl": ("3 Termine", "Drei zusätzliche Neukundinnen im Monat tragen das Paket mehrfach.")},
+ {"slug": "barber", "draw": "barber", "titel": "Barbershops", "beispiel": "barber",
+  "h1": "Weniger Warteschlange, mehr Stammkunden",
+  "lead": "Barber-Kunden entscheiden in Sekunden: Fotos von Fades, Preise, freier Slot bei ihrem Barber. Wer online buchbar ist, gewinnt – und plant seine Tage statt auf Walk-ins zu hoffen.",
+  "probleme": ["Walk-in-Chaos: mal Schlange, mal leerer Laden", "Kunden springen zum nächsten Shop, wenn es voll ist", "Preise und Leistungen stehen nur auf einem Schild im Laden", "Gute Barber wandern ab, weil die Auslastung schwankt"],
+  "loesung": ["Online-Buchung pro Barber mit freien Slots", "Galerie mit Fades, Bartschnitten und Rasuren", "Klare Preise inkl. Kombi-Angeboten", "Google-Anzeigen auf „Barber in der Nähe“", "Stammkunden-Erinnerung nach drei Wochen"],
+  "zahl": ("+20 %", "Typische Auslastungssteigerung, wenn Walk-ins durch planbare Termine ergänzt werden.")},
  {"slug": "dachdecker-solar", "draw": "dach", "titel": "Dachdecker & Solar", "beispiel": "dachdecker-solar",
   "h1": "Mehr Dach- und Solaranfragen aus Ihrer Region",
   "lead": "Ein Sturmschaden, eine Förderung, ein steigender Strompreis – Ihre Kunden suchen, wenn es dringend ist. Dann müssen Sie oben stehen und sofort erreichbar sein.",
@@ -179,6 +191,24 @@ BEISPIELE = [
   "erwartung": "Online-Anfragen ersetzen Anrufe ab dem ersten Tag. Mehr Nachfrage für Zahn und Physio entsteht über Monate – eine Zahnsanierung unter Narkose liegt schnell bei mehreren hundert Euro.",
   "aufgabe": "Notdienstplan pflegen, Anfragen täglich bearbeiten, fachliche Freigabe der Ratgeber."},
 ]
+
+BEISPIELE.insert(1, {"slug": "barber", "draw": "barber", "branche": "Barbershop", "name": "Blackline Barbers", "ort": "Szeneviertel, drei Stühle",
+  "teaser": "Ein Barbershop mit drei Stühlen will weg vom Walk-in-Chaos – hin zu planbaren, vollen Tagen und Kunden, die alle drei Wochen wiederkommen.",
+  "ausgang": "Inhaber Can und zwei Barber arbeiten fast nur mit Walk-ins. Freitags und samstags warten Kunden eine Stunde oder gehen wieder, montags bis mittwochs ist es ruhig. Es gibt ein Instagram-Profil, aber keine Website und keine Online-Buchung.",
+  "ziel": "Mindestens 60 % der Termine vorab gebucht, weniger Leerlauf unter der Woche, mehr Stammkunden.",
+  "kundenweg": [
+   ("Auslöser", "Murat hat Freitag ein Date und sein Fade ist rausgewachsen.", "Anzeigen auf „Barber in der Nähe“ – genau dann, wenn er sucht."),
+   ("Suche", "Er tippt „Barber“ in Google Maps und sieht vier Shops in der Umgebung.", "Google-Profil mit 30 Fotos von Fades und Bärten, Öffnungszeiten, Buchungs-Button."),
+   ("Vergleich", "Er scrollt durch Fotos: Wer kann saubere Übergänge?", "Galerie nach Stil sortiert: Skin Fade, Taper, Bart, Rasur."),
+   ("Prüfen", "Was kostet Haare plus Bart? Muss ich warten?", "Preisliste mit Kombi-Angeboten und sichtbar freien Slots pro Barber."),
+   ("Buchung", "Er bucht Freitag 17:30 bei Can – in 20 Sekunden.", "Online-Buchung mit Wunsch-Barber, Bestätigung und Erinnerung per SMS."),
+   ("Danach", "Drei Wochen später ist der Fade wieder fällig.", "Automatische Erinnerung nach 21 Tagen mit Direktlink zum Lieblingsbarber."),
+  ],
+  "umsetzung": ["Woche 1: Fotos im Laden nach unserer Motivliste, Buchungstool auswählen", "Woche 2: Website online, Google-Profil überarbeitet", "Woche 3: Google Ads mit 300 € Budget im Umkreis von 3 km", "Laufend: Galerie aktualisieren, Bewertungen beantworten"],
+  "paket": [("Website Start (einmalig)", PREISE["web_start"]), ("Pflege & Hosting, 12 × 49 €", 12 * PREISE["pflege_start"]), ("Ads-Einrichtung (einmalig)", PREISE["ads_setup"]), ("Ads-Betreuung, 12 × 290 €", 12 * PREISE["ads"])],
+  "paket_hinweis": "Werbebudget (hier 300 €/Monat) geht direkt an Google.",
+  "erwartung": "Online-Buchungen kommen meist ab der ersten Woche. Ein Barber-Kunde, der alle drei Wochen kommt, bringt bei 35 € schnell über 500 € im Jahr – zehn neue Stammkunden tragen das Paket.",
+  "aufgabe": "Buchungstool pflegen, Fotos von guten Schnitten machen, Kunden um Bewertungen bitten."})
 
 KAPITEL = ["Ausgangslage", "Ziel", "Kundenweg", "Umsetzung", "Paket & Preis", "Was realistisch ist"]
 

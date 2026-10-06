@@ -5,7 +5,7 @@
 const { chromium } = require('playwright');
 (async () => {
   const [out, mode] = [process.argv[2], process.argv[3] || 'check'];
-  const slugs = ['friseur', 'dachdecker-solar', 'steuerberater', 'pflegedienst', 'bestatter', 'tierarzt'];
+  const slugs = ['friseur', 'barber', 'dachdecker-solar', 'steuerberater', 'pflegedienst', 'bestatter', 'tierarzt'];
   const b = await chromium.launch();
   const errs = [];
   for (const s of slugs) {

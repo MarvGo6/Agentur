@@ -41,9 +41,13 @@ _I = {
 # ------------------------------------------------------------------ Fotos (Pexels, lizenzfrei; werden beim Build geladen)
 FOTO = {}  # id -> Dateiname in /bilder/, wird von build.py gefüllt
 
+PEXELS = "https://images.pexels.com/photos/{0}/pexels-photo-{0}.jpeg?auto=compress&cs=tinysrgb&w=1400"
+
 def foto(pid, alt, cls="foto"):
+    """Lokal gehostetes Foto, sonst direkt von Pexels. Lädt es nicht, blendet demo.js es aus (Zeichnung bleibt)."""
     f = FOTO.get(str(pid))
-    return f'<img class="{cls}" src="/bilder/{f}" alt="{alt}" loading="lazy" decoding="async">' if f else ""
+    src = f"/bilder/{f}" if f else PEXELS.format(pid)
+    return f'<img class="{cls}" src="{src}" alt="{alt}" loading="lazy" decoding="async">'
 
 def alle_fotos():
     ids = set()
@@ -70,6 +74,11 @@ ART = {
 <path d="M266 142c70-16 126 18 132 76 4 46-10 84 14 124 20 34 40 52 50 90" opacity=".35"/>
 <path d="M226 176c-30 30-40 80-24 120" opacity=".6"/></g>
 <g stroke="#1f1a19" stroke-width="2.4" fill="none"><circle cx="118" cy="420" r="18"/><circle cx="160" cy="440" r="18"/><path d="M132 408l80-110M146 430l92-80"/></g></svg>''',
+ "barber": '''<svg viewBox="0 0 600 560" preserveAspectRatio="xMidYMid slice"><rect width="600" height="560" fill="#141518"/>
+<circle cx="440" cy="150" r="200" fill="#1d1f23"/><g transform="translate(250 70)"><rect width="90" height="400" rx="45" fill="#f2efe9"/>
+<clipPath id="bp"><rect width="90" height="400" rx="45"/></clipPath><g clip-path="url(#bp)" fill="#b8323a"><path d="M-40 40 130 -50 130 -20 -40 70z"/><path d="M-40 130 130 40 130 70 -40 160z"/><path d="M-40 220 130 130 130 160 -40 250z"/><path d="M-40 310 130 220 130 250 -40 340z"/><path d="M-40 400 130 310 130 340 -40 430z"/><path d="M-40 490 130 400 130 430 -40 520z"/></g>
+<g fill="#c8a165"><rect x="-14" y="-24" width="118" height="28" rx="6"/><rect x="-14" y="396" width="118" height="28" rx="6"/></g></g>
+<path d="M90 470 220 340" stroke="#c8a165" stroke-width="6" stroke-linecap="round"/><path d="M220 340 250 330 240 360z" fill="#c8a165"/></svg>''',
  "dach": '''<svg viewBox="0 0 600 560" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="dg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3a48"/><stop offset="1" stop-color="#151c23"/></linearGradient></defs>
 <rect width="600" height="560" fill="url(#dg)"/><circle cx="455" cy="130" r="58" fill="#e8692b"/><circle cx="455" cy="130" r="92" fill="#e8692b" opacity=".14"/>
 <path d="M0 400 120 300l120 100v160H0z" fill="#0f151b"/><path d="M200 420 360 270l160 150v140H200z" fill="#1b252e"/>
@@ -145,7 +154,7 @@ def b_split(d):
         img = foto(*d["vis_foto"], cls="foto tall")
         vis = f'<div class="pw">{img}<div class="pw-card">{vis}</div></div>' if d.get("overlay") else img
     if d.get("fotos") and all(foto(p, a) for p, a in d["fotos"]):
-        vis = '<div class="pgrid">' + "".join(foto(p, a) for p, a in d["fotos"]) + "</div>"
+        vis = '<div class="pgrid">' + "".join(foto(p, a) for p, a in d["fotos"]) + f'</div><div class="fb">{vis}</div>'
     vis = f'<div>{vis}</div>'
     inner = f'<div class="g2">{vis + txt if d.get("rev") else txt + vis}</div>'
     return sec(d.get("cls", ""), inner, d.get("id", ""))
@@ -199,7 +208,7 @@ def b_cta(d):
 
 FORMS = {
  "termin": lambda d: f'''<h3>Termin anfragen</h3><p class="ok">Wählen Sie Leistung und Wunschzeit – wir bestätigen per SMS.</p><form class="demo-form">
-<label>Leistung<select><option>Schnitt &amp; Styling</option><option>Farbe / Balayage</option><option>Herrenschnitt</option><option>Beratung</option></select></label>
+<label>Leistung<select>{"".join(f"<option>{o}</option>" for o in d.get("optionen", ["Schnitt &amp; Styling", "Farbe / Balayage", "Herrenschnitt", "Beratung"]))}</select></label>
 <label>Wunschtermin</label><div class="slots"><i>Di 10:30</i><i class="on">Di 14:00</i><i>Mi 09:00</i><i>Mi 16:30</i><i>Do 11:00</i><i>Fr 15:30</i></div>
 <div class="row"><label>Name<input placeholder="Vor- und Nachname"></label><label>Handy<input placeholder="Für die Bestätigung"></label></div>
 <button class="btn">Termin anfragen</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
@@ -259,11 +268,11 @@ def page(d, agentur, back):
 <div class="strip"><div class="w">{strip}</div></div>
 <header class="hd"><div class="w"><a class="brand" href="#"><span class="mark">{d["mark"]}</span><span>{d["name"]}<small>{d["claim"]}</small></span></a><nav class="nav">{nav}</nav><a class="btn sm" href="{d["cta"][1]}">{d["cta"][0]}</a></div></header>
 <section class="hero"><div class="w"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1><p class="lead">{h["lead"]}</p><div class="acts">{acts}</div><div class="chips">{chips}</div></div>
-<div class="stage"><div class="art">{(foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else "") or ART[d["art"]]}</div>{h["floats"]}</div></div></section>
+<div class="stage"><div class="art">{ART[d["art"]]}{foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else ""}</div>{h["floats"]}</div></div></section>
 {body}
 <footer class="ft"><div class="w"><div class="cols"><div><div class="brand" style="color:#fff"><span class="mark">{d["mark"]}</span><span>{d["name"]}</span></div><p style="margin-top:16px;max-width:26em">{ft["about"]}</p></div>
 {"".join(f'<div><h4>{t}</h4><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for t, xs in ft["cols"])}</div>
-<div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur}{" · Fotos: Pexels" if FOTO else ""}</span></div></div></footer>
+<div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels</span></div></div></footer>
 <div class="mbar">{mbar}</div><script src="/demo.js" defer></script></body></html>"""
 
 
@@ -317,6 +326,48 @@ DEMOS["friseur"] = {
  ],
  "footer": {"about": "Friseursalon für Schnitt und Farbe. Zwei Stühle, viel Zeit, ehrliche Beratung.", "cols": [("Salon", ["Marktstraße 8", "12345 Musterstadt", "0123 456 789"]), ("Öffnungszeiten", ["Di–Fr 9–19 Uhr", "Sa 8–15 Uhr", "So/Mo geschlossen"]), ("Mehr", ["Gutscheine", "Impressum", "Datenschutz"])]},
  "mbar": [("Termin buchen", "#kontakt"), ("Anrufen", "#kontakt")],
+}
+
+DEMOS["barber"] = {
+ "hero_foto": (3998417, "Barber schneidet einem Kunden den Bart"),
+ "name": "Blackline Barbers", "branche": "Barbershop", "claim": "Barbershop · Est. 2019", "mark": "BL", "art": "barber",
+ "fonts": [("Archivo", "archivo"), ("Inter", "inter")],
+ "vars": {"bg": "#111214", "bg2": "#18191c", "card": "#1c1d21", "ink": "#f2efe9", "muted": "#a7a29a", "line": "#2c2d32", "brand": "#c8a165", "brand-ink": "#111214",
+          "accent": "#c8a165", "soft": "#2a2620", "display": "Archivo,Inter,sans-serif", "body": "Inter,system-ui,sans-serif", "dw": "800", "dls": "-.02em", "br": "4px", "mr": "4px", "cr": "8px", "rr": "10px",
+          "strip": "#c8a165", "strip-ink": "#111214", "dark": "#18191c", "dark-ink": "#f2efe9", "ft": "#0a0a0b", "stage": "#141518", "star": "#c8a165"},
+ "strip": ["Di–Fr 10–20 Uhr · Sa 9–18 Uhr", "Termine online – Walk-ins wenn frei", '<span class="stars">★★★★★</span> 4,9 bei Google (Beispiel)'],
+ "nav": [("Services", "#leistungen"), ("Preise", "#preise"), ("Barber", "#team"), ("Shop", "#shop")], "cta": ("Jetzt buchen", "#kontakt"),
+ "hero": {"eb": "Barbershop im Szeneviertel", "h1": "Saubere Fades. Scharfe Konturen. Kein Warten.",
+          "lead": "Haare, Bart und Rasur bei drei Barbern, die ihr Handwerk lieben. Buch deinen Slot online – und sitz pünktlich im Stuhl.",
+          "ctas": [("Slot buchen", "#kontakt"), ("Preise", "#preise")],
+          "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> · 412 Bewertungen', "Fade ab 32 €", "Heißtuch-Rasur"],
+          "floats": fl("left:-16px;top:40px;width:240px", "<h4>Heute frei bei Can</h4><div class='slots'><i>16:00</i><i class='on'>17:30</i><i>19:00</i></div>")
+                  + fl("right:-14px;bottom:36px;width:230px", "<h4>Haare + Bart</h4><div class='k'>49 €</div><span class='muted'>inkl. Heißtuch &amp; Styling</span>")},
+ "sections": [
+  ("strip", {"fotos": [(12304508, "Fade-Haarschnitt mit der Maschine"), (897265, "Klassische Rasur im Barbershop"), (9992819, "Bärtiger Kunde im Barbershop")], "cap": "Skin Fade, Taper, Bart in Form, Rasur mit dem Messer."}),
+  ("services", {"id": "leistungen", "eb": "Services", "h2": "Was wir machen", "cols": 3, "items": [
+    ("scissors", "Haarschnitt &amp; Fade", "Skin Fade, Taper oder klassischer Schnitt – mit Waschen und Styling.", "ab", "32 €"),
+    ("spark", "Bart in Form", "Konturen mit dem Messer, Länge mit der Maschine, Pflege mit Öl und Balm.", "ab", "22 €"),
+    ("drop", "Heißtuch-Rasur", "Die klassische Nassrasur mit heißen Tüchern und Messer. Zeit für dich.", "", "35 €")]}),
+  ("prices", {"id": "preise", "cls": "tint", "eb": "Preise", "h2": "Klare Preise. Keine Überraschungen.", "rows": [
+    ("Haarschnitt / Fade", "inkl. Waschen &amp; Styling", "32 €"), ("Haare + Bart", "inkl. Heißtuch", "49 €"), ("Bart trimmen &amp; Konturen", "", "22 €"),
+    ("Heißtuch-Rasur", "mit Messer", "35 €"), ("Kids bis 12", "", "22 €"), ("Konturen nachziehen", "zwischen zwei Terminen", "12 €")],
+    "side": '<div class="card"><h3>Stammkunden-Abo</h3><p>Zwei Schnitte im Monat zum Festpreis von 59 € – fester Slot bei deinem Barber inklusive.</p><a class="btn" style="margin-top:18px" href="#kontakt">Abo anfragen</a></div>'}),
+  ("split", {"id": "shop", "eb": "Der Shop", "h2": "Drei Stühle. Gute Musik. Kein Fließband.", "p": "Jeder Termin hat 30 Minuten – genug Zeit für einen sauberen Übergang und ein kurzes Gespräch. Kaffee oder ein kaltes Getränk gibt es dazu.",
+    "fotos": [(2318055, "Kunden im Barbershop"), (6007400, "Bartpflege mit dem Rasiermesser"), (3998421, "Barber bei der Arbeit"), (7697316, "Goldenes Rasiermesser")],
+    "list": ["Termine pro Barber buchbar", "Erinnerung per SMS", "Kartenzahlung &amp; Apple Pay"], "cta": ("Slot buchen", "#kontakt"),
+    "vis": '<div class="card"><h3>Walk-ins?</h3><p>Gerne, wenn ein Stuhl frei ist. Freie Slots siehst du online in Echtzeit.</p></div>'}),
+  ("team", {"id": "team", "cls": "tint", "eb": "Barber", "h2": "Wähl deinen Barber", "people": [
+    ("C", "Can", "Inhaber · Skin Fades &amp; Rasur", "#c8a165"), ("D", "Dario", "Taper &amp; Texturen", "#3a3b40"), ("L", "Lukas", "Bart &amp; Klassiker · Sa", "#6b5a3c")]}),
+  ("quotes", {"eb": "Stimmen", "h2": "Was Kunden sagen", "p": "Beispieltexte für die Vorschau.", "items": [
+    ("Bester Fade in der Gegend. Online gebucht, null Wartezeit, Can ist ein Künstler.", "Murat K.", "Skin Fade"),
+    ("Die Heißtuch-Rasur ist pure Entspannung. Komme jetzt alle drei Wochen.", "Jonas B.", "Rasur"),
+    ("Endlich ein Barber, bei dem der Bart nicht schief wird. Klare Preise, gute Vibes.", "Ali S.", "Haare + Bart")]}),
+  ("contact", {"eb": "Buchen", "h2": "Slot sichern in 20 Sekunden", "p": "Wähl Service und Uhrzeit – Bestätigung kommt per SMS.", "form": "termin", "optionen": ["Haarschnitt / Fade", "Haare + Bart", "Bart trimmen", "Heißtuch-Rasur"],
+    "info": [("map", "Kiezstraße 21, Musterstadt", "Zwei Minuten von der U-Bahn"), ("clock", "Di–Fr 10–20 · Sa 9–18 Uhr", "So/Mo geschlossen"), ("phone", "0123 456 789", "Lieber per WhatsApp? Gleiche Nummer.")]}),
+ ],
+ "footer": {"about": "Barbershop für Fades, Bärte und klassische Rasuren. Drei Stühle, keine Wartezeit mit Termin.", "cols": [("Shop", ["Kiezstraße 21", "12345 Musterstadt", "0123 456 789"]), ("Öffnungszeiten", ["Di–Fr 10–20 Uhr", "Sa 9–18 Uhr", "So/Mo geschlossen"]), ("Mehr", ["Gutscheine", "Impressum", "Datenschutz"])]},
+ "mbar": [("Slot buchen", "#kontakt"), ("WhatsApp", "#kontakt")],
 }
 
 DEMOS["dachdecker-solar"] = {

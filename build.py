@@ -220,16 +220,16 @@ def leistungen():
 
 
 def branchen():
-    cards = "".join(f'<a class="card" href="/branchen/{b["slug"]}/"><div class="thumb">{BRANCHE[b["draw"]]}</div><h3>{b["titel"]}</h3><p>{b["lead"]}</p></a>' for b in BRANCHEN)
+    cards = "".join(f'<article class="show"><a class="show-img" href="/branchen/{b["slug"]}/">{frame(b["beispiel"])}</a><div class="show-meta"><div><h3>{b["titel"]}</h3></div></div><p style="color:var(--ink-2);margin:8px 0 0">{b["lead"]}</p><div class="show-links"><a href="/branchen/{b["slug"]}/">Branche ansehen →</a><a href="/vorschau/{b["beispiel"]}/">Live-Vorschau</a></div></article>' for b in BRANCHEN)
     write("/branchen/", "Branchen", "Marketing für Dachdecker, Steuerberater, Pflegedienste, Bestatter und Tierarztpraxen.",
-          f'<section class="hero"><div class="wrap"><span class="kicker">Branchen</span><h1>Jede Branche hat ihren eigenen Kundenweg</h1><p class="lead">Ein Notfall am Dach läuft anders ab als die Suche nach einer Kanzlei. Deshalb starten wir nie mit einer Vorlage, sondern mit der Frage: Wie entscheiden Ihre Kunden?</p></div></section><section style="padding-top:0"><div class="wrap grid3">{cards}</div></section>{cta()}',
+          f'<section class="hero"><div class="wrap"><span class="kicker">Branchen</span><h1>Jede Branche hat ihren eigenen Kundenweg</h1><p class="lead">Ein Notfall am Dach läuft anders ab als die Suche nach einer Kanzlei. Deshalb starten wir nie mit einer Vorlage, sondern mit der Frage: Wie entscheiden Ihre Kunden?</p></div></section><section style="padding-top:0"><div class="wrap gallery">{cards}</div></section>{cta()}',
           prio=0.9, crumbs=[("/", "Start"), ("/branchen/", "Branchen")])
     for b in BRANCHEN:
         p = f"/branchen/{b['slug']}/"
         bsp = next(x for x in BEISPIELE if x["slug"] == b["beispiel"])
-        body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">{b["titel"]}</span><h1>{b["h1"]}</h1><p class="lead">{b["lead"]}</p><div class="actions"><a class="btn" href="/kontakt/">Erstgespräch anfragen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Beispiel ansehen</a></div></div><div>{BRANCHE[b["draw"]]}</div></div></section>
+        body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">{b["titel"]}</span><h1>{b["h1"]}</h1><p class="lead">{b["lead"]}</p><div class="actions"><a class="btn" href="/kontakt/">Erstgespräch anfragen</a><a class="btn ghost" href="/vorschau/{bsp["slug"]}/">Fertige Beispiel-Website</a></div></div><div class="showcase small"><a href="/vorschau/{bsp["slug"]}/" class="sc-desk">{frame(bsp["slug"], eager=True)}</a><a href="/vorschau/{bsp["slug"]}/" class="sc-phone">{frame(bsp["slug"], mobil=True, eager=True)}</a></div></div></section>
 <section class="band"><div class="wrap grid2"><div><h2>Kommt Ihnen das bekannt vor?</h2><ul class="ticks">{"".join(f"<li>{x}</li>" for x in b["probleme"])}</ul></div><div><h2>Was wir dagegen tun</h2>{ticks(b["loesung"])}</div></div></section>
-<section><div class="wrap grid2" style="align-items:center"><div><a href="/vorschau/{bsp["slug"]}/" class="show-img">{frame(bsp["slug"])}</a><div class="card" style="margin-top:18px"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div></div><div><span class="kicker">Beispiel-Website</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn" href="/vorschau/{bsp["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>{cta()}"""
+<section><div class="wrap grid2" style="align-items:center"><div class="card"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div><div><span class="kicker">Beispiel-Website</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn" href="/vorschau/{bsp["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>{cta()}"""
         write(p, b["h1"], b["lead"], body, prio=0.8, crumbs=[("/", "Start"), ("/branchen/", "Branchen"), (p, b["titel"])])
 
 
@@ -356,7 +356,7 @@ def rechtliches():
 HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin",
            "X-Frame-Options": "SAMEORIGIN", "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
            "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
-           "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
+           "Content-Security-Policy": "default-src 'self'; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
 
 
 def extras():

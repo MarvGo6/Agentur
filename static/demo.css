@@ -169,3 +169,7 @@ p{margin:0 0 1em}
 .strip-f{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:14px}
 .strip-f .foto{aspect-ratio:4/3;height:auto}
 @media (max-width:760px){.strip-f{grid-template-columns:1fr 1fr}.strip-f .foto:first-child{grid-column:span 2}.pw .pw-card{position:static;margin-top:-40px;padding:0 14px}}
+.foto.off{display:none!important}
+.stage .art:has(.hero-img.off)::after{display:none}
+.pw:has(.off) .pw-card{position:static;margin:0}
+.pgrid+.fb{display:none}

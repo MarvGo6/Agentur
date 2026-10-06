@@ -10,6 +10,7 @@ Stand: Oktober 2026. Grundlage für die sechs Vorschau-Websites unter `/vorschau
 ## Je Branche umgesetzt
 | Branche | Muster aus der Recherche | Umsetzung in der Vorschau |
 |---|---|---|
+| Barbershop | Online-Buchung pro Barber, Galerie nach Stil (Fade, Bart, Rasur), Kombi-Preise, Stammkunden-Erinnerung | Buchung mit Wunsch-Barber, Fotostreifen, Abo-Angebot, WhatsApp-Kontakt |
 | Friseur | Bilder, klare Preise, nahtlose Online-Buchung; Preisliste online senkt Preissensibilität; Team mit Spezialisierung, Vorher-nachher | Termin-Widget mit freien Slots, Preisliste, Team, Vorher-nachher-Galerie, Bewertungen |
 | Dachdecker & Solar | 24h-Notdienst, Meisterbetrieb, Jahre am Markt, Referenzen, Dach + PV aus einer Hand, Förderung | Notdienst-Leiste, Kennzahlen, Referenzkarte mit Orten, PV-Beispielrechnung, Anfrage mit Fotoupload, Karriere |
 | Steuerberater | Klare Positionierung auf Zielgruppe („Wir beraten Handwerksbetriebe und nehmen neue Mandanten auf“), Fachseiten, echte Teamfotos, Karriereseite | Positionierung Handwerk, Kanzleiwechsel in 5 Schritten, Erstgespräch-Buchung, Team, Karriere ohne Anschreiben |
