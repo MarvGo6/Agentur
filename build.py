@@ -164,9 +164,9 @@ def vergleich():
 
 CJ_STUFEN = [
     ("1", "Bedarf", "Das Dach tropft, der Pony ist zu lang, der Vater braucht Pflege.", "Noch keine Entscheidung – aber ab jetzt wird gesucht.", ""),
-    ("2", "Suche bei Google &amp; Maps", "„Dachdecker in der Nähe“, „Friseur Musterstadt“ – fast immer auf dem Handy.", "Wer hier nicht oben steht, wird nicht gesehen.", "google"),
+    ("2", "Suche bei Google, Maps &amp; KI", "„Dachdecker in der Nähe“ bei Google – oder „Welcher Friseur in Musterstadt ist gut?“ bei ChatGPT. Fast immer auf dem Handy.", "Wer hier nicht oben steht oder von der KI nicht genannt wird, wird nicht gesehen.", "google"),
     ("3", "Vergleich", "Drei Anbieter, Sterne, Fotos, erste Eindrücke. Dauer: wenige Minuten.", "Bewertungen und ein gepflegtes Profil entscheiden, wer angeklickt wird.", ""),
-    ("4", "Die Website", "Was kostet es? Wie läuft es ab? Wer sind die Menschen? Kann ich sofort anfragen?", "Hier fällt die Entscheidung – oder der Kunde geht zurück zu Google.", "web"),
+    ("4", "Die Website", "Was kostet es? Wie läuft es ab? Wer sind die Menschen? Kann ich sofort anfragen?", "Hier fällt die Entscheidung – oder der Kunde geht zurück zur Suche.", "web"),
     ("5", "Anfrage &amp; Wiederkommen", "Termin, Rückruf, Fotos schicken. Danach: Bewertung, Empfehlung, Stammkunde.", "Ein einfacher nächster Schritt und Erinnerungen machen aus Kunden Stammkunden.", ""),
 ]
 
@@ -175,7 +175,7 @@ def customer_journey():
     stufen = "".join(f'''<li class="cj-step{" hl" if hl else ""}"><span class="cj-dot">{n}</span>{'<span class="cj-tag">' + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + '</span>' if hl else ''}<h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>''' for n, t, tut, key, hl in CJ_STUFEN)
     return f'''<section class="cj" id="customer-journey"><div class="wrap">
 <div class="head"><span class="kicker">Customer Journey</span><h2>So entscheiden Ihre Kunden heute – in fünf Schritten.</h2>
-<p>Bevor jemand bei Ihnen anruft, hat er gesucht, verglichen und Ihre Website angesehen. Meist in wenigen Minuten, meist auf dem Handy. An zwei Stellen verlieren Betriebe die meisten Kunden: <b>bei Google</b>, wenn sie nicht oben stehen – und <b>auf der Website</b>, wenn sie nicht überzeugt.</p></div>
+<p>Bevor jemand bei Ihnen anruft, hat er gesucht, verglichen und Ihre Website angesehen. Meist in wenigen Minuten, meist auf dem Handy. An zwei Stellen verlieren Betriebe die meisten Kunden: <b>bei der Suche</b>, wenn sie bei Google nicht oben stehen oder von KI-Assistenten wie ChatGPT nicht genannt werden – und <b>auf der Website</b>, wenn sie nicht überzeugt.</p></div>
 <ol class="cj-line">{stufen}</ol>
 <p class="cj-next">So sieht dieser Weg in der Praxis aus: <a href="#vorschau">7 fertige Beispiel-Websites ansehen ↓</a> · <a href="/beispiele/">Kundenwege mit Preisen →</a></p></div></section>
 <section class="cj-why"><div class="wrap grid2">
@@ -191,7 +191,13 @@ def customer_journey():
 <div class="cj-stats"><div><b>93 %</b><span>lesen Bewertungen, bevor sie einen Betrieb besuchen oder beauftragen</span></div><div><b>+32 %</b><span>mehr Absprünge, wenn eine Seite 3 statt 1 Sekunde lädt</span></div></div>
 <ul class="cj-vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Unter einer Sekunde, gebaut für das Handy</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul>
 <a class="more" href="#vorschau">Fertige Beispiel-Websites ansehen ↓</a></div>
-</div><div class="wrap"><p class="cj-src">Quellen: Backlinko, Analyse von 4 Mio. Google-Ergebnissen · Think with Google, mobile „in der Nähe“-Suchen · BrightLocal, Local Consumer Review Survey 2025 · Google/SOASTA, Mobile-Ladezeiten 2017. Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
+<div class="cj-card cj-ki"><div><span class="kicker">Neu: Suche mit KI</span><h3>Immer öfter fragt der Kunde nicht Google, sondern ChatGPT.</h3>
+<div class="cj-stats"><div><b>50 %</b><span>der Deutschen nutzen zumindest manchmal einen KI-Chat statt der klassischen Suche</span></div><div><b>45 %</b><span>der Verbraucher haben KI schon nach einer Empfehlung für einen lokalen Betrieb gefragt</span></div></div>
+<p>ChatGPT, Gemini und die KI-Übersicht bei Google nennen meist nur zwei, drei Betriebe – und begründen ihre Wahl. Sie stützen sich dabei auf dieselben Signale wie Google: ein gepflegtes Google-Profil, viele gute Bewertungen und eine Website, die Leistungen, Orte, Preise und Ablauf klar und maschinenlesbar beschreibt. Genau daran arbeiten wir – damit Sie in der Trefferliste <b>und</b> in der KI-Antwort auftauchen.</p>
+<a class="more" href="/leistungen/seo/">Sichtbar bei Google und KI →</a></div>
+<div class="ai-chat" aria-hidden="true"><div class="ai-q">Welcher Dachdecker in Musterstadt ist zuverlässig und macht auch Photovoltaik?</div>
+<div class="ai-a"><span class="ai-l">KI-Assistent</span><p>Empfehlenswert sind zum Beispiel:</p><ol><li class="me"><b>Ihr Betrieb</b> – Meisterbetrieb, 4,9 Sterne aus 126 Bewertungen, Dach und PV aus einer Hand, Festpreis-Angebot in 5 Tagen.</li><li><b>Mitbewerber A</b> – 4,3 Sterne, vor allem Reparaturen.</li></ol><span class="ai-src">Quellen: Google-Profil · ihr-betrieb.de · Bewertungen</span></div></div></div>
+</div><div class="wrap"><p class="cj-src">Quellen: Backlinko, Analyse von 4 Mio. Google-Ergebnissen · Think with Google, mobile „in der Nähe“-Suchen · BrightLocal, Local Consumer Review Survey 2025 · Google/SOASTA, Mobile-Ladezeiten 2017 · Bitkom, Umfrage zu KI-Chats und Internetsuche 2025 · BrightLocal, Local Consumer Review Survey 2026 (KI-Empfehlungen). Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
 '''
 
 
