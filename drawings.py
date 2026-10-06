@@ -20,6 +20,7 @@ LEISTUNG = {
  "ads": _svg('<rect x="70" y="60" width="260" height="190" rx="12"/><path d="M70 100h260"/><circle cx="92" cy="80" r="5"/><circle cx="110" cy="80" r="5"/><path d="M100 140h120M100 170h180M100 200h90"/><g class="c" stroke="currentColor"><rect x="240" y="130" width="60" height="26" rx="6"/><path d="M252 143h36"/><path d="M300 220l40 40M296 216l-8 30l12-8l10 16"/></g>', label="Anzeige im Suchergebnis"),
  "seo": _svg('<path d="M60 270h290"/><path d="M90 270v-60h40v60M150 270v-100h40v100M210 270v-140h40v140"/><g class="c" stroke="currentColor"><circle cx="300" cy="110" r="40"/><path d="M328 138l34 34"/><path d="M282 112l12 12l24-26"/></g>', label="Steigende Balken mit Lupe"),
  "web": _svg('<rect x="50" y="50" width="300" height="200" rx="12"/><path d="M50 88h300"/><circle cx="72" cy="69" r="5"/><circle cx="90" cy="69" r="5"/><rect x="80" y="112" width="130" height="80" rx="6"/><path d="M230 120h90M230 145h70M230 170h80"/><g class="c" stroke="currentColor"><path d="M150 230l-30 22l30 22M250 230l30 22l-30 22M215 222l-30 60"/></g>', label="Browserfenster mit Code-Klammern"),
+ "recruiting": _svg('<circle cx="150" cy="120" r="34"/><path d="M90 230c0-34 27-60 60-60s60 26 60 60"/><circle cx="270" cy="140" r="26" class="c" stroke="currentColor"/><path d="M226 230c0-26 20-46 44-46s44 20 44 46" class="c" stroke="currentColor"/><rect x="220" y="40" width="130" height="64" rx="10"/><path d="M240 62h70M240 82h44"/><path d="M60 270h290"/>', label="Menschen und Stellenanzeige"),
  "wachstum": _svg('<path d="M60 270h290M60 270V60"/><path d="M80 240c60-10 100-40 140-90s70-70 120-80" class="c" stroke="currentColor"/><path d="M320 62l22 8l-8 22" class="c" stroke="currentColor"/><circle cx="140" cy="215" r="6"/><circle cx="220" cy="150" r="6"/><circle cx="300" cy="90" r="6"/><path d="M200 270v-30M240 270v-50M280 270v-70" opacity=".35" stroke-width="12"/>', label="Wachstumskurve"),
 }
 
@@ -37,6 +38,7 @@ ICON = {
  "ads": '<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9" width="36" height="26" rx="4"/><path d="M14 20h14M14 27h20"/><path d="M34 33l7 7"/></svg>',
  "seo": '<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="21" cy="21" r="12"/><path d="M30 30l11 11"/><path d="M15 23l4 4l8-9"/></svg>',
  "web": '<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="38" height="30" rx="4"/><path d="M5 16h38M19 25l-5 4l5 4M29 25l5 4l-5 4"/></svg>',
+ "recruiting": '<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="16" r="6"/><path d="M7 38a11 11 0 0 1 22 0"/><path d="M32 20h10M37 15v10"/></svg>',
  "wachstum": '<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 40h36M8 34l10-10l7 6l15-16"/><path d="M33 14h7v7"/></svg>',
 }
 

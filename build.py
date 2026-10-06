@@ -193,7 +193,7 @@ def startseite():
 <div><b>3 · Vertrauen</b><span>Preise, Ablauf, Gesichter, Antworten</span></div>
 <div><b>4 · Anfrage</b><span>Fotos schicken, Rückruf in 24 h</span></div>
 <p>Für jede Branche bauen wir diesen Weg anders – siehe <a href="/beispiele/">Kundenweg-Beispiele</a>.</p></div></div></section>
-<section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid4">{leist}</div></div></section>
+<section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid3">{leist}</div></div></section>
 <section><div class="wrap"><div class="head"><span class="kicker">Vergleich</span><h2>Was uns von Baukasten und Agentur unterscheidet</h2></div>{vergleich()}</div></section>
 <section class="band"><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>Von null zur fertigen Website in drei Wochen</h2>
 <div class="promise"><b>Unsere Zusage:</b> Sie sehen den kompletten Entwurf im Browser, bevor die zweite Rechnungshälfte fällig wird. Passt etwas nicht, überarbeiten wir ihn, bevor es weitergeht.</div></div>
@@ -205,7 +205,7 @@ def startseite():
 def leistungen():
     cards = "".join(f'<a class="card" href="/leistungen/{l["slug"]}/">{ICON[l["key"]]}<h3>{l["titel"]}</h3><p>{l["kurz"]}</p><span class="more">Mehr erfahren →</span></a>' for l in LEISTUNGEN)
     write("/leistungen/", "Leistungen", "Google Ads, SEO, Websites und Wachstumsprogramm für lokale Betriebe.",
-          f'<section class="hero"><div class="wrap"><span class="kicker">Leistungen</span><h1>Vier Bausteine, ein Ziel</h1><p class="lead">Mehr passende Anfragen. Jeder Baustein funktioniert allein – zusammen wirken sie stärker.</p></div></section><section style="padding-top:0"><div class="wrap grid4">{cards}</div></section>{cta()}',
+          f'<section class="hero"><div class="wrap"><span class="kicker">Leistungen</span><h1>Fünf Bausteine, ein Ziel</h1><p class="lead">Mehr passende Anfragen – und die Fachkräfte, um sie abzuarbeiten. Jeder Baustein funktioniert allein – zusammen wirken sie stärker.</p></div></section><section style="padding-top:0"><div class="wrap grid3">{cards}</div></section>{cta()}',
           prio=0.9, crumbs=[("/", "Start"), ("/leistungen/", "Leistungen")])
     for l in LEISTUNGEN:
         p = f"/leistungen/{l['slug']}/"
@@ -229,7 +229,8 @@ def branchen():
         bsp = next(x for x in BEISPIELE if x["slug"] == b["beispiel"])
         body = f"""<section class="hero"><div class="wrap grid"><div><span class="kicker">{b["titel"]}</span><h1>{b["h1"]}</h1><p class="lead">{b["lead"]}</p><div class="actions"><a class="btn" href="/kontakt/">Erstgespräch anfragen</a><a class="btn ghost" href="/vorschau/{bsp["slug"]}/">Fertige Beispiel-Website</a></div></div><div class="showcase small"><a href="/vorschau/{bsp["slug"]}/" class="sc-desk">{frame(bsp["slug"], eager=True)}</a><a href="/vorschau/{bsp["slug"]}/" class="sc-phone">{frame(bsp["slug"], mobil=True, eager=True)}</a></div></div></section>
 <section class="band"><div class="wrap grid2"><div><h2>Kommt Ihnen das bekannt vor?</h2><ul class="ticks">{"".join(f"<li>{x}</li>" for x in b["probleme"])}</ul></div><div><h2>Was wir dagegen tun</h2>{ticks(b["loesung"])}</div></div></section>
-<section><div class="wrap grid2" style="align-items:center"><div class="card"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div><div><span class="kicker">Beispiel-Website</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn" href="/vorschau/{bsp["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>{cta()}"""
+<section><div class="wrap grid2" style="align-items:center"><div class="card"><div class="num">{b["zahl"][0]}</div><p style="margin-top:10px">{b["zahl"][1]}</p></div><div><span class="kicker">Beispiel-Website</span><h2>{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn" href="/vorschau/{bsp["slug"]}/">Live-Vorschau öffnen</a><a class="btn ghost" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="promise" style="display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap"><div><b>Fachkräfte gesucht?</b> Mit dem Recruiting-Paket bekommen Sie Bewerbungen über die eigene Karriereseite statt über teure Portale.</div><a class="more" href="/leistungen/recruiting/" style="margin:0">Recruiting-Paket →</a></div></div></section>{cta()}"""
         write(p, b["h1"], b["lead"], body, prio=0.8, crumbs=[("/", "Start"), ("/branchen/", "Branchen"), (p, b["titel"])])
 
 
@@ -266,15 +267,17 @@ def preise():
     monat = [("SEO Lokal", P["seo_lokal"], "Profil, Verzeichnisse, 1 neue Seite pro Monat, Bericht. 6 Monate Mindestlaufzeit."),
              ("SEO Plus", P["seo_plus"], "Wie Lokal, plus 2–3 Inhalte pro Monat, Bewertungsprozess, Wettbewerbsanalyse."),
              ("Google-Ads-Betreuung", P["ads"], f"Einrichtung {P['ads_setup']} € einmalig. Monatlich kündbar, Budget separat."),
+             ("Recruiting-Paket", P["rec"], f"Karriereseite, Bewerbung in 60 Sekunden, Anzeigen im Umkreis. Einrichtung {eur(P['rec_setup'])} einmalig, Budget separat."),
              ("Pflege & Hosting Start", P["pflege_start"], "Hosting, Updates, Sicherheit, kleine Änderungen."),
              ("Pflege & Hosting Wachstum", P["pflege_wachstum"], "Wie Start, plus 1 Stunde Änderungen pro Monat.")]
     rows = "".join(f"<tr><td><strong>{n}</strong></td><td>{d}</td><td class='r'>{eur(v)}/Monat</td></tr>" for n, v, d in monat)
     faq = [("Sind die Preise Endpreise?", "Ja. " + C["impressum"]["ust"]), ("Gibt es versteckte Kosten?", "Nein. Werbebudget für Anzeigen zahlen Sie direkt an Google oder Meta. Fremdkosten wie spezielle Buchungstools besprechen wir vorher."), ("Kann ich klein anfangen?", "Ja. Viele starten mit einer Website Start und ergänzen später SEO oder Anzeigen.")]
     body = f"""<section class="hero"><div class="wrap"><span class="kicker">Preise</span><h1>Feste Preise. Keine Überraschungen.</h1><p class="lead">Sie wissen vorher, was es kostet. Ohne Stundenzettel, ohne Prozente vom Werbebudget.</p></div></section>
 <section style="padding-top:0"><div class="wrap grid3">{web}</div></section>
+<section style="padding-top:0"><div class="wrap"><div class="card" style="display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center;border:2px solid var(--copper)"><div><span class="pill" style="background:var(--copper-soft);color:var(--copper)">Neu</span><h2 style="margin-top:12px">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit echten Einblicken, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis – für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)">{eur(P["rec"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)">Einrichtung {eur(P["rec_setup"])} einmalig · Werbebudget separat · nach 3 Monaten monatlich kündbar</p><a class="btn" href="/kontakt/">Anfragen</a></div></div></div></section>
 <section class="band"><div class="wrap"><h2>Laufende Leistungen</h2><div class="tablewrap"><table><thead><tr><th>Leistung</th><th>Umfang</th><th class="r">Preis</th></tr></thead><tbody>{rows}</tbody></table></div></div></section>
 <section><div class="wrap grid2"><div><h2>Fragen zu den Preisen</h2><p>Durchgerechnete Pakete finden Sie in unseren <a href="/beispiele/">Beispielen</a>.</p></div><div>{faq_html(faq)}</div></div></section>{cta()}"""
-    write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.490 €, SEO ab 390 €/Monat, Google Ads ab 290 €/Monat, Wachstumsprogramm 1.190 €/Monat. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])
+    write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.490 €, SEO ab 390 €/Monat, Google Ads ab 290 €/Monat, Recruiting-Paket 790 €/Monat, Wachstumsprogramm 1.190 €/Monat. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])
 
 
 def ablauf():
@@ -317,18 +320,19 @@ def kontakt():
     body = f"""<section class="hero"><div class="wrap grid2"><div><span class="kicker">Kontakt</span><h1>Lassen Sie uns sprechen</h1><p class="lead">Erzählen Sie kurz, worum es geht. Wir melden uns innerhalb eines Werktags mit Terminvorschlägen für ein 20-minütiges Erstgespräch.</p>
 {ticks(["Kostenlos und unverbindlich", "Ehrliche Einschätzung, auch wenn wir nicht passen", "Antwort innerhalb eines Werktags"])}
 <p>Lieber direkt per E-Mail? <a href="mailto:{C['email']}">{C['email']}</a></p></div>
-<div class="card"><form id="anfrage" data-to="{C['email']}">
+<div class="card"><form id="anfrage" data-to="{C['email']}" data-sb="{C['supabase_url']}" data-key="{C['supabase_key']}">
 <label>Ihr Name<input name="name" required autocomplete="name"></label>
 <label>Betrieb<input name="betrieb" autocomplete="organization"></label>
 <label>E-Mail<input name="email" type="email" required autocomplete="email"></label>
 <label>Telefon (optional)<input name="telefon" type="tel" autocomplete="tel"></label>
-<label>Worum geht es?<select name="thema"><option>Neue Website</option><option>Bei Google gefunden werden (SEO)</option><option>Google Ads</option><option>Mitarbeiter gewinnen</option><option>Wachstumsprogramm</option><option>Noch unklar</option></select></label>
+<label>Worum geht es?<select name="thema"><option>Neue Website</option><option>Bei Google gefunden werden (SEO)</option><option>Google Ads</option><option>Mitarbeiter gewinnen (Recruiting-Paket)</option><option>Wachstumsprogramm</option><option>Noch unklar</option></select></label>
 <label>Nachricht<textarea name="nachricht" rows="4" placeholder="Was soll in sechs Monaten anders sein?"></textarea></label>
 <label class="check"><input type="checkbox" name="einwilligung" required> <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage verwendet werden. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</span></label>
-<button class="btn" type="submit">Anfrage senden</button><p style="font-size:.85rem;color:var(--ink-2);margin:0">Es öffnet sich Ihr E-Mail-Programm mit der vorbereiteten Nachricht.</p>
+<label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+<button class="btn" type="submit">Anfrage senden</button><p class="form-msg" role="status" style="font-size:.88rem;color:var(--ink-2);margin:0">Wir antworten innerhalb eines Werktags.</p>
 </form></div></div></section>"""
     write("/kontakt/", "Kontakt & Erstgespräch", "Kostenloses Erstgespräch zu Website, SEO und Google Ads anfragen. Antwort innerhalb eines Werktags.", body, prio=0.8, crumbs=[("/", "Start"), ("/kontakt/", "Kontakt")])
-    write("/danke/", "Danke für Ihre Anfrage", "Ihre Anfrage ist vorbereitet.", f'<section class="hero"><div class="wrap prose"><h1>Danke!</h1><p class="lead">Falls sich Ihr E-Mail-Programm nicht geöffnet hat, schreiben Sie uns direkt an <a href="mailto:{C["email"]}">{C["email"]}</a>. Wir melden uns innerhalb eines Werktags.</p><p><a class="btn" href="/beispiele/">Inzwischen Beispiele ansehen</a></p></div></section>')
+    write("/danke/", "Danke für Ihre Anfrage", "Ihre Anfrage ist vorbereitet.", f'<section class="hero"><div class="wrap prose"><h1>Danke!</h1><p class="lead">Ihre Anfrage ist bei uns angekommen. Wir melden uns innerhalb eines Werktags. Dringend? Schreiben Sie direkt an <a href="mailto:{C["email"]}">{C["email"]}</a>.</p><p><a class="btn" href="/beispiele/">Inzwischen Beispiele ansehen</a></p></div></section>')
 
 
 def rechtliches():
@@ -345,7 +349,7 @@ def rechtliches():
 <h2>1. Verantwortlicher</h2><p>{i["inhaber"]}, {i["strasse"]}, {i["ort"]}, E-Mail: {i["email"]}</p>
 <h2>2. Grundsatz</h2><p>Diese Website verwendet keine Cookies, keine Analyse-Tools und keine Einbindungen von Drittanbietern. Schriften werden lokal ausgeliefert. Eine Einwilligung über ein Cookie-Banner ist daher nicht erforderlich.</p>
 <h2>3. Hosting</h2><p>Die Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA gehostet. Beim Aufruf verarbeitet Vercel technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Seite, Browserinformationen) zur Auslieferung und zur Abwehr von Angriffen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Vercel ist unter dem EU-US Data Privacy Framework zertifiziert; zusätzlich besteht ein Auftragsverarbeitungsvertrag mit Standardvertragsklauseln.</p>
-<h2>4. Kontaktaufnahme</h2><p>Wenn Sie uns per E-Mail oder über das Kontaktformular (das Ihr E-Mail-Programm öffnet) schreiben, verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Die Daten werden gelöscht, wenn sie nicht mehr benötigt werden und keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
+<h2>4. Kontaktaufnahme und Kontaktformular</h2><p>Wenn Sie uns per E-Mail oder über das Kontaktformular schreiben, verarbeiten wir Ihre Angaben (Name, Betrieb, E-Mail, Telefon, Thema, Nachricht und die Seite, von der Sie das Formular abgeschickt haben) zur Bearbeitung der Anfrage und zur Anbahnung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO). Die Angaben aus dem Formular werden in einer Datenbank bei Supabase Inc. gespeichert; die Daten liegen in einem Rechenzentrum in der EU (Irland). Mit Supabase besteht ein Auftragsverarbeitungsvertrag. Wir löschen Anfragen, aus denen kein Auftrag entsteht, spätestens nach 12 Monaten; ansonsten gelten die gesetzlichen Aufbewahrungsfristen.</p>
 <h2>5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>
 <h2>6. Speicherung im Browser</h2><p>Wenn Sie zwischen hellem und dunklem Design wechseln, wird diese Einstellung ausschließlich in Ihrem Browser gespeichert (localStorage) und nicht an uns übertragen.</p>
 <p>Stand: {date.today().strftime("%m/%Y")}</p></div></section>"""
@@ -356,7 +360,7 @@ def rechtliches():
 HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin",
            "X-Frame-Options": "SAMEORIGIN", "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
            "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
-           "Content-Security-Policy": "default-src 'self'; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
+           "Content-Security-Policy": f"default-src 'self'; connect-src 'self' {C.get('supabase_url', '')}; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
 
 
 def extras():

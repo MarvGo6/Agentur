@@ -6,6 +6,7 @@ PREISE = {
     "seo_lokal": 390, "seo_plus": 690,
     "ads_setup": 390, "ads": 290,
     "programm": 1190,
+    "rec_setup": 1490, "rec": 790,
 }
 
 def eur(v):
@@ -34,6 +35,13 @@ LEISTUNGEN = [
   "ablauf": [("Gespräch", "30 Minuten: Ziele, Zielgruppe, Wunschanfragen."), ("Entwurf", "Nach einer Woche sehen Sie die Startseite im Browser."), ("Ausbau", "Alle Seiten, Texte, Bilder, Formulare."), ("Start & Pflege", "Freischaltung, Einrichtung bei Google, danach laufende Pflege.")],
   "preis": "Website Start ab 1.490 €, Website Wachstum ab 2.990 € einmalig. Pflege & Hosting 49 € bzw. 89 € im Monat.",
   "faq": [("Gehört mir die Website?", "Ja. Inhalte, Texte und Domain gehören Ihnen. Wenn Sie gehen, bekommen Sie alle Dateien."), ("Kann ich selbst Texte ändern?", "Ja. Kleine Änderungen machen wir im Rahmen der Pflege, auf Wunsch richten wir eine einfache Bearbeitung ein."), ("Was ist mit Fotos?", "Am besten echte Fotos von Ihnen und Ihrem Team. Wir sagen Ihnen genau, welche Motive wir brauchen.")]},
+ {"slug": "recruiting", "key": "recruiting", "titel": "Recruiting-Paket", "kurz": "Fachkräfte finden über die eigene Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis.",
+  "h1": "Bewerbungen von Fachkräften – ohne teure Stellenportale",
+  "lead": "Pflegekräfte, Gesellen und Fachangestellte suchen nicht auf Portalen, sondern scrollen abends durch ihr Handy. Wir holen sie dort ab: mit einer Karriereseite, die zeigt, wie es bei Ihnen wirklich ist, einer Bewerbung ohne Lebenslauf und gezielten Anzeigen im Umkreis.",
+  "punkte": ["Karriereseite mit Gehaltsrahmen, Team und echten Einblicken", "Bewerbung in 60 Sekunden – ohne Lebenslauf und Anschreiben", "Stellen erscheinen in Google Jobs (strukturierte Daten)", "Anzeigen auf Instagram, Facebook und Google im Umkreis von 20–30 km", "Jede Bewerbung sofort per E-Mail oder WhatsApp an Sie", "Monatlicher Bericht: Bewerbungen, Kosten je Bewerbung, Einstellungen"],
+  "ablauf": [("Arbeitgeber-Check", "Was macht Ihren Betrieb attraktiv? Gehalt, Dienstplan, Team, Fahrzeug – wir sammeln die Argumente."), ("Karriereseite", "Eine Seite pro Stelle, mit Fotos aus Ihrem Betrieb und Kurzbewerbung."), ("Kampagnen", "Anzeigen im Umkreis, abgestimmt auf die Zielgruppe – mit eigenem Budget."), ("Nachfassen", "Wir zeigen Ihnen, wie schnelle Rückrufe die Einstellungsquote verdoppeln.")],
+  "preis": "Einrichtung 1.490 € einmalig, Betreuung 790 € im Monat zzgl. Werbebudget. Monatlich kündbar nach drei Monaten.",
+  "faq": [("Für welche Berufe funktioniert das?", "Besonders gut für Pflege, Handwerk, Praxen und Kanzleien – überall, wo Fachkräfte knapp sind und regional gesucht werden."), ("Wie viel Werbebudget brauche ich?", "Meist reichen 300 bis 800 € im Monat pro Stelle. Wir legen das vorher gemeinsam fest."), ("Was ist, wenn niemand Passendes kommt?", "Wir sehen nach zwei bis vier Wochen, wie viele und welche Bewerbungen kommen, und passen Ansprache, Umkreis und Stellenprofil an.")]},
  {"slug": "wachstum", "key": "wachstum", "titel": "Wachstumsprogramm", "kurz": "Website, SEO und Anzeigen aus einer Hand – mit einem Ziel und einem Monatsgespräch.",
   "h1": "Ein Programm, ein Ziel: mehr passende Anfragen",
   "lead": "Statt einzelne Bausteine zu kaufen, arbeiten wir zwölf Monate auf ein messbares Ziel hin: mehr Anfragen, mehr Bewerbungen oder mehr Termine. Website, SEO und Anzeigen greifen ineinander – und Sie haben einen Ansprechpartner.",
@@ -278,5 +286,6 @@ FAQ = [
  ("Schreiben Sie auch die Texte?", "Ja. Sie erzählen, wir schreiben. Fachliche Inhalte geben Sie frei."),
  ("Setzen Sie Cookies und Tracking ein?", "So wenig wie möglich. Wir messen Anfragen datenschutzfreundlich und verzichten wo möglich auf Cookie-Banner."),
  ("Garantieren Sie Ergebnisse?", "Wir garantieren saubere Arbeit, klare Ziele und ehrliche Berichte. Rankings und Anfragen kann niemand seriös garantieren."),
+ ("Helfen Sie auch bei der Mitarbeitersuche?", "Ja, mit dem Recruiting-Paket: Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis. Einrichtung 1.490 €, danach 790 € im Monat."),
  ("Wie läuft die Abrechnung?", "Einmalige Leistungen zur Hälfte bei Start, zur Hälfte bei Freischaltung. Monatliche Leistungen per Rechnung zum Monatsanfang."),
 ]

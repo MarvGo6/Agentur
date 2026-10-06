@@ -8,10 +8,18 @@
   if(b)b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o)});
   var f=document.getElementById('anfrage');
   if(f)f.addEventListener('submit',function(e){
-    e.preventDefault();var d=new FormData(f),lines=[];
-    d.forEach(function(v,k){if(k!=='einwilligung'&&v)lines.push(k.charAt(0).toUpperCase()+k.slice(1)+': '+v)});
-    location.href='mailto:'+f.dataset.to+'?subject='+encodeURIComponent('Anfrage über die Website – '+(d.get('betrieb')||d.get('name')||''))+'&body='+encodeURIComponent(lines.join('\n'));
-    setTimeout(function(){location.href='/danke/'},800);
+    e.preventDefault();
+    var d=new FormData(f),btn=f.querySelector('button[type=submit]'),msg=f.querySelector('.form-msg');
+    if(d.get('website'))return;                                   // Spam-Falle
+    var daten={name:(d.get('name')||'').trim(),betrieb:(d.get('betrieb')||'').trim()||null,email:(d.get('email')||'').trim(),
+      telefon:(d.get('telefon')||'').trim()||null,thema:d.get('thema')||null,nachricht:(d.get('nachricht')||'').trim()||null,
+      quelle:((document.referrer?document.referrer.slice(0,140)+' → ':'')+location.pathname).slice(0,200),einwilligung:!!d.get('einwilligung')};
+    function mail(){var z=[];Object.keys(daten).forEach(function(k){if(daten[k]&&k!=='einwilligung'&&k!=='quelle')z.push(k.charAt(0).toUpperCase()+k.slice(1)+': '+daten[k])});
+      location.href='mailto:'+f.dataset.to+'?subject='+encodeURIComponent('Anfrage über die Website – '+(daten.betrieb||daten.name))+'&body='+encodeURIComponent(z.join('\n'))}
+    btn.disabled=true;btn.textContent='Wird gesendet …';
+    fetch(f.dataset.sb+'/rest/v1/agentur_anfragen',{method:'POST',headers:{'apikey':f.dataset.key,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(daten)})
+      .then(function(r){if(!r.ok)throw new Error(r.status);location.href='/danke/'})
+      .catch(function(){btn.disabled=false;btn.textContent='Anfrage senden';msg.textContent='Das hat nicht geklappt – wir öffnen Ihr E-Mail-Programm mit der vorbereiteten Nachricht.';setTimeout(mail,900)});
   });
 })();
 (function(){
