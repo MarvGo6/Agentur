@@ -230,7 +230,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <h3>Vertriebstrichter im Basis-Szenario</h3>
 <p>{deals_b} Abschlüsse im Monat brauchen bei 25 % Abschlussquote rund {deals_b*4} Gespräche, also 3 pro Woche. Dafür werden bei 10 % Antwortquote rund {deals_b*40} Betriebe im Monat angeschrieben – etwa 6 pro Arbeitstag.</p>
 <h3>Vertrauen ohne Gesicht</h3>
-<ul><li>Fertige Vorschau-Websites für sieben Branchen</li><li>Durchgerechnete Beispiele mit Preisen</li><li>Faire Konditionen: Website gehört dem Kunden, Pflege monatlich kündbar</li><li>Echter Name im Impressum (Pflicht), aber kein Foto nötig</li></ul>
+<ul><li>Fertige Vorschau-Websites für sieben Branchen</li><li>Durchgerechnete Beispiele mit Preisen</li><li>Faire Konditionen: Website gehört dem Kunden, klare Laufzeiten (Pflege 12 Monate)</li><li>Echter Name im Impressum (Pflicht), aber kein Foto nötig</li></ul>
 </section>
 
 <section class="page">{kap(6, "Allein arbeiten: Stunden als Engpass")}

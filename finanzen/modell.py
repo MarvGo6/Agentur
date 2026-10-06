@@ -78,8 +78,8 @@ PREISLISTE = [
     # Produkt, einmalig, monatlich, Std einmalig, Std/Monat, Hinweis
     ("Website Start", 1490, 0, 16, 0, "bis 5 Seiten, fertig in 2–3 Wochen"),
     ("Website Wachstum", 2990, 0, 28, 0, "bis 15 Seiten, Orts- und Karriereseiten"),
-    ("Pflege & Hosting Start", 0, 49, 0, 0.25, "monatlich kündbar"),
-    ("Pflege & Hosting Wachstum", 0, 89, 0, 0.5, "inkl. 1 h Änderungen"),
+    ("Pflege & Hosting Start", 0, 49, 0, 0.25, "12 Monate Laufzeit"),
+    ("Pflege & Hosting Wachstum", 0, 89, 0, 0.5, "12 Monate Laufzeit, inkl. 1 h Änderungen"),
     ("SEO Lokal", 0, 390, 4, 5, "6 Monate Mindestlaufzeit"),
     ("SEO Plus", 0, 690, 6, 8, "6 Monate Mindestlaufzeit"),
     ("Google-Ads-Betreuung", 390, 290, 4, 2.5, "zzgl. Werbebudget, monatlich kündbar"),
