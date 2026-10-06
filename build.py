@@ -50,9 +50,9 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
 <main id="inhalt">{crumb_html}{body}</main>
 <footer><div class="wrap"><div class="cols">
 <div><a class="logo" href="/">{LOGO}{NAME}</a><p style="margin-top:12px">{e(C["tagline"])}</p><p>Remote aus Deutschland für ganz Deutschland.</p></div>
-<div><h4>Leistungen</h4>{"".join(f'<a href="/leistungen/{l["slug"]}/">{l["titel"]}</a>' for l in LEISTUNGEN)}</div>
-<div><h4>Branchen</h4>{"".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}</div>
-<div><h4>Agentur</h4><a href="/beispiele/">Beispiele</a><a href="/ablauf/">Ablauf</a><a href="/preise/">Preise</a><a href="/faq/">Häufige Fragen</a><a href="/kontakt/">Kontakt</a></div>
+<div><p class="fh">Leistungen</p>{"".join(f'<a href="/leistungen/{l["slug"]}/">{l["titel"]}</a>' for l in LEISTUNGEN)}</div>
+<div><p class="fh">Branchen</p>{"".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}</div>
+<div><p class="fh">Agentur</p><a href="/beispiele/">Beispiele</a><a href="/ablauf/">Ablauf</a><a href="/preise/">Preise</a><a href="/faq/">Häufige Fragen</a><a href="/kontakt/">Kontakt</a></div>
 </div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a></span></div></div></footer>
 <script src="/main.js" defer></script></body></html>"""
 
@@ -140,7 +140,7 @@ def paket_summe(b):
 
 # ------------------------------------------------------------------ Seiten
 def galerie(items):
-    return "".join(f'''<article class="show"><a class="show-img" href="/vorschau/{b["slug"]}/" aria-label="Live-Vorschau {e(b["name"])} öffnen">{frame(b["slug"])}</a>
+    return "".join(f'''<article class="show"><a class="show-img" href="/vorschau/{b["slug"]}/">{frame(b["slug"])}</a>
 <div class="show-meta"><div><span class="pill">{b["branche"]}</span><h3>{b["name"]}</h3></div><span class="price-mini">{eur(paket_summe(b))}<small>im 1. Jahr</small></span></div>
 <div class="show-links"><a href="/vorschau/{b["slug"]}/">Live-Vorschau →</a><a href="/beispiele/{b["slug"]}/">Kundenweg &amp; Preis</a></div></article>''' for b in items)
 
@@ -159,7 +159,7 @@ VERGLEICH = [
 
 def vergleich():
     rows = "".join(f'<tr><td>{r[0]}</td>' + "".join(f'<td class="c{" us" if i == 3 else ""}">{v}</td>' for i, v in enumerate(r[1:])) + "</tr>" for r in VERGLEICH)
-    return f'''<div class="tablewrap compare"><table><thead><tr><th></th><th class="c">Baukasten</th><th class="c">Freelancer</th><th class="c">Klassische Agentur</th><th class="c us">{NAME}</th></tr></thead><tbody>{rows}</tbody></table></div>'''
+    return f'''<div class="tablewrap compare"><table><thead><tr><th>Leistung</th><th class="c">Baukasten</th><th class="c">Freelancer</th><th class="c">Klassische Agentur</th><th class="c us">{NAME}</th></tr></thead><tbody>{rows}</tbody></table></div>'''
 
 
 CJ_STUFEN = [
@@ -284,7 +284,7 @@ def beispiele():
 def preise():
     P = PREISE
     def box(t, amt, per, items, feat=False, note=""):
-        return f'<div class="card price{" feat" if feat else ""}">{"<span class=pill>Beliebt</span>" if feat else ""}<h3 style="margin-top:8px">{t}</h3><div class="amt">{amt}</div><div class="per">{per}</div>{ticks(items)}{f"<p class=note>{note}</p>" if note else ""}<a class="btn{"" if feat else " ghost"}" href="/kontakt/" style="text-align:center;margin-top:14px">Anfragen</a></div>'
+        return f'<div class="card price{" feat" if feat else ""}">{"<span class=pill>Beliebt</span>" if feat else ""}<h2 class="h3" style="margin-top:8px">{t}</h2><div class="amt">{amt}</div><div class="per">{per}</div>{ticks(items)}{f"<p class=note>{note}</p>" if note else ""}<a class="btn{"" if feat else " ghost"}" href="/kontakt/" style="text-align:center;margin-top:14px">Anfragen</a></div>'
     web = box("Website Start", eur(P["web_start"]), f"einmalig · Pflege {P['pflege_start']} €/Monat", ["Bis zu 5 Seiten", "Texte und Struktur inklusive", "Google-Unternehmensprofil eingerichtet", "Kontakt- oder Buchungsformular", "Fertig in 2–3 Wochen"]) + \
           box("Website Wachstum", eur(P["web_wachstum"]), f"einmalig · Pflege {P['pflege_wachstum']} €/Monat", ["Bis zu 15 Seiten", "Eigene Seiten je Leistung und Ort", "Karriere- oder Bewerbungsbereich", "Ratgeber-Bereich", "Anruf- und Formularmessung"], feat=True) + \
           box("Wachstumsprogramm", eur(P["programm"]), "pro Monat · 12 Monate", ["Website Wachstum inklusive", "SEO Plus inklusive", "Google-Ads-Betreuung inklusive", "Monatsgespräch und Bericht", "Gemeinsames, messbares Ziel"], note=f"Einzeln im ersten Jahr: {eur(P['web_wachstum'] + 12*P['pflege_wachstum'] + 12*P['seo_plus'] + P['ads_setup'] + 12*P['ads'])}")
@@ -298,7 +298,7 @@ def preise():
     faq = [("Sind die Preise Endpreise?", "Ja. " + C["impressum"]["ust"]), ("Gibt es versteckte Kosten?", "Nein. Werbebudget für Anzeigen zahlen Sie direkt an Google oder Meta. Fremdkosten wie spezielle Buchungstools besprechen wir vorher."), ("Kann ich klein anfangen?", "Ja. Viele starten mit einer Website Start und ergänzen später SEO oder Anzeigen.")]
     body = f"""<section class="hero"><div class="wrap"><span class="kicker">Preise</span><h1>Feste Preise. Keine Überraschungen.</h1><p class="lead">Sie wissen vorher, was es kostet. Ohne Stundenzettel, ohne Prozente vom Werbebudget.</p></div></section>
 <section style="padding-top:0"><div class="wrap grid3">{web}</div></section>
-<section style="padding-top:0"><div class="wrap"><div class="card" style="display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center;border:2px solid var(--copper)"><div><span class="pill" style="background:var(--copper-soft);color:var(--copper)">Neu</span><h2 style="margin-top:12px">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit echten Einblicken, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis – für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)">{eur(P["rec"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)">Einrichtung {eur(P["rec_setup"])} einmalig · Werbebudget separat · nach 3 Monaten monatlich kündbar</p><a class="btn" href="/kontakt/">Anfragen</a></div></div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="card" style="display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center;border:2px solid var(--copper)"><div><span class="pill" style="background:var(--copper-soft);color:var(--copper-ink)">Neu</span><h2 style="margin-top:12px">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit echten Einblicken, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis – für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)">{eur(P["rec"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)">Einrichtung {eur(P["rec_setup"])} einmalig · Werbebudget separat · nach 3 Monaten monatlich kündbar</p><a class="btn" href="/kontakt/">Anfragen</a></div></div></div></section>
 <section class="band"><div class="wrap"><h2>Laufende Leistungen</h2><div class="tablewrap"><table><thead><tr><th>Leistung</th><th>Umfang</th><th class="r">Preis</th></tr></thead><tbody>{rows}</tbody></table></div></div></section>
 <section><div class="wrap grid2"><div><h2>Fragen zu den Preisen</h2><p>Durchgerechnete Pakete finden Sie in unseren <a href="/beispiele/">Beispielen</a>.</p></div><div>{faq_html(faq)}</div></div></section>{cta()}"""
     write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.490 €, SEO ab 390 €/Monat, Google Ads ab 290 €/Monat, Recruiting-Paket 790 €/Monat, Wachstumsprogramm 1.190 €/Monat. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])

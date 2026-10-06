@@ -251,3 +251,15 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 :root[data-theme=dark] .cj-card.dark{border-color:#2f3d37}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .cj-card.dark{border-color:#2f3d37}}
 .cj-next{margin:26px 0 0;font-size:1rem;color:var(--ink-2)}.cj-next a{font-weight:600}
+/* Kontraste & Footer-Überschriften */
+:root{--copper-ink:#94491b}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--copper-ink:#e8a26b}}
+:root[data-theme=dark]{--copper-ink:#e8a26b}
+.kicker,.ribbon span{color:var(--copper-ink)}
+.cj-card.dark .kicker{color:#e8a26b}
+.serp-r .st{color:#7a5300}
+:root[data-theme=dark] .serp-r .st{color:#e3b04b}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .serp-r .st{color:#e3b04b}}
+.serp-more{opacity:1}
+footer .fh{font:600 .8rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:0 0 10px}
+.h3{font-size:1.3rem}
