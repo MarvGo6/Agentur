@@ -16,6 +16,7 @@
       quelle:((document.referrer?document.referrer.slice(0,140)+' → ':'')+location.pathname).slice(0,200),einwilligung:!!d.get('einwilligung')};
     function mail(){var z=[];Object.keys(daten).forEach(function(k){if(daten[k]&&k!=='einwilligung'&&k!=='quelle')z.push(k.charAt(0).toUpperCase()+k.slice(1)+': '+daten[k])});
       location.href='mailto:'+f.dataset.to+'?subject='+encodeURIComponent('Anfrage über die Website – '+(daten.betrieb||daten.name))+'&body='+encodeURIComponent(z.join('\n'))}
+    if(!f.dataset.sb){mail();setTimeout(function(){location.href='/danke/'},800);return}
     btn.disabled=true;btn.textContent='Wird gesendet …';
     fetch(f.dataset.sb+'/rest/v1/agentur_anfragen',{method:'POST',headers:{'apikey':f.dataset.key,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(daten)})
       .then(function(r){if(!r.ok)throw new Error(r.status);location.href='/danke/'})

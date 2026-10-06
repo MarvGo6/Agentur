@@ -1,5 +1,5 @@
--- Angelegt im Supabase-Projekt mscipkkvljajnwjfabjv (EU, Irland) als Migration "agentur_anfragen".
--- Öffentlich (anon) nur INSERT auf freigegebene Spalten; Lesen nur im Supabase-Dashboard bzw. mit service_role.
+-- Für ein EIGENES Supabase-Projekt der Agentur (getrennt von Vertriebs-OS). Im SQL-Editor des neuen Projekts ausführen,
+-- danach URL und Publishable Key in config.json eintragen (supabase_url, supabase_key).
 create table public.agentur_anfragen (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
