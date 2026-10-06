@@ -196,3 +196,7 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 .lv iframe.ready{opacity:1}
 .phone .lv{border-radius:23px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+/* Dunkelmodus: umrandete Buttons behalten helle Schrift */
+:root[data-theme=dark] .btn.ghost{color:var(--ink);border-color:var(--ink)}
+:root[data-theme=dark] .btn.ghost:hover{background:var(--ink);color:var(--paper)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .btn.ghost{color:var(--ink);border-color:var(--ink)}:root:not([data-theme=light]) .btn.ghost:hover{background:var(--ink);color:var(--paper)}}
