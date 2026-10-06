@@ -16,5 +16,7 @@
     "ust": "Kleinunternehmer gemäß § 19 UStG – es wird keine Umsatzsteuer ausgewiesen."
   },
   "supabase_url": "https://mlvraqrtejfwamwhyici.supabase.co",
-  "supabase_key": "sb_publishable_-mMDOedAuGmTssud4LXlJw_0EYSLX5S"
+  "supabase_key": "sb_publishable_-mMDOedAuGmTssud4LXlJw_0EYSLX5S",
+  "ansprechpartner": "",
+  "standort": ""
 }

@@ -7,6 +7,7 @@
   });
   if(b)b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o)});
   var f=document.getElementById('anfrage');
+  try{var k=new URLSearchParams(location.search).get('thema'),o=k&&f&&f.querySelector('option[data-k="'+k.replace(/[^a-z]/g,'')+'"]');if(o)o.selected=true}catch(e){}
   if(f)f.addEventListener('submit',function(e){
     e.preventDefault();
     var d=new FormData(f),btn=f.querySelector('button[type=submit]'),msg=f.querySelector('.form-msg');
@@ -20,7 +21,7 @@
     btn.disabled=true;btn.textContent='Wird gesendet …';
     fetch(f.dataset.sb+'/rest/v1/agentur_anfragen',{method:'POST',headers:{'apikey':f.dataset.key,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(daten)})
       .then(function(r){if(!r.ok)throw new Error(r.status);location.href='/danke/'})
-      .catch(function(){btn.disabled=false;btn.textContent='Anfrage senden';msg.textContent='Das hat nicht geklappt – wir öffnen Ihr E-Mail-Programm mit der vorbereiteten Nachricht.';setTimeout(mail,900)});
+      .catch(function(){btn.disabled=false;btn.textContent='Ersteinschätzung anfordern';msg.textContent='Das hat nicht geklappt – wir öffnen Ihr E-Mail-Programm mit der vorbereiteten Nachricht.';setTimeout(mail,900)});
   });
 })();
 (function(){
