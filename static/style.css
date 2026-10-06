@@ -159,7 +159,7 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 .showcase:hover .sc-desk{transform:none}
 .showcase .sc-phone{position:absolute;right:-8px;bottom:0;width:27%;min-width:120px;display:block}
 .showcase.small .sc-phone{width:24%}
-@media (max-width:900px){.hero-xl .grid{grid-template-columns:1fr}.showcase .sc-desk{transform:none;width:84%}.showcase{padding-bottom:110px}.showcase .sc-phone{right:0;width:22%;min-width:0}}
+@media (max-width:900px){.hero-xl .grid{grid-template-columns:1fr}.showcase .sc-desk{transform:none;width:90%}.showcase{padding-bottom:150px}.showcase .sc-phone{right:0;width:27%}}
 /* Branchenband */
 .ribbon{padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card)}
 .ribbon .wrap{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center;font:500 1.12rem var(--serif)}
