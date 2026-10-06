@@ -136,3 +136,4 @@ footer a{color:var(--ink-2);text-decoration:none;display:block;margin:5px 0}foot
 footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (max-width:800px){footer .cols{grid-template-columns:1fr 1fr}}
 .preview-bar{background:var(--copper);color:#fff;text-align:center;font-size:.85rem;padding:6px 12px}
+.thumb{height:120px;margin-bottom:12px}.thumb svg{height:100%;width:auto;display:block}
