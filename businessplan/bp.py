@@ -186,8 +186,8 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <tr><td>Pflegedienst</td><td>Website Wachstum + Pflege + Ads (Recruiting)</td><td class=r>{eur(P['web_wachstum']+12*P['pflege_wachstum']+P['ads_setup']+12*P['ads'])}</td></tr>
 <tr><td>Steuerberater</td><td>Website Wachstum + Pflege + SEO Lokal</td><td class=r>{eur(P['web_wachstum']+12*P['pflege_wachstum']+12*P['seo_lokal'])}</td></tr>
 <tr><td>Tierarzt</td><td>Website Wachstum + Pflege + SEO Plus</td><td class=r>{eur(P['web_wachstum']+12*P['pflege_wachstum']+12*P['seo_plus'])}</td></tr>
-<tr><td>Dachdecker & Solar</td><td>Wachstumsprogramm</td><td class=r>{eur(12*P['programm'])}</td></tr></tbody></table>
-<div class="box">Das Wachstumsprogramm ist bewusst günstiger als seine Bausteine einzeln ({eur(P['web_wachstum'] + 12*P['pflege_wachstum'] + 12*P['seo_plus'] + P['ads_setup'] + 12*P['ads'])} im ersten Jahr). Das macht die Entscheidung leicht und sichert zwölf Monate Umsatz.</div>
+<tr><td>Dachdecker & Solar</td><td>Wachstumsprogramm</td><td class=r>{eur(P['prog_setup'] + 12*P['programm'])}</td></tr></tbody></table>
+<div class="box">Das Wachstumsprogramm ({eur(P['prog_setup'])} Einrichtung inkl. Website, dann {eur(P['programm'])} im Monat – {eur(P['prog_setup'] + 12*P['programm'])} im ersten Jahr) ist bewusst günstiger als seine Bausteine einzeln ({eur(P['web_wachstum'] + 12*P['pflege_wachstum'] + 12*P['seo_plus'] + P['ads_setup'] + 12*P['ads'])} im ersten Jahr). Das macht die Entscheidung leicht und sichert zwölf Monate Umsatz.</div>
 </section>
 
 <section class="page">{kap(3, "Verdienst je Abschluss")}

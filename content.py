@@ -5,7 +5,7 @@ PREISE = {
     "web_wachstum": 2990, "pflege_wachstum": 89,
     "seo_lokal": 390, "seo_plus": 690,
     "ads_setup": 390, "ads": 290,
-    "programm": 1190,
+    "prog_setup": 1490, "programm": 1190,
     "rec_setup": 1490, "rec": 790,
 }
 
@@ -47,7 +47,7 @@ LEISTUNGEN = [
   "lead": "Statt einzelne Bausteine zu kaufen, arbeiten wir zwölf Monate auf ein messbares Ziel hin: mehr Anfragen, mehr Bewerbungen oder mehr Termine. Website, SEO und Anzeigen greifen ineinander – und Sie haben einen Ansprechpartner.",
   "punkte": ["Website Wachstum inklusive, ohne Einmalkosten", "SEO Plus und Google-Ads-Betreuung inklusive", "Ein messbares Ziel, vorher schriftlich vereinbart", "Monatliches Gespräch mit klaren Zahlen", "Quartalsplanung: was wir als Nächstes angehen", "Günstiger als die Bausteine einzeln"],
   "ablauf": [("Zielbild", "Wir legen fest, was nach zwölf Monaten anders sein soll – in Zahlen."), ("Monat 1", "Website, Profil, Messung, erste Kampagnen."), ("Monat 2–6", "Inhalte, Bewertungen, Anzeigen nachschärfen."), ("Monat 7–12", "Ausbauen, was wirkt. Streichen, was nicht wirkt.")],
-  "preis": "1.190 € im Monat bei zwölf Monaten Laufzeit, Werbebudget separat.",
+  "preis": "1.490 € Einrichtung (inkl. neuer Website) und 1.190 € im Monat bei zwölf Monaten Laufzeit, Werbebudget separat.",
   "faq": [("Warum zwölf Monate?", "Weil die Website-Erstellung im Preis steckt und SEO Zeit braucht. Die Laufzeit macht den Preis möglich."), ("Was, wenn das Ziel nicht erreicht wird?", "Wir sehen das früh in den Monatszahlen und steuern um. Liegen wir nach sechs Monaten deutlich hinter Plan, können Sie das Programm in reine Pflege umwandeln."), ("Für wen lohnt sich das?", "Für Betriebe, bei denen ein neuer Kunde oder eine neue Fachkraft mehrere tausend Euro wert ist.")]},
 ]
 
@@ -129,7 +129,7 @@ BEISPIELE = [
    ("Danach", "Die Anlage läuft, die Nachbarn fragen nach.", "Bewertungsanfrage nach Abnahme, Projekt kommt mit Erlaubnis auf die Referenzkarte."),
   ],
   "umsetzung": ["Monat 1: Neue Website, Google-Profil, Messung von Anrufen und Formularen", "Monat 1: Google Ads für Notdienst und PV mit 700 € Budget", "Monat 2–4: Ortsseiten, Referenzkarte, Ratgeber Förderung", "Ab Monat 3: Recruiting-Seite und Anzeigen für Gesellen"],
-  "paket": [("Wachstumsprogramm, 12 × 1.190 €", 12 * P["programm"])],
+  "paket": [("Einrichtung inkl. Website", P["prog_setup"]), ("Wachstumsprogramm, 12 × 1.190 €", 12 * P["programm"])],
   "paket_hinweis": "Enthalten: Website Wachstum, Pflege, SEO Plus, Google-Ads-Betreuung. Einzeln wären das im ersten Jahr " + eur(P["web_wachstum"] + 12 * P["pflege_wachstum"] + 12 * P["seo_plus"] + P["ads_setup"] + 12 * P["ads"]) + ". Werbebudget (hier 700 €/Monat) geht direkt an Google.",
   "erwartung": "Anzeigen bringen ab der zweiten Woche Anfragen. Organische Anfragen über die Ortsseiten wachsen meist ab dem vierten Monat. Eine einzige Sanierung mit PV liegt schnell bei 30.000 € und mehr.",
   "aufgabe": "Fotos von Baustellen schicken, Anfragen innerhalb von 24 Stunden zurückrufen, Kunden um Bewertungen bitten."},

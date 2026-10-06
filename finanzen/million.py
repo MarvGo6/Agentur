@@ -15,7 +15,7 @@ START = {"pflege": _s["k_pflege"], "seo": _s["k_seo"], "ads": 0.0, "prog": _s["k
 
 A = {
     # Preise (Durchschnitt je Abschluss)
-    "p_web": 2600, "p_pflege": 79, "p_seo": 520, "p_ads": 290, "p_ads_setup": 390, "p_prog": 1190,
+    "p_web": 2600, "p_pflege": 79, "p_seo": 520, "p_ads": 290, "p_ads_setup": 390, "p_prog": 1190, "p_prog_setup": 1490,
     "p_rec_setup": 1490, "p_rec": 790,
     # Mix der Abschlüsse
     "mix_web": 0.50, "mix_prog": 0.25, "mix_rec": 0.25,
@@ -53,7 +53,7 @@ def rechne(a=A, closer=CLOSER, sdr=SDR):
             k[s] = k[s] * (1 - a["ch_" + s]) + n[s]
         mrr = (k["pflege"] * a["p_pflege"] + k["seo"] * a["p_seo"] + k["ads"] * a["p_ads"]
                + k["prog"] * a["p_prog"] + k["rec"] * a["p_rec"])
-        einmal = n_web * a["p_web"] + n["ads"] * a["p_ads_setup"] + n_rec * a["p_rec_setup"]
+        einmal = n_web * a["p_web"] + n["ads"] * a["p_ads_setup"] + n_prog * a["p_prog_setup"] + n_rec * a["p_rec_setup"]
         umsatz = mrr + einmal
         stunden = (n_web * a["h_web"] + k["seo"] * a["h_seo"] + k["ads"] * a["h_ads"] + k["prog"] * a["h_prog"]
                    + n_rec * a["h_rec_setup"] + k["rec"] * a["h_rec"] + k["pflege"] * a["h_pflege"])

@@ -20,7 +20,7 @@ G = {
     # Preise (Ø je Abschluss)
     "preis_web": 2200,      # Ø Website Start 1.490 / Wachstum 2.990, danach Pflege
     "preis_pflege": 69,     # Ø Pflege & Hosting je Monat (49 / 89)
-    "preis_prog": 1190, "preis_seo": 520, "preis_rec": 790, "preis_rec_setup": 1490,
+    "preis_prog": 1190, "preis_prog_setup": 1490, "preis_seo": 520, "preis_rec": 790, "preis_rec_setup": 1490,
     # Mix der Abschlüsse
     "mix_web": 0.25, "mix_prog": 0.25, "mix_seo": 0.25, "mix_rec": 0.25,
     # Kündigungen pro Monat
@@ -56,7 +56,8 @@ def rechne(name, g=G):
             s = KUNDE[p]
             k[s] = k[s] * (1 - g["churn_" + s]) + deals * g["mix_" + p]
         mrr = sum(k[s] * g["preis_" + s] for s in k)
-        einmal = deals * g["mix_web"] * g["preis_web"] + deals * g["mix_rec"] * g["preis_rec_setup"]
+        einmal = (deals * g["mix_web"] * g["preis_web"] + deals * g["mix_prog"] * g["preis_prog_setup"]
+                  + deals * g["mix_rec"] * g["preis_rec_setup"])
         umsatz = mrr + einmal
         kosten = g["fix_kosten"] + g["marketing"]
         erg = umsatz - kosten
@@ -83,7 +84,7 @@ PREISLISTE = [
     ("SEO Plus", 0, 690, 6, 8, "6 Monate Mindestlaufzeit"),
     ("Google-Ads-Betreuung", 390, 290, 4, 2.5, "zzgl. Werbebudget, monatlich kündbar"),
     ("Recruiting-Paket", 1490, 790, 10, 7, "zzgl. Werbebudget, 3 Monate Mindestlaufzeit"),
-    ("Wachstumsprogramm", 0, 1190, 28, 13, "12 Monate, Website + SEO Plus + Ads inklusive"),
+    ("Wachstumsprogramm", 1490, 1190, 28, 13, "12 Monate, Website + SEO Plus + Ads inklusive"),
 ]
 
 

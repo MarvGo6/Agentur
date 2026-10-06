@@ -50,7 +50,7 @@ P.column_dimensions["I"].width = 46
 A = wb.create_sheet("Annahmen")
 A["A1"] = "Annahmen Solo-Plan (Gründer macht Vertrieb und Umsetzung allein)"; A["A1"].font = H1
 A["A2"] = "Blaue Zahlen sind Eingaben. Gelb = wichtigste Hebel. Monat 1 = November 2026."; A["A2"].font = ITAL
-labels = [("preis_web", "Ø Website-Auftrag (einmalig)", EUR), ("preis_pflege", "Ø Pflege & Hosting / Monat", EUR), ("preis_prog", "Wachstumsprogramm / Monat", EUR),
+labels = [("preis_web", "Ø Website-Auftrag (einmalig)", EUR), ("preis_pflege", "Ø Pflege & Hosting / Monat", EUR), ("preis_prog", "Wachstumsprogramm / Monat", EUR), ("preis_prog_setup", "Programm-Einrichtung (inkl. Website)", EUR),
           ("preis_seo", "Ø SEO / Monat", EUR), ("preis_rec", "Recruiting-Paket / Monat", EUR), ("preis_rec_setup", "Recruiting-Einrichtung", EUR),
           ("mix_web", "Anteil Abschlüsse: Website (+ Pflege)", PCT), ("mix_prog", "Anteil Abschlüsse: Wachstumsprogramm", PCT),
           ("mix_seo", "Anteil Abschlüsse: SEO", PCT), ("mix_rec", "Anteil Abschlüsse: Recruiting", PCT),
@@ -129,7 +129,7 @@ def solo_sheet(name):
             elif key == "mrr":
                 f = "=" + "+".join(f"{col}{Rr['k_' + s]}*{R['preis_' + s]}" for s in ("pflege", "prog", "seo", "rec"))
             elif key == "einmal":
-                f = f"={col}{Rr['deals']}*{R['mix_web']}*{R['preis_web']}+{col}{Rr['deals']}*{R['mix_rec']}*{R['preis_rec_setup']}"
+                f = f"={col}{Rr['deals']}*{R['mix_web']}*{R['preis_web']}+{col}{Rr['deals']}*{R['mix_prog']}*{R['preis_prog_setup']}+{col}{Rr['deals']}*{R['mix_rec']}*{R['preis_rec_setup']}"
             elif key == "umsatz":
                 f = f"={col}{Rr['mrr']}+{col}{Rr['einmal']}"
             elif key == "kosten":
@@ -162,7 +162,7 @@ X["A1"] = "Ausbau-Plan: Team ab dem Monat nach 10.000 € MRR (Solo Basis)"; X["
 X["A2"] = "Startbestand kommt automatisch aus „Solo Basis“ (erster Monat mit MRR ≥ 10.000 €). Blaue Werte sind Eingaben."; X["A2"].font = ITAL
 a = MI.A
 inp = [("p_web", "Ø Website-Auftrag", EUR), ("p_pflege", "Pflege & Hosting / Monat", EUR), ("p_seo", "SEO / Monat", EUR), ("p_ads", "Ads-Betreuung / Monat", EUR),
-       ("p_ads_setup", "Ads-Einrichtung", EUR), ("p_prog", "Wachstumsprogramm / Monat", EUR), ("p_rec_setup", "Recruiting-Einrichtung", EUR), ("p_rec", "Recruiting / Monat", EUR),
+       ("p_ads_setup", "Ads-Einrichtung", EUR), ("p_prog", "Wachstumsprogramm / Monat", EUR), ("p_prog_setup", "Programm-Einrichtung", EUR), ("p_rec_setup", "Recruiting-Einrichtung", EUR), ("p_rec", "Recruiting / Monat", EUR),
        ("mix_web", "Anteil Website-Abschlüsse", PCT), ("mix_prog", "Anteil Programm-Abschlüsse", PCT), ("mix_rec", "Anteil Recruiting-Abschlüsse", PCT),
        ("att_seo", "Website-Abschlüsse mit SEO", PCT), ("att_ads", "Website-Abschlüsse mit Ads", PCT),
        ("ch_pflege", "Kündigung Pflege", PCT), ("ch_seo", "Kündigung SEO", PCT), ("ch_ads", "Kündigung Ads", PCT), ("ch_prog", "Kündigung Programm", PCT), ("ch_rec", "Kündigung Recruiting", PCT),
@@ -239,7 +239,7 @@ for key in lines:
             prev = f"{pc}{RW[key]}" if pc else PR["s_" + s]
             f = f"={prev}*(1-{PR['ch_' + s]})+{col}{RW[neu]}"
         elif key == "mrr": f = f"={col}{RW['k_pflege']}*{PR['p_pflege']}+{col}{RW['k_seo']}*{PR['p_seo']}+{col}{RW['k_ads']}*{PR['p_ads']}+{col}{RW['k_prog']}*{PR['p_prog']}+{col}{RW['k_rec']}*{PR['p_rec']}"
-        elif key == "einmal": f = f"={col}{RW['n_web']}*{PR['p_web']}+{col}{RW['n_ads']}*{PR['p_ads_setup']}+{col}{RW['n_rec']}*{PR['p_rec_setup']}"
+        elif key == "einmal": f = f"={col}{RW['n_web']}*{PR['p_web']}+{col}{RW['n_ads']}*{PR['p_ads_setup']}+{col}{RW['n_prog']}*{PR['p_prog_setup']}+{col}{RW['n_rec']}*{PR['p_rec_setup']}"
         elif key == "umsatz": f = f"={col}{RW['mrr']}+{col}{RW['einmal']}"
         elif key == "tempo": f = f"={col}{RW['umsatz']}*12"
         elif key == "stunden": f = (f"={col}{RW['n_web']}*{PR['h_web']}+{col}{RW['k_seo']}*{PR['h_seo']}+{col}{RW['k_ads']}*{PR['h_ads']}+{col}{RW['k_prog']}*{PR['h_prog']}"
