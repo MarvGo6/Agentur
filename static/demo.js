@@ -1,0 +1,2 @@
+document.querySelectorAll('.demo-form').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button');if(b){b.textContent='✓ Vorschau – nichts gesendet';b.disabled=true}})});
+document.querySelectorAll('.slots i').forEach(function(s){s.addEventListener('click',function(){s.parentNode.querySelectorAll('i').forEach(function(x){x.classList.remove('on')});s.classList.add('on')})});

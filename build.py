@@ -6,6 +6,7 @@ from datetime import date
 
 from content import PREISE, eur, LEISTUNGEN, BRANCHEN, BEISPIELE, KAPITEL, RATGEBER, FAQ
 from drawings import HERO, LEISTUNG, BRANCHE, ICON, LOGO, FAVICON
+import vorschau
 
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
@@ -79,6 +80,26 @@ def faq_schema(items):
 
 def ticks(items):
     return '<ul class="ticks">' + "".join(f"<li>{x}</li>" for x in items) + "</ul>"
+
+
+def frame(slug, mobil=False, eager=False):
+    """Browser- bzw. Handyrahmen mit Screenshot der Vorschau-Website."""
+    art = "m" if mobil else "d"
+    img = ROOT / "static" / "vorschau-bilder" / f"{slug}-{art}.webp"
+    name = next(b["name"] for b in BEISPIELE if b["slug"] == slug)
+    lazy = "" if eager else ' loading="lazy"'
+    w, h = (390, 780) if mobil else (1440, 900)
+    inner = f'<img src="/vorschau-bilder/{slug}-{art}.webp" alt="Vorschau der Website {e(name)}" width="{w}" height="{h}"{lazy} decoding="async">' if img.exists() else '<div class="ph"></div>'
+    if mobil:
+        return f'<div class="phone">{inner}</div>'
+    return f'<div class="browser"><div class="bar"><i></i><i></i><i></i><span>{e(name.lower().replace(" ", "-").replace("&", "und"))}.de</span></div>{inner}</div>'
+
+
+def vorschauseiten():
+    for slug, d in vorschau.DEMOS.items():
+        out = DIST / "vorschau" / slug / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(vorschau.page(d, NAME, f"/beispiele/{slug}/"), encoding="utf-8")
 
 
 def paket_summe(b):
@@ -296,7 +317,7 @@ def extras():
 if __name__ == "__main__":
     shutil.rmtree(DIST, ignore_errors=True)
     DIST.mkdir()
-    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kontakt, rechtliches):
+    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kontakt, rechtliches, vorschauseiten):
         f()
     extras()
     n = len(list(DIST.rglob("*.html")))
