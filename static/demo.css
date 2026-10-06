@@ -173,3 +173,103 @@ p{margin:0 0 1em}
 .stage .art:has(.hero-img.off)::after{display:none}
 .pw:has(.off) .pw-card{position:static;margin:0}
 .pgrid+.fb{display:none}
+
+/* ================= Eigener Seitenaufbau je Branche (body.L-…) ================= */
+.trust{background:var(--ink);color:var(--bg)}
+.trust .w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 28px;padding-top:18px;padding-bottom:18px;font:600 .9rem/1.3 var(--body)}
+.trust span::before{content:"✓";color:var(--brand);margin-right:8px}
+.tiles{display:none}
+
+/* Friseur – Mosaik: großes Bild + zwei Kacheln, Kopf mit Logo in der Mitte */
+@media (min-width:981px){
+.L-mosaic .hd .w{display:grid;grid-template-columns:1fr auto 1fr}
+.L-mosaic .brand{grid-column:2;grid-row:1;flex-direction:column;text-align:center;gap:6px}
+.L-mosaic .nav{grid-column:1;grid-row:1;margin:0}
+.L-mosaic .hd .btn{grid-column:3;grid-row:1;justify-self:end}
+.L-mosaic .hd .w{height:96px}
+}
+.L-mosaic .hero .w{grid-template-columns:.9fr 1.1fr}
+.L-mosaic .stage{display:grid;grid-template-columns:1.25fr .75fr;grid-template-rows:1fr 1fr;gap:14px;min-height:560px}
+.L-mosaic .stage .art{position:relative;inset:auto;grid-row:span 2;border-radius:200px 200px 24px 24px}
+.L-mosaic .tiles{display:contents}
+.L-mosaic .tile{border-radius:24px;overflow:hidden;background:var(--soft)}
+.L-mosaic .tile:nth-child(2){border-radius:24px 24px 120px 24px}
+.L-mosaic .tile .foto{border-radius:0}
+.L-mosaic .float[style*="left:-"]{left:auto!important;right:24px;top:auto!important;bottom:-10px}
+.L-mosaic .float[style*="right:-"]{display:none}
+@media (max-width:600px){.L-mosaic .stage{min-height:420px}}
+
+/* Barber – Vollbild: Foto über die ganze Breite, Text darauf */
+.L-fullbleed .hd{background:rgba(10,10,12,.72);border-bottom-color:rgba(255,255,255,.08)}
+.L-fullbleed .hero{padding:0;min-height:680px;display:flex;align-items:flex-end}
+.L-fullbleed .hero .w{position:static;display:block;width:100%;padding-top:150px;padding-bottom:72px}
+.L-fullbleed .hero .w>div:first-child{position:relative;z-index:2;max-width:640px}
+.L-fullbleed .hero h1{text-transform:uppercase;font-size:clamp(2.8rem,7vw,5.6rem);line-height:.95}
+.L-fullbleed .stage{position:absolute;inset:0;min-height:0}
+.L-fullbleed .stage .art{border-radius:0}
+.L-fullbleed .stage .art::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,10,12,.92) 0%,rgba(10,10,12,.65) 45%,rgba(10,10,12,.15) 100%)}
+.L-fullbleed .stage .art:has(.hero-img)::after{display:none}
+.L-fullbleed .float{z-index:3;background:rgba(28,29,33,.88);backdrop-filter:blur(8px)}
+.L-fullbleed .float[style*="left:-"]{left:auto!important;right:6%;top:auto!important;bottom:72px}
+.L-fullbleed .float[style*="right:-"]{right:6%!important;bottom:auto!important;top:150px}
+@media (max-width:900px){.L-fullbleed .hero{min-height:0}.L-fullbleed .hero .w{padding-top:90px;padding-bottom:300px}.L-fullbleed .float[style*="right:-"]{display:none}.L-fullbleed .float[style*="left:-"]{left:22px!important;right:22px;bottom:28px}}
+
+/* Dachdecker – Bild läuft bis zum Rand, darunter Vertrauensleiste */
+.L-bleed .hero{padding:0}
+.L-bleed .hero .w{grid-template-columns:1fr 1fr;gap:64px;max-width:none;padding:0 0 0 max(22px,calc((100vw - 1156px)/2))}
+.L-bleed .hero .w>div:first-child{padding:84px 0}
+.L-bleed .stage{min-height:640px;align-self:stretch}
+.L-bleed .stage .art{border-radius:0 0 0 120px}
+.L-bleed .float[style*="left:-"]{left:-40px!important;top:auto!important;bottom:60px}
+@media (max-width:900px){.L-bleed .hero .w{padding:0;gap:0}.L-bleed .hero .w>div:first-child{padding:44px 22px}.L-bleed .stage{min-height:380px}.L-bleed .stage .art{border-radius:0}.L-bleed .float[style*="left:-"]{left:16px!important;bottom:16px}}
+
+/* Steuerberater – Typografie: Überschrift über die ganze Breite, Grafik klein daneben */
+.L-type .hero{padding:96px 0 64px;border-bottom:1px solid var(--line)}
+.L-type .hero .w{grid-template-columns:1.2fr .8fr;column-gap:72px;row-gap:0;align-items:start}
+.L-type .hero .w>div:first-child{display:contents}
+.L-type .hero .eyebrow,.L-type .hero h1{grid-column:1/-1}
+.L-type .hero h1{font-size:clamp(2.6rem,6.4vw,5.4rem);max-width:15em;padding-bottom:40px;margin-bottom:40px;border-bottom:1px solid var(--line)}
+.L-type .hero .lead,.L-type .hero .acts,.L-type .hero .chips{grid-column:1}
+.L-type .stage{grid-column:2;grid-row:3/span 3;min-height:300px}
+.L-type .stage .art{border-radius:6px}
+.L-type .float[style*="left:-"]{display:none}
+.L-type .float{right:16px!important;bottom:16px!important}
+@media (max-width:900px){.L-type .hero .w{grid-template-columns:1fr}.L-type .stage{grid-column:1;grid-row:auto;margin-top:24px}}
+
+/* Pflegedienst – großes Bild, Textkarte darauf */
+.L-cover .hero{padding:28px 0 64px}
+.L-cover .hero .w{display:grid;grid-template-columns:1fr}
+.L-cover .hero .w>*{grid-area:1/1}
+.L-cover .stage{min-height:640px}
+.L-cover .stage .art{border-radius:36px}
+.L-cover .hero .w>div:first-child{position:relative;z-index:3;align-self:end;max-width:600px;margin:0 0 36px 36px;background:var(--card);border-radius:28px;padding:40px 40px 30px;box-shadow:0 30px 70px -30px rgba(0,0,0,.4)}
+.L-cover .hero h1{font-size:clamp(2.2rem,4.4vw,3.6rem)}
+.L-cover .float[style*="left:-"]{left:auto!important;right:36px;top:36px!important}
+@media (max-width:900px){.L-cover .hero .w>*{grid-area:auto}.L-cover .stage{min-height:340px;order:-1}.L-cover .hero .w>div:first-child{margin:-90px 12px 0;padding:28px 22px 20px}.L-cover .float[style*="left:-"]{right:14px;top:14px!important;left:auto!important}}
+
+/* Bestatter – ruhig: zentrierter Text, breites flaches Bild darunter */
+.L-quiet .hd .w{height:88px}
+.L-quiet .hero{padding:110px 0 0;text-align:center}
+.L-quiet .hero .w{grid-template-columns:1fr;gap:72px;justify-items:center}
+.L-quiet .hero .w>div:first-child{max-width:760px}
+.L-quiet .hero .lead{margin-inline:auto}
+.L-quiet .hero .acts,.L-quiet .chips{justify-content:center}
+.L-quiet .stage{width:100%;min-height:360px}
+.L-quiet .stage .art{border-radius:4px 4px 0 0}
+.L-quiet .float[style*="left:-"]{left:50%!important;transform:translateX(-50%);bottom:-1px!important;border-radius:18px 18px 0 0;text-align:center}
+@media (max-width:900px){.L-quiet .hero{padding-top:56px}.L-quiet .stage{min-height:260px}.L-quiet .float[style*="left:-"]{width:auto!important;left:16px!important;right:16px;transform:none}}
+
+/* Tierarzt – Bild links in runder Form, Text rechts, getönter Hintergrund */
+.L-blob .hero{background:var(--bg2)}
+.L-blob .hero .w{grid-template-columns:.95fr 1.05fr}
+.L-blob .hero .w>div:first-child{order:2}
+.L-blob .stage{order:1;min-height:540px}
+.L-blob .stage .art{border-radius:58% 42% 46% 54% / 52% 44% 56% 48%}
+.L-blob .float[style*="left:-"]{left:auto!important;right:-10px;top:24px!important}
+.L-blob .float[style*="right:-"]{right:auto!important;left:-10px}
+@media (max-width:900px){.L-blob .hero .w>div:first-child{order:1}.L-blob .stage{order:2;min-height:380px}.L-blob .float[style*="right:-"]{left:10px!important}.L-blob .float[style*="left:-"]{right:10px!important}}
+/* Feinschliff */
+.L-fullbleed .hero h1{font-size:clamp(2.6rem,6vw,4.4rem)}
+.L-fullbleed .hero .w{padding-top:110px;padding-bottom:64px}
+.L-quiet .hero{padding-top:72px}.L-quiet .hero .w{gap:48px}
+@media (max-width:900px){.L-mosaic .hero .w,.L-bleed .hero .w,.L-blob .hero .w,.L-type .hero .w{grid-template-columns:1fr}.L-fullbleed .hero .w{padding-top:72px}}

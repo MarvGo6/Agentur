@@ -53,6 +53,7 @@ def alle_fotos():
     ids = set()
     for d in DEMOS.values():
         if d.get("hero_foto"): ids.add(str(d["hero_foto"][0]))
+        for pid, _ in d.get("hero_tiles", []): ids.add(str(pid))
         for k, v in d["sections"]:
             for pid, _ in v.get("fotos", []): ids.add(str(pid))
             if v.get("vis_foto"): ids.add(str(v["vis_foto"][0]))
@@ -257,19 +258,21 @@ def page(d, agentur, back):
     acts = "".join(f'<a class="btn{"" if i == 0 else " alt"}" href="{u}">{t}</a>' for i, (t, u) in enumerate(h["ctas"]))
     chips = "".join(f"<span>{c}</span>" for c in h["chips"])
     body = "".join(BLOCKS[k](v) for k, v in d["sections"])
+    tiles = ("<div class=\"tiles\">" + "".join(f'<div class="tile">{foto(pid, alt)}</div>' for pid, alt in d["hero_tiles"]) + "</div>") if d.get("hero_tiles") else ""
+    trust = f'<div class="trust"><div class="w">{"".join(f"<span>{x}</span>" for x in d["trust"])}</div></div>' if d.get("trust") else ""
     ft = d["footer"]
     mbar = "".join(f'<a class="btn sm{"" if i == 0 else " alt"}" href="{u}">{t}</a>' for i, (t, u) in enumerate(d["mbar"]))
     return f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{d["name"]} – Vorschau | {agentur}</title><meta name="robots" content="noindex,nofollow">
 <meta name="description" content="Vorschau einer Beispiel-Website von {agentur} für einen fiktiven Betrieb ({d["branche"]}).">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/demo.css">
-<style>{fonts}:root{{{vars_}}}</style></head><body>
+<style>{fonts}:root{{{vars_}}}</style></head><body class="L-{d.get("layout", "split")}">
 <div class="demo-bar">Vorschau einer Beispiel-Website von {agentur} · {d["name"]} ist ein fiktiver Betrieb · <a href="{back}">← Zurück zum Beispiel</a></div>
 <div class="strip"><div class="w">{strip}</div></div>
 <header class="hd"><div class="w"><a class="brand" href="#"><span class="mark">{d["mark"]}</span><span>{d["name"]}<small>{d["claim"]}</small></span></a><nav class="nav">{nav}</nav><a class="btn sm" href="{d["cta"][1]}">{d["cta"][0]}</a></div></header>
 <section class="hero"><div class="w"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1><p class="lead">{h["lead"]}</p><div class="acts">{acts}</div><div class="chips">{chips}</div></div>
-<div class="stage"><div class="art">{ART[d["art"]]}{foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else ""}</div>{h["floats"]}</div></div></section>
-{body}
+<div class="stage"><div class="art">{ART[d["art"]]}{foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else ""}</div>{tiles}{h["floats"]}</div></div></section>
+{trust}{body}
 <footer class="ft"><div class="w"><div class="cols"><div><div class="brand" style="color:#fff"><span class="mark">{d["mark"]}</span><span>{d["name"]}</span></div><p style="margin-top:16px;max-width:26em">{ft["about"]}</p></div>
 {"".join(f'<div><h4>{t}</h4><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for t, xs in ft["cols"])}</div>
 <div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels</span></div></div></footer>
@@ -284,6 +287,7 @@ def fl(style, inner):
 DEMOS = {}
 
 DEMOS["friseur"] = {
+ "layout": "mosaic", "hero_tiles": [(3356170, "Haarschnitt im Salon"), (2799605, "Styling mit Rundbürste")],
  "hero_foto": (3993453, "Friseurin schneidet einer Kundin die Haare"),
  "name": "Kamm &amp; Kante", "branche": "Friseur", "claim": "Salon für Schnitt &amp; Farbe", "mark": "K&amp;K", "art": "friseur",
  "fonts": [("Bodoni Moda", "bodoni"), ("Manrope", "manrope")],
@@ -329,6 +333,7 @@ DEMOS["friseur"] = {
 }
 
 DEMOS["barber"] = {
+ "layout": "fullbleed",
  "hero_foto": (3998417, "Barber schneidet einem Kunden den Bart"),
  "name": "Blackline Barbers", "branche": "Barbershop", "claim": "Barbershop · Est. 2019", "mark": "BL", "art": "barber",
  "fonts": [("Archivo", "archivo"), ("Inter", "inter")],
@@ -371,6 +376,7 @@ DEMOS["barber"] = {
 }
 
 DEMOS["dachdecker-solar"] = {
+ "layout": "bleed", "trust": ["Meisterbetrieb seit 1987", "Mitglied der Dachdecker-Innung", "Zertifizierter PV-Fachbetrieb", "5 Jahre Gewährleistung", "Notdienst 24/7"],
  "hero_foto": (35237908, "Handwerker montiert Solarmodule auf einem Hausdach"),
  "name": "Brandt Bedachungen", "branche": "Dachdecker &amp; Solar", "claim": "Meisterbetrieb seit 1987", "mark": "B", "art": "dach",
  "fonts": [("Archivo", "archivo"), ("Inter", "inter")],
@@ -418,6 +424,7 @@ DEMOS["dachdecker-solar"] = {
 }
 
 DEMOS["steuerberater"] = {
+ "layout": "type",
  "hero_foto": (7433848, "Beratungsgespräch in einem hellen Büro"),
  "name": "Kanzlei Weidner", "branche": "Steuerberatung", "claim": "Steuerberatung für das Handwerk", "mark": "W", "art": "steuer",
  "fonts": [("Instrument Serif", "instrument"), ("DM Sans", "dmsans")],
@@ -468,6 +475,7 @@ DEMOS["steuerberater"] = {
 }
 
 DEMOS["pflegedienst"] = {
+ "layout": "cover",
  "hero_foto": (18459198, "Pflegekraft unterstützt ältere Menschen"),
  "name": "Pflege am Lindenhof", "branche": "Ambulante Pflege", "claim": "Ambulanter Pflegedienst", "mark": "L", "art": "pflege",
  "fonts": [("Fraunces", "fraunces"), ("Figtree", "figtree")],
@@ -515,6 +523,7 @@ DEMOS["pflegedienst"] = {
 }
 
 DEMOS["bestatter"] = {
+ "layout": "quiet",
  "hero_foto": (8986709, "Strauß weißer Blumen"),
  "name": "Bestattungen Hollmann", "branche": "Bestattungen", "claim": "Familienbetrieb seit 1952", "mark": "H", "art": "bestatter",
  "fonts": [("Cormorant Garamond", "cormorant"), ("Inter", "inter")],
@@ -559,6 +568,7 @@ DEMOS["bestatter"] = {
 }
 
 DEMOS["tierarzt"] = {
+ "layout": "blob",
  "hero_foto": (6235242, "Tierarzt hält einen kleinen Hund im Arm"),
  "name": "Tierarztpraxis am Mühlbach", "branche": "Tierarztpraxis", "claim": "Kleintierpraxis", "mark": "M", "art": "tierarzt",
  "fonts": [("Outfit", "outfit")],
