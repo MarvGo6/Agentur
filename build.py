@@ -178,9 +178,6 @@ def customer_journey():
 <div class="serp-r"><b>Mitbewerber A</b><span class="st">★★★★☆ 4,3 (41)</span></div><div class="serp-r"><b>Mitbewerber B</b><span class="st">★★★★☆ 4,1 (18)</span></div>
 <div class="serp-more">Seite 2 – hier sucht fast niemand mehr.</div></div></div>
 <div class="facts"><div><b>27,6 %<sup>1</sup></b><span>aller Klicks gehen an das erste Suchergebnis</span></div><div><b>0,63 %<sup>1</sup></b><span>klicken überhaupt auf Seite 2</span></div><div><b>93 %<sup>3</sup></b><span>lesen Bewertungen, bevor sie einen Betrieb wählen</span></div><div><b>+32 %<sup>4</sup></b><span>mehr Absprünge, wenn die Seite 3 statt 1 Sekunde lädt</span></div></div>
-<div class="split-row"><div><p class="kicker">Überzeugung</p><h3>Google bringt Besucher. <em class="serif">Die Website macht daraus Kunden.</em></h3>
-<p>76 % der Menschen, die „in der Nähe“ suchen, besuchen noch am selben Tag einen Betrieb.<sup>2</sup> Ob es Ihrer ist, entscheidet sich in Sekunden auf dem Handy.</p><a class="more" href="#vorschau">Fertige Beispiel-Websites ansehen</a></div>
-<ul class="vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Schnell und für das Handy gebaut – Ziel unter einer Sekunde</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul></div>
 <div class="split-row"><div><p class="kicker">Neu: Suche mit KI</p><h3>Immer öfter fragt der Kunde nicht Google, <em class="serif">sondern ChatGPT.</em></h3>
 <p>Die Hälfte der Deutschen nutzt zumindest manchmal einen KI-Chat statt der klassischen Suche.<sup>5</sup> ChatGPT, Gemini und Googles KI-Übersicht nennen meist nur zwei, drei Betriebe – und stützen sich auf dieselben Signale: gepflegtes Profil, gute Bewertungen und eine Website, die Leistungen, Orte und Preise klar beschreibt.</p><a class="more" href="/leistungen/seo/">Sichtbar bei Google und KI</a></div>
 <div class="ai-chat" aria-hidden="true"><div class="ai-q">Welcher Dachdecker in Musterstadt ist zuverlässig und macht auch Photovoltaik?</div>
@@ -193,15 +190,15 @@ def arbeiten():
     out = []
     for i, b in enumerate(BEISPIELE, 1):
         out.append(f'''<article class="work-item"><a href="/vorschau/{b["slug"]}/">{frame(b["slug"])}</a>
-<div class="work-meta"><span class="wm-n">{i:02d}</span><h3>{b["name"]}</h3><span class="wm-p">{eur(paket_summe(b))} · 1. Jahr</span><span class="wm-b">{b["branche"]} · Beispielbetrieb</span><a class="wm-l" href="/beispiele/{b["slug"]}/">Kundenweg &amp; Preis</a></div></article>''')
+<div class="work-meta"><span class="wm-n">{i:02d}</span><h3>{b["name"]}</h3><span class="wm-b">{b["branche"]} · Beispielbetrieb</span><a class="wm-l" href="/beispiele/{b["slug"]}/">Kundenweg ansehen</a></div></article>''')
     return "".join(out)
 
 
 SVC_ORDER = ["webentwicklung", "seo", "google-ads", "recruiting", "wachstum"]
 
 
-def svc_liste(items):
-    return '<ul class="svc">' + "".join(f'<li><a href="/leistungen/{l["slug"]}/"><span class="n">{i:02d}</span><span class="t">{l["titel"]}</span><span class="d">{l["kurz"]}</span><span class="p">{l["ab"]}</span><span class="a" aria-hidden="true">→</span></a></li>' for i, l in enumerate(items, 1)) + "</ul>"
+def svc_liste(items, preis=True):
+    return f'<ul class="svc{"" if preis else " np"}">' + "".join(f'<li><a href="/leistungen/{l["slug"]}/"><span class="n">{i:02d}</span><span class="t">{l["titel"]}</span><span class="d">{l["kurz"]}</span>{f"<span class=p>{l[chr(97)+chr(98)]}</span>" if preis else ""}<span class="a" aria-hidden="true">→</span></a></li>' for i, l in enumerate(items, 1)) + "</ul>"
 
 
 def faq_mini(items):
@@ -210,39 +207,34 @@ def faq_mini(items):
 
 def startseite():
     lst = sorted(LEISTUNGEN, key=lambda l: SVC_ORDER.index(l["slug"]))
-    fuer = " · ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)
     fq = [f for f in FAQ if f[0] in ("Garantieren Sie Ergebnisse?", "Wem gehört die Website?", "Was muss ich selbst beitragen?", "Gibt es lange Vertragslaufzeiten?")]
+    tl = [("Tag 1", "Ersteinschätzung", "20 Minuten per Telefon oder Video. Wir sagen ehrlich, ob wir helfen können.", "Kostenlos und unverbindlich"),
+          ("Tag 3", "Angebot", "Ziel, Umfang und Zeitplan auf einer Seite.", "Festpreis statt Stundenzettel"),
+          ("Tag 10", "Entwurf", "Die Startseite live im Browser. Sie testen auf Ihrem Handy und geben Feedback.", "Zweite Rate erst nach Ihrer Freigabe"),
+          ("Tag 21", "Start", "Website online, Google-Profil überarbeitet, Messung aktiv.", "Website, Domain und Zugänge gehören Ihnen"),
+          ("Jeden Monat", "Bericht", f"Anrufe und Anfragen statt Klicks. Ein Ansprechpartner: {PERSON}.", "Pflege monatlich kündbar")]
+    tlh = "".join(f'<li><span class="d">{d}</span><h3>{t}</h3><p>{x}</p><p class="usp">{u}</p></li>' for d, t, x, u in tl)
     body = f"""
 <section class="h-hero"><div class="wrap">
 <p class="kicker">Webagentur für lokale Betriebe · aus {ORT} für ganz Deutschland</p>
 <h1>Websites und Google-Sichtbarkeit für <em>lokale Betriebe.</em></h1>
 <div class="h-row"><p class="lead">Für Handwerk, Kanzleien, Pflegedienste und Praxen. Wir bauen Ihre Website, bringen Sie bei Google und in Maps nach vorn und zeigen Ihnen jeden Monat, wie viele Anfragen daraus entstehen.</p>
-<div class="actions"><a class="btn" href="{EINSCH}">Kostenlose Ersteinschätzung <span class="ar">→</span></a><p class="small">20 Minuten per Telefon oder Video. Wir prüfen Website, Google-Profil und drei Mitbewerber und sagen Ihnen, wo Anfragen verloren gehen.</p></div>
-<dl class="h-facts"><div><dt>Website</dt><dd>ab 1.490 € Festpreis</dd></div><div><dt>Erster Entwurf</dt><dd>nach 7 Tagen</dd></div><div><dt>Zweite Rate</dt><dd>erst nach Ihrer Freigabe</dd></div><div><dt>Eigentum</dt><dd>Website &amp; Domain gehören Ihnen</dd></div></dl></div>
-<p class="h-for"><span>Schwerpunkte</span> {fuer}</p></div>
-<div class="h-stage"><div class="wrap"><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div><p class="h-cap"><span>Beispiel-Websites für erfundene Betriebe: Brandt Bedachungen und Salon Kamm &amp; Kante</span><a href="#vorschau">Alle sieben ansehen ↓</a></p></div></div>
+<div class="actions"><a class="btn" href="{EINSCH}">Kostenlose Ersteinschätzung <span class="ar">→</span></a><a class="link" href="#vorschau">Beispiel-Websites ansehen</a></div></div></div>
+<div class="h-stage"><div class="wrap"><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></div>
 </section>
 {customer_journey()}
 <section id="vorschau"><div class="wrap"><div class="sec-head"><span class="idx"><b>(02)</b> Beispiel-Websites</span><h2>So könnte Ihre Website <em>aussehen.</em></h2>
-<p>Sieben vollständig gebaute Websites für erfundene Beispielbetriebe. Jede hat ihren eigenen Aufbau und folgt dem Kundenweg ihrer Branche. Klicken Sie sich durch, gern auch auf dem Handy.</p></div>
+<p>Sieben vollständig gebaute Websites für erfundene Beispielbetriebe. Jede folgt dem Kundenweg ihrer Branche. Klicken Sie sich durch, gern auch auf dem Handy.</p></div>
 <div class="work">{arbeiten()}</div></div></section>
-<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(03)</b> Leistungen &amp; Preise</span><h2>Alles zwischen Suche <em>und Anfrage.</em></h2><p>Einzeln buchbar oder als Programm. Alle Preise sind Festpreise und stehen vorab fest.</p></div>{svc_liste(lst)}<p class="more-row"><a class="more" href="/preise/">Alle Preise im Detail</a></p></div></section>
-<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> Warum {NAME}</span><h2>Was Sie von uns <em>erwarten können.</em></h2></div>
-<div class="trust"><ol class="pledge-list">
-<li><b>Festpreis vorab.</b> Was im Angebot steht, kostet es. Keine Stundenzettel.</li>
-<li><b>Erst sehen, dann zahlen.</b> Die zweite Rate wird fällig, wenn Ihnen der Entwurf gefällt.</li>
-<li><b>Alles gehört Ihnen.</b> Website, Domain und Zugänge laufen auf Ihren Namen.</li>
-<li><b>Ein Ansprechpartner.</b> {PERSON} kümmert sich um Website, SEO und Anzeigen – keine Weiterleitung.</li>
-<li><b>Zahlen statt Floskeln.</b> Jeden Monat ein Bericht mit Anrufen und Anfragen, nicht mit Klicks.</li>
-<li><b>Fair kündbar.</b> Pflege und Anzeigen monatlich, SEO nach sechs Monaten.</li></ol>
-<div class="proof"><div class="proof-box"><p class="kicker">Prüfen Sie uns selbst</p><p>Diese Website ist so gebaut, wie wir Ihre bauen. Messen Sie ihre Ladezeit mit dem kostenlosen Werkzeug von Google.</p><a class="more" href="https://pagespeed.web.dev/analysis?url={DOMAIN}/" rel="noopener" target="_blank">Mit Google PageSpeed testen ↗</a></div>
-<div class="proof-box ph"><p class="kicker">Kundenstimmen</p><p>{todo("ECHTE GOOGLE-BEWERTUNGEN EINBINDEN")}</p><p class="small">Sobald die ersten Kunden bewertet haben: zwei bis drei Bewertungen mit Vorname, Ort und Sternen, verlinkt auf das Google-Profil.</p></div>
-<div class="proof-box ph"><p class="kicker">Fallstudie</p><p>{todo("ERSTES KUNDENPROJEKT EINBINDEN")}</p><p class="small">Vorher/Nachher-Screenshot und Anfragen vor und nach drei Monaten – nur mit Freigabe des Kunden.</p></div></div></div></div></section>
-<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(05)</b> Ablauf</span><h2>In drei Wochen <em>online.</em></h2><p>Ihr Aufwand: etwa zwei bis drei Stunden im ersten Monat, danach rund 30 Minuten im Monat.</p></div>
-<ol class="tl"><li><span class="d">Tag 1</span><h3>Ersteinschätzung</h3><p>20 Minuten, kostenlos. Wir sagen ehrlich, ob und wie wir helfen können.</p></li><li><span class="d">Tag 3</span><h3>Festpreis-Angebot</h3><p>Ziel, Umfang und Zeitplan auf einer Seite.</p></li><li><span class="d">Tag 10</span><h3>Entwurf</h3><p>Die Startseite live im Browser. Sie testen auf Ihrem Handy und geben Feedback.</p></li><li><span class="d">Tag 21</span><h3>Start</h3><p>Website online, Google-Profil überarbeitet, Messung aktiv.</p></li></ol>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(03)</b> Leistungen</span><h2>Alles zwischen Suche <em>und Anfrage.</em></h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div>{svc_liste(lst, preis=False)}</div></section>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> So arbeiten wir</span><h2>In drei Wochen online – <em>und das ist Ihnen sicher.</em></h2><p>Ihr Aufwand: etwa zwei bis drei Stunden im ersten Monat, danach rund 30 Minuten im Monat.</p></div>
+<ol class="tl tl5">{tlh}</ol>
+<div class="proof"><div class="proof-box"><p class="kicker">Prüfen Sie uns selbst</p><p>Diese Website ist so gebaut, wie wir Ihre bauen. Messen Sie die Ladezeit mit dem kostenlosen Werkzeug von Google.</p><a class="more" href="https://pagespeed.web.dev/analysis?url={DOMAIN}/" rel="noopener" target="_blank">Mit Google PageSpeed testen ↗</a></div>
+<div class="proof-box ph"><p class="kicker">Kundenstimmen</p><p>{todo("ECHTE GOOGLE-BEWERTUNGEN EINBINDEN")}</p><p class="small">Zwei bis drei Bewertungen mit Vorname, Ort und Sternen, verlinkt auf das Google-Profil.</p></div>
+<div class="proof-box ph"><p class="kicker">Fallstudie</p><p>{todo("ERSTES KUNDENPROJEKT EINBINDEN")}</p><p class="small">Vorher/Nachher und Anfragen nach drei Monaten – nur mit Freigabe des Kunden.</p></div></div>
 {faq_mini(fq)}</div></section>
 {cta()}"""
-    write("/", f"{NAME} – Websites & Google-Sichtbarkeit für lokale Betriebe", "Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflegedienste und Praxen in ganz Deutschland. Festpreis ab 1.490 €, erster Entwurf nach 7 Tagen.", body, prio=1.0, crumbs=[("/", "Start")])
+    write("/", f"{NAME} – Websites & Google-Sichtbarkeit für lokale Betriebe", "Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflegedienste und Praxen in ganz Deutschland. Festpreis, erster Entwurf nach 7 Tagen.", body, prio=1.0, crumbs=[("/", "Start")])
 
 
 def leistungen():
