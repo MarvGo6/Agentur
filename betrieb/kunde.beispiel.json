@@ -1,0 +1,21 @@
+{
+  "_hinweis": "Beispiel für die Datei, aus der der Generator eine Kunden-Website baut. Die KI füllt nur diese Datei. Alles mit [PRÜFEN] blockiert den Launch.",
+  "slug": "brandt-bedachungen",
+  "domain": "brandt-bedachungen.de",
+  "branche": "dachdecker-solar",
+  "layout": "bleed",
+  "firma": { "name": "Brandt Bedachungen", "claim": "Meisterbetrieb seit 1987", "inhaber": "[PRÜFEN]", "adresse": "Musterstraße 1, 12345 Musterstadt", "telefon": "0123 456789", "email": "info@brandt-bedachungen.de" },
+  "marke": { "farben": { "brand": "#e8692b", "ink": "#151c23", "bg": "#ffffff" }, "schriften": ["Archivo", "Inter"], "logo": "fotos/logo.svg" },
+  "einzugsgebiet": ["Musterstadt", "Nordheim", "Altdorf"],
+  "leistungen": [
+    { "slug": "dachsanierung", "titel": "Dachsanierung", "kurz": "Steildach und Flachdach, mit Dämmung nach GEG.", "preis_ab": null, "ortsseiten": true },
+    { "slug": "photovoltaik", "titel": "Photovoltaik", "kurz": "PV-Anlage mit Dach aus einer Hand.", "preis_ab": null, "ortsseiten": true }
+  ],
+  "vertrauen": { "bewertung": 4.9, "bewertungen": 126, "quelle": "Google-Profil, abgerufen am 2026-10-06", "siegel": ["Dachdecker-Innung", "Meisterbetrieb"] },
+  "team": [{ "name": "[PRÜFEN]", "rolle": "Dachdeckermeister", "foto": "fotos/team-1.jpg" }],
+  "formular": { "typ": "anfrage", "empfaenger": "info@brandt-bedachungen.de", "turnstile": true },
+  "recruiting": { "aktiv": true, "stellen": ["Dachdecker:in (m/w/d)", "Azubi Dachdecker"] },
+  "rechtliches": { "impressum": "[PRÜFEN]", "datenschutz": "vorlage-v3" },
+  "tracking": { "statistik": "plausible", "search_console": true },
+  "sections": ["stats", "services", "split", "steps", "quotes", "faq", "contact"]
+}
