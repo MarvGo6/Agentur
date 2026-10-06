@@ -1,5 +1,5 @@
--- Für ein EIGENES Supabase-Projekt der Agentur (getrennt von Vertriebs-OS). Im SQL-Editor des neuen Projekts ausführen,
--- danach URL und Publishable Key in config.json eintragen (supabase_url, supabase_key).
+-- Eigenes Supabase-Projekt der Agentur "Lotwerk Agentur" (mlvraqrtejfwamwhyici, EU Irland) – getrennt von Vertriebs-OS.
+-- Angewendet als Migration "agentur_anfragen". Öffentlich (anon) nur INSERT auf freigegebene Spalten.
 create table public.agentur_anfragen (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
