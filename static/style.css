@@ -250,3 +250,4 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 @media (max-width:1000px){.cj-tag{position:static;display:block;margin-bottom:6px}}
 :root[data-theme=dark] .cj-card.dark{border-color:#2f3d37}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .cj-card.dark{border-color:#2f3d37}}
+.cj-next{margin:26px 0 0;font-size:1rem;color:var(--ink-2)}.cj-next a{font-weight:600}

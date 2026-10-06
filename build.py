@@ -176,7 +176,8 @@ def customer_journey():
     return f'''<section class="cj" id="customer-journey"><div class="wrap">
 <div class="head"><span class="kicker">Customer Journey</span><h2>So entscheiden Ihre Kunden heute – in fünf Schritten.</h2>
 <p>Bevor jemand bei Ihnen anruft, hat er gesucht, verglichen und Ihre Website angesehen. Meist in wenigen Minuten, meist auf dem Handy. An zwei Stellen verlieren Betriebe die meisten Kunden: <b>bei Google</b>, wenn sie nicht oben stehen – und <b>auf der Website</b>, wenn sie nicht überzeugt.</p></div>
-<ol class="cj-line">{stufen}</ol></div></section>
+<ol class="cj-line">{stufen}</ol>
+<p class="cj-next">So sieht dieser Weg in der Praxis aus: <a href="#vorschau">7 fertige Beispiel-Websites ansehen ↓</a> · <a href="/beispiele/">Kundenwege mit Preisen →</a></p></div></section>
 <section class="cj-why"><div class="wrap grid2">
 <div class="cj-card"><span class="kicker">Warum oben stehen entscheidet</span><h3>Seite 2 ist unsichtbar.</h3>
 <div class="cj-stats"><div><b>27,6 %</b><span>aller Klicks gehen an das erste Suchergebnis</span></div><div><b>0,63 %</b><span>klicken überhaupt auf Seite 2</span></div><div><b>76 %</b><span>der „in der Nähe“-Suchenden besuchen innerhalb eines Tages einen Betrieb</span></div></div>
@@ -189,7 +190,7 @@ def customer_journey():
 <div class="cj-card dark"><span class="kicker">Warum die Website so wichtig ist</span><h3>Google bringt Besucher. Die Website macht daraus Kunden.</h3>
 <div class="cj-stats"><div><b>93 %</b><span>lesen Bewertungen, bevor sie einen Betrieb besuchen oder beauftragen</span></div><div><b>+32 %</b><span>mehr Absprünge, wenn eine Seite 3 statt 1 Sekunde lädt</span></div></div>
 <ul class="cj-vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Unter einer Sekunde, gebaut für das Handy</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul>
-<a class="more" href="/beispiele/">Kundenwege an echten Beispielen →</a></div>
+<a class="more" href="#vorschau">Fertige Beispiel-Websites ansehen ↓</a></div>
 </div><div class="wrap"><p class="cj-src">Quellen: Backlinko, Analyse von 4 Mio. Google-Ergebnissen · Think with Google, mobile „in der Nähe“-Suchen · BrightLocal, Local Consumer Review Survey 2025 · Google/SOASTA, Mobile-Ladezeiten 2017. Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
 '''
 
@@ -206,15 +207,16 @@ def startseite():
 <ul class="assure"><li>Festpreis vorab</li><li>Entwurf 7 Tage nach Auftrag</li><li>Website gehört Ihnen</li><li>Pflege monatlich kündbar</li></ul>
 </div><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></section>
 <section class="ribbon"><div class="wrap"><span>Gebaut für</span>{bran}<a href="/branchen/">und viele mehr →</a></div></section>
-<section id="vorschau"><div class="wrap"><div class="head"><span class="kicker">Vorschau-Websites</span><h2>Sehen Sie, was Sie bekommen – bevor Sie etwas bezahlen.</h2><p>Sechs vollständig gestaltete Beispiel-Websites für typische Betriebe. Jede folgt dem Kundenweg ihrer Branche: was Kunden suchen, vergleichen und brauchen, um anzufragen. Klicken Sie sich durch – auch auf dem Handy.</p></div>
+{customer_journey()}
+<section id="vorschau"><div class="wrap"><div class="head"><span class="kicker">Vorschau-Websites</span><h2>Sehen Sie, was Sie bekommen – bevor Sie etwas bezahlen.</h2><p>Sieben vollständig gestaltete Beispiel-Websites für typische Betriebe. Jede folgt dem Kundenweg ihrer Branche: was Kunden suchen, vergleichen und brauchen, um anzufragen. Klicken Sie sich durch – auch auf dem Handy.</p></div>
 <div class="gallery">{galerie(BEISPIELE)}</div></div></section>
+
 <section class="band"><div class="wrap grid4">
 <div><div class="num">7 Tage</div><p>bis Sie den ersten Entwurf Ihrer Website im Browser sehen</p></div>
 <div><div class="num">&lt;1 s</div><p>Ladezeit auf dem Handy – Standard bei jeder Website</p></div>
 <div><div class="num">0</div><p>Tracking-Cookies, kein Cookie-Banner nötig</p></div>
 <div><div class="num">1</div><p>Ansprechpartner für Website, SEO und Anzeigen</p></div>
 </div></section>
-{customer_journey()}
 <section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid3">{leist}</div></div></section>
 <section><div class="wrap"><div class="head"><span class="kicker">Vergleich</span><h2>Was uns von Baukasten und Agentur unterscheidet</h2></div>{vergleich()}</div></section>
 <section class="band"><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>Von null zur fertigen Website in drei Wochen</h2>
@@ -258,8 +260,8 @@ def branchen():
 
 def beispiele():
     cards = galerie(BEISPIELE)
-    write("/beispiele/", "Beispiele mit Kundenweg und Preis", "Sechs durchgerechnete Beispiele: Kundenweg, Umsetzung, Paket und Preis für Friseur, Dachdecker, Steuerberater, Pflegedienst, Bestatter und Tierarzt.",
-          f'<section class="hero"><div class="wrap"><span class="kicker">Beispiele</span><h1>Sechs Betriebe, sechs Kundenwege</h1><p class="lead">Jedes Beispiel erzählt, wie ein Kunde sucht, vergleicht und sich entscheidet – und was wir an jeder Stelle bauen. Mit echtem Paketpreis – und einer vollständigen Vorschau-Website zum Durchklicken.</p><p class="note">Die Betriebe sind erfundene Beispiele, damit Sie Ablauf und Kosten realistisch einschätzen können. Preise entsprechen unserer aktuellen Preisliste.</p></div></section><section style="padding-top:0"><div class="wrap gallery">{cards}</div></section>{cta()}',
+    write("/beispiele/", "Beispiele mit Kundenweg und Preis", "Sieben durchgerechnete Beispiele: Kundenweg, Umsetzung, Paket und Preis für Friseur, Barber, Dachdecker, Steuerberater, Pflegedienst, Bestatter und Tierarzt.",
+          f'<section class="hero"><div class="wrap"><span class="kicker">Beispiele</span><h1>Sieben Betriebe, sieben Kundenwege</h1><p class="lead">Jedes Beispiel erzählt, wie ein Kunde sucht, vergleicht und sich entscheidet – und was wir an jeder Stelle bauen. Mit echtem Paketpreis – und einer vollständigen Vorschau-Website zum Durchklicken.</p><p class="note">Die Betriebe sind erfundene Beispiele, damit Sie Ablauf und Kosten realistisch einschätzen können. Preise entsprechen unserer aktuellen Preisliste.</p></div></section><section style="padding-top:0"><div class="wrap gallery">{cards}</div></section>{cta()}',
           prio=0.9, crumbs=[("/", "Start"), ("/beispiele/", "Beispiele")])
     for b in BEISPIELE:
         p = f"/beispiele/{b['slug']}/"
