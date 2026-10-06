@@ -14,3 +14,15 @@
     setTimeout(function(){location.href='/danke/'},800);
   });
 })();
+(function(){
+  var frames=[].slice.call(document.querySelectorAll('.lv iframe'));if(!frames.length)return;
+  function fit(f){var w=f.parentNode.clientWidth;f.style.transform='scale('+(w/f.width)+')';f.parentNode.style.height=(f.height*w/f.width)+'px'}
+  function load(f){if(f.src)return;fit(f);f.addEventListener('load',function(){f.classList.add('ready')});f.src=f.dataset.src}
+  addEventListener('resize',function(){frames.forEach(fit)});
+  addEventListener('load',function(){
+    setTimeout(function(){
+      if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){load(x.target);io.unobserve(x.target)}})},{rootMargin:'300px'});frames.forEach(function(f){io.observe(f)})}
+      else frames.forEach(load);
+    },600);
+  });
+})();

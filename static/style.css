@@ -191,3 +191,7 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 /* Zusage */
 .promise{margin-top:22px;background:var(--card);border-left:4px solid var(--copper);border-radius:10px;padding:18px 20px;box-shadow:var(--shadow)}
 .hero .actions+.assure{margin-top:24px}
+.lv{position:relative;overflow:hidden}
+.lv iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;opacity:0;transition:opacity .5s;background:#fff}
+.lv iframe.ready{opacity:1}
+.phone .lv{border-radius:23px}

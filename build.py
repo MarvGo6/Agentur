@@ -83,19 +83,51 @@ def ticks(items):
 
 
 def frame(slug, mobil=False, eager=False):
-    """Browser- bzw. Handyrahmen mit Screenshot der Vorschau-Website."""
+    """Browser- bzw. Handyrahmen. Screenshot als Platzhalter, darüber die echte Vorschau-Seite als verkleinerte Live-Ansicht."""
     art = "m" if mobil else "d"
     img = ROOT / "static" / "vorschau-bilder" / f"{slug}-{art}.webp"
     name = next(b["name"] for b in BEISPIELE if b["slug"] == slug)
     lazy = "" if eager else ' loading="lazy"'
     w, h = (390, 780) if mobil else (1440, 900)
-    inner = f'<img src="/vorschau-bilder/{slug}-{art}.webp" alt="Vorschau der Website {e(name)}" width="{w}" height="{h}"{lazy} decoding="async">' if img.exists() else '<div class="ph"></div>'
+    pic = f'<img src="/vorschau-bilder/{slug}-{art}.webp" alt="Vorschau der Website {e(name)}" width="{w}" height="{h}"{lazy} decoding="async">' if img.exists() else '<div class="ph"></div>'
+    live = f'<div class="lv">{pic}<iframe data-src="/vorschau/{slug}/?embed=1" width="{w}" height="{h}" title="Live-Ansicht {e(name)}" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div>'
     if mobil:
-        return f'<div class="phone">{inner}</div>'
-    return f'<div class="browser"><div class="bar"><i></i><i></i><i></i><span>{e(name.lower().replace(" ", "-").replace("&", "und"))}.de</span></div>{inner}</div>'
+        return f'<div class="phone">{live}</div>'
+    return f'<div class="browser"><div class="bar"><i></i><i></i><i></i><span>{e(name.lower().replace(" ", "-").replace("&", "und"))}.de</span></div>{live}</div>'
+
+
+BILDCACHE = ROOT / ".bildcache"
+
+
+def bilder_laden():
+    """Lädt die Pexels-Fotos der Vorschau-Seiten (Vercel-Build hat Internet). Fehlschläge werden übersprungen –
+    dann zeigen die Seiten ihre Zeichnungen."""
+    import urllib.request
+    BILDCACHE.mkdir(exist_ok=True)
+    (DIST / "bilder").mkdir(parents=True, exist_ok=True)
+    ok = 0
+    for pid in vorschau.alle_fotos():
+        hit = next(BILDCACHE.glob(f"{pid}.*"), None)
+        if not hit:
+            url = f"https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&fm=webp&w=1400"
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Lotwerk-Build)"})
+                with urllib.request.urlopen(req, timeout=20) as r:
+                    typ, data = r.headers.get("Content-Type", ""), r.read()
+                if typ.startswith("image/") and len(data) > 5000:
+                    hit = BILDCACHE / f"{pid}.{'webp' if 'webp' in typ else 'jpg'}"
+                    hit.write_bytes(data)
+            except Exception:
+                hit = None
+        if hit:
+            shutil.copy(hit, DIST / "bilder" / hit.name)
+            vorschau.FOTO[pid] = hit.name
+            ok += 1
+    print(f"Fotos: {ok} von {len(vorschau.alle_fotos())} geladen")
 
 
 def vorschauseiten():
+    bilder_laden()
     for slug, d in vorschau.DEMOS.items():
         out = DIST / "vorschau" / slug / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -322,9 +354,9 @@ def rechtliches():
 
 
 HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin",
-           "X-Frame-Options": "DENY", "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+           "X-Frame-Options": "SAMEORIGIN", "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
            "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
-           "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'none'"}
+           "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
 
 
 def extras():

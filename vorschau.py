@@ -38,6 +38,23 @@ _I = {
  "chat": '<path d="M4 5h16v11H9l-5 4z"/>',
 }
 
+# ------------------------------------------------------------------ Fotos (Pexels, lizenzfrei; werden beim Build geladen)
+FOTO = {}  # id -> Dateiname in /bilder/, wird von build.py gefüllt
+
+def foto(pid, alt, cls="foto"):
+    f = FOTO.get(str(pid))
+    return f'<img class="{cls}" src="/bilder/{f}" alt="{alt}" loading="lazy" decoding="async">' if f else ""
+
+def alle_fotos():
+    ids = set()
+    for d in DEMOS.values():
+        if d.get("hero_foto"): ids.add(str(d["hero_foto"][0]))
+        for k, v in d["sections"]:
+            for pid, _ in v.get("fotos", []): ids.add(str(pid))
+            if v.get("vis_foto"): ids.add(str(v["vis_foto"][0]))
+    return sorted(ids)
+
+
 def ic(name):
     return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{_I[name]}</svg>'
 
@@ -123,7 +140,13 @@ def b_split(d):
     lst = '<ul class="list">' + "".join(f"<li>{x}</li>" for x in d.get("list", [])) + "</ul>" if d.get("list") else ""
     cta = f'<a class="btn" href="{d["cta"][1]}">{d["cta"][0]}</a>' if d.get("cta") else ""
     txt = f'<div><span class="eyebrow">{d.get("eb","")}</span><h2>{d["h2"]}</h2><p class="muted" style="font-size:1.1rem">{d["p"]}</p>{lst}{cta}</div>'
-    vis = f'<div>{d["vis"]}</div>'
+    vis = d["vis"]
+    if d.get("vis_foto") and foto(*d["vis_foto"]):
+        img = foto(*d["vis_foto"], cls="foto tall")
+        vis = f'<div class="pw">{img}<div class="pw-card">{vis}</div></div>' if d.get("overlay") else img
+    if d.get("fotos") and all(foto(p, a) for p, a in d["fotos"]):
+        vis = '<div class="pgrid">' + "".join(foto(p, a) for p, a in d["fotos"]) + "</div>"
+    vis = f'<div>{vis}</div>'
     inner = f'<div class="g2">{vis + txt if d.get("rev") else txt + vis}</div>'
     return sec(d.get("cls", ""), inner, d.get("id", ""))
 
@@ -160,6 +183,13 @@ def b_tags(d):
 def b_paths(d):
     items = "".join(f'<a href="{h}" style="background:{bg};color:{fg}"><span class="eyebrow" style="color:{fg};opacity:.75">{eb}</span><h3 style="font-size:1.7rem">{t}</h3><p style="opacity:.82;max-width:26em">{x}</p><span class="go">→</span></a>' for eb, t, x, h, bg, fg in d["items"])
     return f'<section style="padding:30px 0 0"><div class="w"><div class="paths">{items}</div></div></section>'
+
+def b_strip(d):
+    imgs = [foto(p, a) for p, a in d["fotos"]]
+    if not all(imgs):
+        return ""
+    cap = f'<p class="muted" style="margin-top:14px;font-size:.9rem">{d["cap"]}</p>' if d.get("cap") else ""
+    return f'<section style="padding:0 0 20px"><div class="w"><div class="strip-f" style="--n:{len(imgs)}">{"".join(imgs)}</div>{cap}</div></section>'
 
 def b_custom(d):
     return sec(d.get("cls", ""), d["html"], d.get("id", ""))
@@ -206,7 +236,7 @@ def b_contact(d):
     return sec(d.get("cls", "tint"), f'<div class="g2" style="align-items:start"><div>{head(d)}{info}</div><div class="form">{FORMS[d["form"]](d)}</div></div>', "kontakt")
 
 BLOCKS = {"stats": b_stats, "services": b_services, "split": b_split, "steps": b_steps, "prices": b_prices, "team": b_team,
-          "quotes": b_quotes, "faq": b_faq, "tags": b_tags, "paths": b_paths, "custom": b_custom, "cta": b_cta, "contact": b_contact}
+          "quotes": b_quotes, "strip": b_strip, "faq": b_faq, "tags": b_tags, "paths": b_paths, "custom": b_custom, "cta": b_cta, "contact": b_contact}
 
 
 def page(d, agentur, back):
@@ -229,11 +259,11 @@ def page(d, agentur, back):
 <div class="strip"><div class="w">{strip}</div></div>
 <header class="hd"><div class="w"><a class="brand" href="#"><span class="mark">{d["mark"]}</span><span>{d["name"]}<small>{d["claim"]}</small></span></a><nav class="nav">{nav}</nav><a class="btn sm" href="{d["cta"][1]}">{d["cta"][0]}</a></div></header>
 <section class="hero"><div class="w"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1><p class="lead">{h["lead"]}</p><div class="acts">{acts}</div><div class="chips">{chips}</div></div>
-<div class="stage"><div class="art">{ART[d["art"]]}</div>{h["floats"]}</div></div></section>
+<div class="stage"><div class="art">{(foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else "") or ART[d["art"]]}</div>{h["floats"]}</div></div></section>
 {body}
 <footer class="ft"><div class="w"><div class="cols"><div><div class="brand" style="color:#fff"><span class="mark">{d["mark"]}</span><span>{d["name"]}</span></div><p style="margin-top:16px;max-width:26em">{ft["about"]}</p></div>
 {"".join(f'<div><h4>{t}</h4><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for t, xs in ft["cols"])}</div>
-<div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur}</span></div></div></footer>
+<div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur}{" · Fotos: Pexels" if FOTO else ""}</span></div></div></footer>
 <div class="mbar">{mbar}</div><script src="/demo.js" defer></script></body></html>"""
 
 
@@ -245,6 +275,7 @@ def fl(style, inner):
 DEMOS = {}
 
 DEMOS["friseur"] = {
+ "hero_foto": (3993453, "Friseurin schneidet einer Kundin die Haare"),
  "name": "Kamm &amp; Kante", "branche": "Friseur", "claim": "Salon für Schnitt &amp; Farbe", "mark": "K&amp;K", "art": "friseur",
  "fonts": [("Bodoni Moda", "bodoni"), ("Manrope", "manrope")],
  "vars": {"bg": "#f7f2ed", "bg2": "#efe6de", "card": "#fffdfb", "ink": "#1d1918", "muted": "#6d625e", "line": "#e3d7ce", "brand": "#1d1918", "brand-ink": "#f7f2ed",
@@ -263,6 +294,7 @@ DEMOS["friseur"] = {
     ("drop", "Farbe &amp; Balayage", "Natürliche Verläufe, Grauabdeckung oder ein ganz neuer Look – mit pflegenden, veganen Farben.", "ab", "89 €"),
     ("spark", "Pflege &amp; Treatments", "Olaplex-Kur, Kopfhautpflege und Glossing für Glanz, der bleibt.", "ab", "29 €")]}),
   ("split", {"id": "salon", "eb": "Der Salon", "h2": "Klein, ruhig und mit Zeit für Sie", "p": "Bei uns gibt es keine Fließbandtermine. Zwei Stühle, ein Termin nach dem anderen – und am Ende eine Frisur, die Sie zu Hause selbst hinbekommen.",
+    "fotos": [(705255, "Salon mit hellen Stühlen"), (3356170, "Haarschnitt im Salon"), (2799605, "Styling mit Rundbürste"), (853427, "Friseurstühle vor Spiegeln")],
     "list": ["Eine Ansprechpartnerin vom Waschen bis zum Föhnen", "Tipps für das Styling zu Hause", "Kaffee, Tee und WLAN"], "cta": ("Termin buchen", "#kontakt"),
     "vis": '<div class="ba"><div style="background:linear-gradient(160deg,#c9a28f,#7d5446)">Vorher</div><div style="background:linear-gradient(160deg,#e0b9a3,#a9604d)">Nachher</div><div style="background:linear-gradient(160deg,#b98d7a,#4c3029)">Balayage</div><div style="background:linear-gradient(160deg,#d8c2b5,#8c6b5f)">Bob</div></div>'}),
   ("prices", {"id": "preise", "cls": "tint", "eb": "Preise", "h2": "Transparente Preise", "p": "Alle Preise inklusive Waschen, Beratung und Styling. Für sehr langes Haar kann ein Aufschlag anfallen.", "rows": [
@@ -288,6 +320,7 @@ DEMOS["friseur"] = {
 }
 
 DEMOS["dachdecker-solar"] = {
+ "hero_foto": (35237908, "Handwerker montiert Solarmodule auf einem Hausdach"),
  "name": "Brandt Bedachungen", "branche": "Dachdecker &amp; Solar", "claim": "Meisterbetrieb seit 1987", "mark": "B", "art": "dach",
  "fonts": [("Archivo", "archivo"), ("Inter", "inter")],
  "vars": {"bg": "#ffffff", "bg2": "#f2f4f6", "card": "#ffffff", "ink": "#151c23", "muted": "#58626c", "line": "#dfe4e9", "brand": "#e8692b", "brand-ink": "#ffffff", "accent": "#e8692b",
@@ -302,6 +335,7 @@ DEMOS["dachdecker-solar"] = {
                   + fl("right:-14px;bottom:36px;width:250px", "<h4>Dach + PV aus einer Hand</h4><span class='muted'>Ein Gerüst, ein Termin, ein Ansprechpartner – spart bis zu 15 % gegenüber getrennter Vergabe.</span>")},
  "sections": [
   ("stats", {"items": [("37 Jahre", "Meisterbetrieb in zweiter Generation"), ("1.400+", "sanierte Dächer im Landkreis"), ("320", "Photovoltaik-Anlagen montiert"), ("10 Jahre", "Gewährleistung auf Dacharbeiten")]}),
+  ("strip", {"fotos": [(33404248, "Dachdecker deckt ein neues Dach"), (9875419, "Montage eines Solarmoduls"), (9729882, "Solarmodule auf einem Altbau")], "cap": "Aus unseren Projekten: Neueindeckung, PV-Montage, Altbausanierung."}),
   ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Alles rund ums Dach", "p": "Vom Ziegel bis zur Solaranlage – vom eigenen Team, nicht von Subunternehmern.", "cols": 3, "items": [
     ("home", "Dachsanierung", "Neueindeckung, Dämmung nach GEG und neue Dachfenster – mit Förderberatung."),
     ("sun", "Photovoltaik &amp; Speicher", "Planung, Montage und Anmeldung – ideal in Kombination mit der Sanierung."),
@@ -310,6 +344,7 @@ DEMOS["dachdecker-solar"] = {
     ("drop", "Klempnerarbeiten", "Dachrinnen, Fallrohre und Kaminverkleidungen aus Zink und Kupfer."),
     ("file", "Förderung &amp; Gutachten", "Wir kümmern uns um BAFA- und KfW-Anträge und die Unterlagen für Ihre Versicherung.")]}),
   ("split", {"id": "pv", "cls": "dark", "eb": "Photovoltaik", "h2": "Dach neu? Dann gleich mit Solar.", "p": "Wer saniert, steht schon auf dem Gerüst. Wir planen Dach und Anlage zusammen – das spart Gerüstkosten, Termine und Abstimmung zwischen Gewerken.",
+    "vis_foto": (12243093, "Wohnhaus mit Solaranlage auf dem Dach"), "overlay": True,
     "list": ["Ertragsprognose für Ihr Dach in 48 Stunden", "Speicher und Wallbox auf Wunsch", "Anmeldung beim Netzbetreiber inklusive"], "cta": ("PV-Check anfordern", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow">Beispielrechnung</span><h3 style="font-size:1.6rem">Einfamilienhaus, 9,8 kWp</h3><table class="tbl" style="margin-top:14px;background:transparent;border-color:rgba(255,255,255,.15)"><tbody><tr><td>Jahresertrag</td><td class="r">ca. 9.300 kWh</td></tr><tr><td>Eigenverbrauch mit Speicher</td><td class="r">ca. 65 %</td></tr><tr><td>Ersparnis pro Jahr</td><td class="r">ca. 1.900 €</td></tr></tbody></table><p style="margin-top:12px;font-size:.85rem">Unverbindliche Beispielwerte, abhängig von Ausrichtung und Verbrauch.</p></div>'}),
   ("tags", {"id": "referenzen", "eb": "Referenzen", "h2": "40 Projekte allein im letzten Jahr", "p": "Fragen Sie Ihre Nachbarn – gut möglich, dass wir dort schon waren.",
@@ -332,6 +367,7 @@ DEMOS["dachdecker-solar"] = {
 }
 
 DEMOS["steuerberater"] = {
+ "hero_foto": (7433848, "Beratungsgespräch in einem hellen Büro"),
  "name": "Kanzlei Weidner", "branche": "Steuerberatung", "claim": "Steuerberatung für das Handwerk", "mark": "W", "art": "steuer",
  "fonts": [("Instrument Serif", "instrument"), ("DM Sans", "dmsans")],
  "vars": {"bg": "#f8f7f4", "bg2": "#efece5", "card": "#ffffff", "ink": "#14233c", "muted": "#5b6577", "line": "#e1ddd3", "brand": "#14233c", "brand-ink": "#f8f7f4", "accent": "#a8834b",
@@ -346,6 +382,7 @@ DEMOS["steuerberater"] = {
                   + fl("right:-12px;bottom:36px;width:240px", "<h4>Nächster freier Termin</h4><div class='slots'><i class='on'>Mi 10:00</i><i>Do 17:30</i></div><span class='muted' style='display:block;margin-top:8px'>Erstgespräch per Video</span>")},
  "sections": [
   ("split", {"id": "handwerk", "eb": "Für wen wir arbeiten", "h2": "Spezialisiert auf Handwerk und Bau", "p": "Wir kennen die Fragen, die Sie nachts wachhalten: Liquidität bei langen Zahlungszielen, Abschlagsrechnungen, Fahrzeugflotte, Nachfolge. Deshalb beraten wir fast ausschließlich Handwerksbetriebe.",
+    "vis_foto": (18947396, "Tischler in seiner Werkstatt"), "overlay": True,
     "list": ["Maler, Elektro, SHK, Dach, Tischler, Bau", "5 bis 80 Mitarbeitende", "Inhabergeführt, regional verwurzelt"], "cta": ("Passt das zu Ihnen?", "#kontakt"),
     "vis": '<div class="card" style="padding:36px;border-left:3px solid var(--accent)"><p style="font:400 1.7rem/1.35 var(--display);color:var(--ink);margin:0">„Wir nehmen nur so viele Mandate an, wie wir gut betreuen können. Aktuell haben wir Kapazität für vier neue Handwerksbetriebe.“</p><p style="margin-top:18px">— Dr. Martin Weidner, Steuerberater</p></div>'}),
   ("services", {"id": "leistungen", "cls": "tint", "eb": "Leistungen", "h2": "Mehr als Belege buchen", "cols": 3, "items": [
@@ -364,6 +401,7 @@ DEMOS["steuerberater"] = {
     ("MW", "Dr. Martin Weidner", "Steuerberater · Gründer", "#14233c"), ("SK", "Sandra Kühn", "Steuerberaterin · Bau &amp; SHK", "#2b4066"),
     ("AT", "Ali Tekin", "Bilanzbuchhalter", "#a8834b"), ("LB", "Lena Brandt", "Lohn &amp; Baulohn", "#5b6577")]}),
   ("split", {"id": "karriere", "cls": "dark", "eb": "Karriere", "h2": "Steuerfachangestellte gesucht", "p": "Flexible Arbeitszeiten, zwei Homeoffice-Tage, Mandanten aus dem Handwerk statt anonymer Masse. Bewerbung ohne Anschreiben in drei Minuten.",
+    "vis_foto": (36733323, "Team bei einer Besprechung im Büro"), "overlay": True,
     "list": ["4-Tage-Woche möglich", "Fortbildung zum Steuerfachwirt bezahlt", "Moderne, voll digitale Kanzlei"], "cta": ("Offene Stellen", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow">Aus dem Team</span><p style="font:400 1.45rem/1.4 var(--display);margin:0;color:#fff">„Ich weiß bei jedem Mandanten, was er baut. Das macht die Arbeit viel greifbarer.“</p><p style="margin-top:14px">— Lena, seit 2021 bei uns</p></div>'}),
   ("faq", {"eb": "Fragen", "h2": "Häufige Fragen", "items": [
@@ -379,6 +417,7 @@ DEMOS["steuerberater"] = {
 }
 
 DEMOS["pflegedienst"] = {
+ "hero_foto": (18459198, "Pflegekraft unterstützt ältere Menschen"),
  "name": "Pflege am Lindenhof", "branche": "Ambulante Pflege", "claim": "Ambulanter Pflegedienst", "mark": "L", "art": "pflege",
  "fonts": [("Fraunces", "fraunces"), ("Figtree", "figtree")],
  "vars": {"bg": "#fbf8f2", "bg2": "#f1ece1", "card": "#ffffff", "ink": "#1f2e27", "muted": "#5d6b64", "line": "#e2dccf", "brand": "#3f7d5c", "brand-ink": "#ffffff", "accent": "#e07a4f",
@@ -401,6 +440,7 @@ DEMOS["pflegedienst"] = {
     ("users", "Verhinderungspflege", "Entlastung für pflegende Angehörige – stundenweise oder mehrere Tage."),
     ("chat", "Pflegeberatung § 37.3", "Die Pflichtberatung für Pflegegeldempfänger – auf Wunsch auch bei Ihnen zu Hause."),
     ("file", "Hilfe bei Anträgen", "Pflegegrad beantragen, Widerspruch, Hilfsmittel – wir unterstützen Sie Schritt für Schritt.")]}),
+  ("strip", {"fotos": [(271353, "Pflegekraft hält die Hand einer älteren Frau"), (8460373, "Lächelnde Pflegekraft in Dienstkleidung")]}),
   ("prices", {"id": "kosten", "cls": "tint", "eb": "Kosten", "h2": "Was kostet ambulante Pflege?", "p": "Die Pflegekasse übernimmt je nach Pflegegrad einen festen Betrag pro Monat (Pflegesachleistung). Wir erstellen Ihnen vorab einen kostenlosen Kostenvoranschlag.", "rows": [
     ("Pflegegrad 2", "Pflegesachleistung pro Monat", "bis 796 €"), ("Pflegegrad 3", "Pflegesachleistung pro Monat", "bis 1.497 €"), ("Pflegegrad 4", "Pflegesachleistung pro Monat", "bis 1.859 €"),
     ("Pflegegrad 5", "Pflegesachleistung pro Monat", "bis 2.299 €"), ("Entlastungsbetrag", "ab Pflegegrad 1, zusätzlich", "131 €")],
@@ -424,6 +464,7 @@ DEMOS["pflegedienst"] = {
 }
 
 DEMOS["bestatter"] = {
+ "hero_foto": (8986709, "Strauß weißer Blumen"),
  "name": "Bestattungen Hollmann", "branche": "Bestattungen", "claim": "Familienbetrieb seit 1952", "mark": "H", "art": "bestatter",
  "fonts": [("Cormorant Garamond", "cormorant"), ("Inter", "inter")],
  "vars": {"bg": "#f6f4f0", "bg2": "#ece8e1", "card": "#fdfcfa", "ink": "#22272b", "muted": "#61666a", "line": "#ddd7cd", "brand": "#22272b", "brand-ink": "#f6f4f0", "accent": "#9a7d4c",
@@ -447,11 +488,13 @@ DEMOS["bestatter"] = {
     "note": "Beispielpreise der Vorschau. Sie erhalten vor jeder Beauftragung einen schriftlichen Kostenvoranschlag.",
     "side": '<div class="card"><h3>Kein Kleingedrucktes</h3><p>Wir erklären jede Position und zeigen Ihnen, wo Sie sparen können. Es entstehen keine Kosten ohne Ihre Zustimmung.</p></div>'}),
   ("split", {"id": "vorsorge", "eb": "Vorsorge", "h2": "Selbst bestimmen, Angehörige entlasten", "p": "Mit einem Vorsorgevertrag legen Sie fest, wie Ihr Abschied aussehen soll – und sichern die Kosten über ein Treuhandkonto ab. Das Gespräch ist kostenlos und unverbindlich.",
+    "vis_foto": (158251, "Sonnenlicht im Wald"), "overlay": True,
     "list": ["Wünsche schriftlich festhalten", "Kosten absichern – insolvenzgeschützt", "Gespräch bei Ihnen zu Hause oder bei uns"], "cta": ("Vorsorgegespräch vereinbaren", "#kontakt"),
     "vis": '<div class="card" style="padding:40px;text-align:center"><div style="width:64px;height:64px;margin:0 auto 18px;color:var(--accent)">' + ic("candle") + '</div><p style="font:500 1.7rem/1.35 var(--display);margin:0">„Meine Kinder sollen nicht rätseln müssen, was ich mir gewünscht hätte.“</p><p class="muted" style="margin-top:14px">Häufigster Grund für eine Vorsorge</p></div>'}),
   ("split", {"id": "familie", "cls": "dark", "rev": True, "eb": "Über uns", "h2": "Drei Generationen, ein Versprechen", "p": "1952 gründete Wilhelm Hollmann das Bestattungshaus. Heute führen Katrin und Jan Hollmann den Betrieb – mit eigenem Abschiedsraum, eigenen Fahrzeugen und viel Zeit für jede Familie.",
     "list": ["Persönliche Begleitung durch die Familie", "Abschiednahme am offenen Sarg möglich", "Trauerbegleitung auch nach der Beisetzung"],
     "vis": '<div class="team" style="--n:2"><div class="person"><div class="ph" style="--ph:#4a5157"><span>KH</span></div><h3 style="color:#fff">Katrin Hollmann</h3><p>Bestattermeisterin</p></div><div class="person"><div class="ph" style="--ph:#9a7d4c"><span>JH</span></div><h3 style="color:#fff">Jan Hollmann</h3><p>Geprüfter Bestatter</p></div></div>'}),
+  ("strip", {"fotos": [(8963669, "Weiße Lilien auf einem Grabstein"), (8963947, "Weiße Blumen auf Stein")], "cap": "Baum-, See-, Erd- oder Feuerbestattung – wir zeigen Ihnen alle Möglichkeiten."}),
   ("faq", {"eb": "Fragen", "h2": "Was Angehörige uns oft fragen", "items": [
     ("Wie schnell muss ich mich entscheiden?", "Sie haben Zeit. In den meisten Bundesländern muss eine Bestattung erst innerhalb von 7 bis 10 Tagen erfolgen."),
     ("Kann ich mich in Ruhe verabschieden?", "Ja. In unserem Abschiedsraum können Sie sich in Ruhe und ohne Zeitdruck verabschieden."),
@@ -465,6 +508,7 @@ DEMOS["bestatter"] = {
 }
 
 DEMOS["tierarzt"] = {
+ "hero_foto": (6235242, "Tierarzt hält einen kleinen Hund im Arm"),
  "name": "Tierarztpraxis am Mühlbach", "branche": "Tierarztpraxis", "claim": "Kleintierpraxis", "mark": "M", "art": "tierarzt",
  "fonts": [("Outfit", "outfit")],
  "vars": {"bg": "#ffffff", "bg2": "#f0f7f7", "card": "#ffffff", "ink": "#12302f", "muted": "#557371", "line": "#d8e8e7", "brand": "#0e7c86", "brand-ink": "#ffffff", "accent": "#f2b63c", "accent-ink": "#12302f",
@@ -485,6 +529,7 @@ DEMOS["tierarzt"] = {
     ("heart", "Senioren-Check", "Frühzeitig erkennen, was ältere Tiere belastet – Niere, Herz, Gelenke."),
     ("paw", "Physiotherapie", "Nach Operationen und bei Arthrose – mit Unterwasserlaufband."),
     ("pill", "Online-Rezepte &amp; Futter", "Dauermedikamente und Diätfutter online bestellen und abholen.")]}),
+  ("strip", {"fotos": [(6816836, "Katze bei der Ohrenreinigung"), (6235231, "Tierarzt untersucht einen Collie"), (7469222, "Tierärztin untersucht einen Hund")], "cap": "Ruhige Abläufe, eigener Katzenwartebereich, moderne Diagnostik."}),
   ("split", {"id": "zeiten", "cls": "tint", "eb": "Sprechzeiten", "h2": "Wann wir für Sie da sind", "p": "Routinetermine nach Vereinbarung, akute Fälle kommen ohne Termin – bitte rufen Sie kurz vorher an.",
     "list": ["Mo–Fr 8–12 und 14–19 Uhr", "Sa 9–12 Uhr", "Akutsprechstunde täglich bis 18 Uhr"], "cta": ("Termin anfragen", "#kontakt"),
     "vis": '<div class="notice" style="display:block;padding:30px"><h3 style="color:var(--brand)">Notfall außerhalb der Sprechzeiten?</h3><p>Der tierärztliche Notdienst wird im Wechsel organisiert. Den aktuellen Notdienst zeigen wir immer ganz oben auf dieser Seite.</p><a class="btn acc" href="#kontakt">Notdienst anzeigen</a></div>'}),
