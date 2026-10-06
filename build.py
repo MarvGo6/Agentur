@@ -162,6 +162,38 @@ def vergleich():
     return f'''<div class="tablewrap compare"><table><thead><tr><th></th><th class="c">Baukasten</th><th class="c">Freelancer</th><th class="c">Klassische Agentur</th><th class="c us">{NAME}</th></tr></thead><tbody>{rows}</tbody></table></div>'''
 
 
+CJ_STUFEN = [
+    ("1", "Bedarf", "Das Dach tropft, der Pony ist zu lang, der Vater braucht Pflege.", "Noch keine Entscheidung – aber ab jetzt wird gesucht.", ""),
+    ("2", "Suche bei Google &amp; Maps", "„Dachdecker in der Nähe“, „Friseur Musterstadt“ – fast immer auf dem Handy.", "Wer hier nicht oben steht, wird nicht gesehen.", "google"),
+    ("3", "Vergleich", "Drei Anbieter, Sterne, Fotos, erste Eindrücke. Dauer: wenige Minuten.", "Bewertungen und ein gepflegtes Profil entscheiden, wer angeklickt wird.", ""),
+    ("4", "Die Website", "Was kostet es? Wie läuft es ab? Wer sind die Menschen? Kann ich sofort anfragen?", "Hier fällt die Entscheidung – oder der Kunde geht zurück zu Google.", "web"),
+    ("5", "Anfrage &amp; Wiederkommen", "Termin, Rückruf, Fotos schicken. Danach: Bewertung, Empfehlung, Stammkunde.", "Ein einfacher nächster Schritt und Erinnerungen machen aus Kunden Stammkunden.", ""),
+]
+
+
+def customer_journey():
+    stufen = "".join(f'''<li class="cj-step{" hl" if hl else ""}"><span class="cj-dot">{n}</span>{'<span class="cj-tag">' + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + '</span>' if hl else ''}<h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>''' for n, t, tut, key, hl in CJ_STUFEN)
+    return f'''<section class="cj" id="customer-journey"><div class="wrap">
+<div class="head"><span class="kicker">Customer Journey</span><h2>So entscheiden Ihre Kunden heute – in fünf Schritten.</h2>
+<p>Bevor jemand bei Ihnen anruft, hat er gesucht, verglichen und Ihre Website angesehen. Meist in wenigen Minuten, meist auf dem Handy. An zwei Stellen verlieren Betriebe die meisten Kunden: <b>bei Google</b>, wenn sie nicht oben stehen – und <b>auf der Website</b>, wenn sie nicht überzeugt.</p></div>
+<ol class="cj-line">{stufen}</ol></div></section>
+<section class="cj-why"><div class="wrap grid2">
+<div class="cj-card"><span class="kicker">Warum oben stehen entscheidet</span><h3>Seite 2 ist unsichtbar.</h3>
+<div class="cj-stats"><div><b>27,6 %</b><span>aller Klicks gehen an das erste Suchergebnis</span></div><div><b>0,63 %</b><span>klicken überhaupt auf Seite 2</span></div><div><b>76 %</b><span>der „in der Nähe“-Suchenden besuchen innerhalb eines Tages einen Betrieb</span></div></div>
+<div class="serp" aria-hidden="true"><div class="serp-q">dachdecker in der nähe</div><div class="serp-map"><i style="left:22%;top:40%"></i><i class="me" style="left:52%;top:55%"></i><i style="left:74%;top:30%"></i></div>
+<div class="serp-r me"><b>Ihr Betrieb</b><span class="st">★★★★★ 4,9 (126)</span><span>Geöffnet · Anrufen · Website · Route</span></div>
+<div class="serp-r"><b>Mitbewerber A</b><span class="st">★★★★☆ 4,3 (41)</span></div><div class="serp-r"><b>Mitbewerber B</b><span class="st">★★★★☆ 4,1 (18)</span></div>
+<div class="serp-more">… Seite 2: hier sucht fast niemand mehr</div></div>
+<p>Bei lokalen Suchen zeigt Google zuerst die Karte mit drei Betrieben. Wer dort und in den ersten organischen Treffern steht, bekommt den Großteil der Anfragen – alle anderen teilen sich den Rest. Deshalb arbeiten wir an Google-Profil, Bewertungen und Seiten für jede Leistung und jeden Ort.</p>
+<a class="more" href="/leistungen/seo/">Wie wir Sie nach oben bringen →</a></div>
+<div class="cj-card dark"><span class="kicker">Warum die Website so wichtig ist</span><h3>Google bringt Besucher. Die Website macht daraus Kunden.</h3>
+<div class="cj-stats"><div><b>93 %</b><span>lesen Bewertungen, bevor sie einen Betrieb besuchen oder beauftragen</span></div><div><b>+32 %</b><span>mehr Absprünge, wenn eine Seite 3 statt 1 Sekunde lädt</span></div></div>
+<ul class="cj-vs"><li><s>Visitenkarte mit Telefonnummer im Kleingedruckten</s><span>Antworten auf die Fragen Ihrer Kunden: Preise, Ablauf, Menschen</span></li><li><s>Lädt langsam, auf dem Handy kaum bedienbar</s><span>Unter einer Sekunde, gebaut für das Handy</span></li><li><s>„Rufen Sie uns an“ – zu den Öffnungszeiten</s><span>Termin buchen, Fotos schicken, Rückruf anfordern – auch abends um zehn</span></li></ul>
+<a class="more" href="/beispiele/">Kundenwege an echten Beispielen →</a></div>
+</div><div class="wrap"><p class="cj-src">Quellen: Backlinko, Analyse von 4 Mio. Google-Ergebnissen · Think with Google, mobile „in der Nähe“-Suchen · BrightLocal, Local Consumer Review Survey 2025 · Google/SOASTA, Mobile-Ladezeiten 2017. Internationale Erhebungen, Werte für Deutschland können abweichen.</p></div></section>
+'''
+
+
 def startseite():
     leist = "".join(f'<a class="card" href="/leistungen/{l["slug"]}/">{ICON[l["key"]]}<h3>{l["titel"]}</h3><p>{l["kurz"]}</p><span class="more">Mehr erfahren →</span></a>' for l in LEISTUNGEN)
     bran = "".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)
@@ -182,17 +214,7 @@ def startseite():
 <div><div class="num">0</div><p>Tracking-Cookies, kein Cookie-Banner nötig</p></div>
 <div><div class="num">1</div><p>Ansprechpartner für Website, SEO und Anzeigen</p></div>
 </div></section>
-<section><div class="wrap grid2" style="align-items:center"><div>
-<span class="kicker">Warum viele Websites nichts bringen</span><h2>Ihre Kunden vergleichen drei Anbieter in fünf Minuten.</h2>
-<p class="lead" style="font-size:1.1rem">Meist auf dem Handy, oft abends. Gewinnt, wer zuerst gefunden wird, sofort Vertrauen weckt und den nächsten Schritt leicht macht: Termin buchen, Fotos schicken, Rückruf anfordern.</p>
-<p>Die bestplatzierten Betriebe in Berlin, Hamburg, München und Köln machen genau das. Sie zeigen Preise statt „auf Anfrage“, Öffnungszeiten und Notdienst ganz oben, echte Menschen statt Stockfotos – und eine Anfrage, die keine zwei Minuten dauert. Diese Muster bauen wir für Ihren Betrieb nach.</p>
-<a class="more" href="/ablauf/">So arbeiten wir →</a></div>
-<div class="journey-mini">
-<div><b>1 · Suche</b><span>„Dachdecker Notdienst Musterstadt“</span></div>
-<div><b>2 · Vergleich</b><span>Sterne, Fotos, Referenzen in der Nähe</span></div>
-<div><b>3 · Vertrauen</b><span>Preise, Ablauf, Gesichter, Antworten</span></div>
-<div><b>4 · Anfrage</b><span>Fotos schicken, Rückruf in 24 h</span></div>
-<p>Für jede Branche bauen wir diesen Weg anders – siehe <a href="/beispiele/">Kundenweg-Beispiele</a>.</p></div></div></section>
+{customer_journey()}
 <section class="band"><div class="wrap"><div class="head"><span class="kicker">Leistungen</span><h2>Alles zwischen Suche und Anfrage</h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div><div class="grid3">{leist}</div></div></section>
 <section><div class="wrap"><div class="head"><span class="kicker">Vergleich</span><h2>Was uns von Baukasten und Agentur unterscheidet</h2></div>{vergleich()}</div></section>
 <section class="band"><div class="wrap grid2"><div><span class="kicker">Ablauf</span><h2>Von null zur fertigen Website in drei Wochen</h2>
