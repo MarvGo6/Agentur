@@ -214,9 +214,19 @@ pre{padding:8pt;white-space:pre-wrap;line-height:1.35}
 <p>Rollen im Dashboard (Inhaber, Closer, Umsetzer), Closer sehen Pipeline + Provision, Umsetzer sehen Aufgaben + Zeiten.</p>
 <p>Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als Seiten im Dashboard.</p>
 
+<h3>Bereits umgesetzt (Stand 2026-10-06)</h3>
+<ul>
+<li>Supabase „Lotwerk Agentur“: Betriebs-Schema aus <code>betrieb/schema.sql</code> eingespielt (Interessenten, Kunden, Verträge, Rechnungen, Kosten, Zeiten, Websites, Checks, Messwerte, Aufgaben, KI-Läufe, Berichte, Seitenaufrufe, Einstellungen).</li>
+<li>Edge Functions in <code>supabase/functions/</code>: <code>monitor</code> (Erreichbarkeit täglich, PageSpeed montags), <code>analyse</code> (Website-Befund + Potenzial für Interessenten), <code>bericht</code> (Wochen-/Monatsbericht, Löschfrist Seitenaufrufe). Schutz über <code>x-cron-secret</code> aus Tabelle <code>einstellungen</code>.</li>
+<li>Datenbank-Jobs (pg_cron) über <code>public.funktion_starten(name)</code>: 05:15 UTC täglich, alle 30 Min., Mo 06:00 UTC, am 1. 06:30 UTC.</li>
+<li>Website zählt anonym Seitenaufrufe und Klicks (Tabelle <code>seitenaufrufe</code>, nur INSERT für anon).</li>
+<li>Abfragen: <code>betrieb/abfragen.sql</code>. Leistungen und Abnahme: <code>betrieb/Leistungshandbuch.pdf</code>.</li>
+<li>Offen: <code>psi_key</code> in <code>einstellungen</code> (Google PageSpeed API-Schlüssel).</li>
+</ul>
 <h3>Änderungsprotokoll</h3>
 <ul>
 <li>2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).</li>
+<li>2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.</li>
 </ul></section>
 
 <section class="page"><h2><small class="nr">B</small>Anhang: Beispiel einer Kunden-Konfiguration</h2>

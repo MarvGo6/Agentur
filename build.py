@@ -46,7 +46,7 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
     full_title = title if NAME in title else f"{title} | {NAME}"
     bar = '<div class="preview-bar">Vorschau – diese Seite ist noch nicht öffentlich.</div>' if C["preview"] else ""
     return f"""<!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="de"{f' data-sb="{C["supabase_url"]}" data-key="{C["supabase_key"]}"' if C.get("supabase_url") else ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(full_title)}</title><meta name="description" content="{e(desc)}">{robots}
 <link rel="canonical" href="{DOMAIN}{path}"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="{e(full_title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{DOMAIN}{path}"><meta property="og:locale" content="de_DE">
@@ -393,7 +393,8 @@ def rechtliches():
     write("/impressum/", "Impressum", "Impressum und Anbieterkennzeichnung.", imp, prio=0.2)
     ds = f"""<section class="hero"><div class="wrap prose"><h1>Datenschutzerklärung</h1>
 <h2>1. Verantwortlicher</h2><p>{i["inhaber"]}, {i["strasse"]}, {i["ort"]}, E-Mail: {i["email"]}</p>
-<h2>2. Grundsatz</h2><p>Diese Website verwendet keine Cookies, keine Analyse-Tools und keine Einbindungen von Drittanbietern. Schriften werden lokal ausgeliefert. Eine Einwilligung über ein Cookie-Banner ist daher nicht erforderlich.</p>
+<h2>2. Grundsatz</h2><p>Diese Website verwendet keine Cookies und keine Einbindungen von Drittanbietern. Schriften werden lokal ausgeliefert. Eine Einwilligung über ein Cookie-Banner ist daher nicht erforderlich.</p>
+<h2>2a. Anonyme Reichweitenmessung</h2><p>Um zu verstehen, welche Seiten hilfreich sind, zählen wir Seitenaufrufe und Klicks auf Kontakt-, Telefon- und E-Mail-Links. Gespeichert werden nur: die aufgerufene Seite, die Domain der verweisenden Website (z. B. „google.com“), der Gerätetyp (Handy, Tablet, Computer) und der Zeitpunkt. Wir speichern keine IP-Adressen, setzen keine Cookies und vergeben keine Kennungen – ein Rückschluss auf Ihre Person ist nicht möglich. Die Daten liegen bei Supabase Inc. in einem Rechenzentrum in der EU (Auftragsverarbeitungsvertrag besteht) und werden nach spätestens 25 Monaten gelöscht. Bei der Übertragung verarbeitet der Server technisch bedingt Ihre IP-Adresse, speichert sie aber nicht in unserer Datenbank. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung der Website (Art. 6 Abs. 1 lit. f DSGVO). Ist in Ihrem Browser „Do Not Track“ aktiviert, zählen wir nicht.</p>
 <h2>3. Hosting</h2><p>Die Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA gehostet. Beim Aufruf verarbeitet Vercel technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Seite, Browserinformationen) zur Auslieferung und zur Abwehr von Angriffen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Vercel ist unter dem EU-US Data Privacy Framework zertifiziert; zusätzlich besteht ein Auftragsverarbeitungsvertrag mit Standardvertragsklauseln.</p>
 <h2>4. Kontaktaufnahme und Kontaktformular</h2>{DS_FORM}
 <h2>5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>

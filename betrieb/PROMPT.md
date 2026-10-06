@@ -88,5 +88,15 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 
 ---
 
+## Bereits umgesetzt (Stand 2026-10-06)
+
+- Supabase „Lotwerk Agentur“: Betriebs-Schema aus `betrieb/schema.sql` eingespielt (Interessenten, Kunden, Verträge, Rechnungen, Kosten, Zeiten, Websites, Checks, Messwerte, Aufgaben, KI-Läufe, Berichte, Seitenaufrufe, Einstellungen).
+- Edge Functions in `supabase/functions/`: `monitor` (Erreichbarkeit täglich, PageSpeed montags), `analyse` (Website-Befund + Potenzial für Interessenten), `bericht` (Wochen-/Monatsbericht, Löschfrist Seitenaufrufe). Schutz über `x-cron-secret` aus Tabelle `einstellungen`.
+- Datenbank-Jobs (pg_cron) über `public.funktion_starten(name)`: 05:15 UTC täglich, alle 30 Min., Mo 06:00 UTC, am 1. 06:30 UTC.
+- Website zählt anonym Seitenaufrufe und Klicks (Tabelle `seitenaufrufe`, nur INSERT für anon).
+- Abfragen: `betrieb/abfragen.sql`. Leistungen und Abnahme: `betrieb/Leistungshandbuch.pdf`.
+- Offen: `psi_key` in `einstellungen` (Google PageSpeed API-Schlüssel).
+
 ## Änderungsprotokoll
 - 2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).
+- 2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.

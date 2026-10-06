@@ -35,3 +35,16 @@
     else frames.forEach(load)}
   ['scroll','pointermove','touchstart','keydown'].forEach(function(t){addEventListener(t,start,{passive:true})});
 })();
+(function(){
+  // Anonyme Zählung: Seite, Herkunfts-Domain, Gerätetyp, Ereignis. Keine Cookies, keine Kennung, keine IP-Speicherung.
+  var f=document.getElementById('anfrage'),sb=document.documentElement.getAttribute('data-sb'),key=document.documentElement.getAttribute('data-key');
+  if(!sb||!key||navigator.doNotTrack==='1'||location.hostname==='localhost'||/embed=1/.test(location.search))return;
+  var w=innerWidth,geraet=w<700?'handy':w<1100?'tablet':'computer',her=null;
+  try{var r=document.referrer&&new URL(document.referrer);if(r&&r.hostname!==location.hostname)her=r.hostname.slice(0,100)}catch(e){}
+  function z(ereignis){try{fetch(sb+'/rest/v1/seitenaufrufe',{method:'POST',keepalive:true,headers:{'apikey':key,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({pfad:location.pathname.slice(0,200),herkunft:her,geraet:geraet,ereignis:ereignis})}).catch(function(){})}catch(e){}}
+  z('aufruf');
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
+    if(h.indexOf('/kontakt/')===0)z('cta');else if(h.indexOf('tel:')===0)z('telefon');else if(h.indexOf('mailto:')===0)z('mail');else if(h.indexOf('/vorschau/')===0)z('vorschau')});
+  if(f)f.addEventListener('submit',function(){if(f.checkValidity())z('formular')});
+})();

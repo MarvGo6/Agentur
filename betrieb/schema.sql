@@ -1,5 +1,5 @@
 -- Lotwerk Betrieb – Entwurf der Dashboard-Datenbank (Supabase-Projekt "Lotwerk Agentur")
--- NOCH NICHT EINGESPIELT. Erst prüfen, dann als Migration anwenden.
+-- Eingespielt im Supabase-Projekt "Lotwerk Agentur" (Migration betrieb_grundschema).
 -- Zugriff: nur angemeldete Admins (Tabelle admins). Automatisierungen nutzen den Service-Role-Schlüssel serverseitig.
 
 create table if not exists admins (user_id uuid primary key references auth.users on delete cascade, rolle text not null default 'inhaber');
@@ -126,9 +126,35 @@ create or replace view deckungsbeitrag_kunde as
     coalesce((select sum(minuten) from zeiten z where z.kunde_id = k.id and z.start > now() - interval '365 days'), 0) / 60.0 as stunden_12m
   from kunden k;
 
+
+-- ---------------------------------------------------------------- Datensammlung & Auswertung (Automatisierungen)
+alter table interessenten add column if not exists befund jsonb;          -- Ergebnis der automatischen Website-Analyse
+alter table interessenten add column if not exists analysiert_am timestamptz;
+create index if not exists interessenten_offen on interessenten (analysiert_am) where website_alt is not null;
+
+create table if not exists berichte (                -- wöchentliche/monatliche Auswertungen
+  id uuid primary key default gen_random_uuid(),
+  art text not null check (art in ('woche','monat')), von date not null, bis date not null,
+  daten jsonb not null, text text, erstellt timestamptz not null default now(), unique (art, von)
+);
+
+create table if not exists einstellungen (            -- nur serverseitig lesbar (keine Policy)
+  schluessel text primary key, wert text not null
+);
+
+create table if not exists seitenaufrufe (            -- anonym: keine IP, keine Cookies, keine Kennung
+  id bigint generated always as identity primary key,
+  zeit timestamptz not null default now(),
+  pfad text not null check (char_length(pfad) <= 200),
+  herkunft text check (char_length(herkunft) <= 100),  -- nur Domain des Verweises
+  geraet text check (geraet in ('handy','tablet','computer')),
+  ereignis text not null default 'aufruf' check (ereignis in ('aufruf','cta','formular','telefon','mail','vorschau'))
+);
+create index if not exists seitenaufrufe_zeit on seitenaufrufe (zeit desc);
+
 -- ---------------------------------------------------------------- Zugriffsschutz
 do $$ declare t text; begin
-  foreach t in array array['admins','interessenten','kunden','angebote','vertraege','rechnungen','kosten','zeiten','websites','checks','messwerte','anfragen','aufgaben','ki_laeufe'] loop
+  foreach t in array array['admins','interessenten','kunden','angebote','vertraege','rechnungen','kosten','zeiten','websites','checks','messwerte','anfragen','aufgaben','ki_laeufe','berichte','seitenaufrufe'] loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists admin_alles on %I', t);
     execute format('create policy admin_alles on %I for all to authenticated using (ist_admin()) with check (ist_admin())', t);
@@ -136,3 +162,7 @@ do $$ declare t text; begin
 end $$;
 alter view mrr_aktuell set (security_invoker = on);
 alter view deckungsbeitrag_kunde set (security_invoker = on);
+alter table einstellungen enable row level security;  -- bewusst ohne Policy: nur Service-Rolle
+drop policy if exists anon_zaehlen on seitenaufrufe;
+create policy anon_zaehlen on seitenaufrufe for insert to anon with check (zeit > now() - interval '5 minutes');
+grant insert (pfad, herkunft, geraet, ereignis) on seitenaufrufe to anon;
