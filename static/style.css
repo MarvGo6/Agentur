@@ -151,9 +151,6 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 .browser .bar span{margin-left:10px;font-size:.72rem;color:var(--ink-2);background:var(--card);border-radius:6px;padding:2px 10px;flex:1;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .browser img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
 .browser .ph{aspect-ratio:16/10;background:var(--paper-2)}
-.phone{border-radius:30px;padding:8px;background:#141917;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);width:100%}
-.phone img{border-radius:23px;display:block;width:100%;height:auto;aspect-ratio:1/2;object-fit:cover;object-position:top}
-.phone .ph{aspect-ratio:1/2;border-radius:23px;background:#2a302e}
 .showcase{position:relative;padding:0 0 40px}
 .showcase .sc-desk{display:block;transform:perspective(1600px) rotateY(-6deg) rotateX(2deg);transform-origin:left center;transition:transform .4s}
 .showcase:hover .sc-desk{transform:none}
@@ -194,7 +191,6 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 .lv{position:relative;overflow:hidden}
 .lv iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;opacity:0;transition:opacity .5s;background:#fff}
 .lv iframe.ready{opacity:1}
-.phone .lv{border-radius:23px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 /* Dunkelmodus: umrandete Buttons behalten helle Schrift */
 :root[data-theme=dark] .btn.ghost{color:var(--ink);border-color:var(--ink)}
@@ -263,3 +259,17 @@ footer .legal{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
 .serp-more{opacity:1}
 footer .fh{font:600 .8rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:0 0 10px}
 .h3{font-size:1.3rem}
+
+/* iPhone-Rahmen: flache Kanten, Titanrand, Dynamic Island, eigene Statusleiste (Inhalt wird nicht abgeschnitten) */
+.phone{container-type:inline-size;width:100%}
+.phone .ip{border-radius:15cqw;padding:3.2cqw;background:#1a1d1c;box-shadow:inset 0 0 0 .9cqw #6b706e,inset 0 0 0 1.6cqw #2b2f2e,0 30px 60px -20px rgba(0,0,0,.45)}
+.phone .scr{position:relative;border-radius:12cqw;overflow:hidden;background:#fff}
+.phone .sb{display:flex;align-items:center;justify-content:space-between;height:13cqw;padding:0 7cqw 0 9cqw;background:#fff;color:#111;font:600 4.2cqw/1 -apple-system,system-ui,sans-serif}
+.phone .di{position:absolute;left:50%;top:3cqw;width:30cqw;height:8.6cqw;margin-left:-15cqw;border-radius:5cqw;background:#0b0b0b}
+.phone .si{display:flex;align-items:flex-end;gap:.8cqw}
+.phone .si b{width:1.3cqw;background:#111;border-radius:.4cqw}
+.phone .si b:nth-child(1){height:1.6cqw}.phone .si b:nth-child(2){height:2.4cqw}.phone .si b:nth-child(3){height:3.2cqw}.phone .si b:nth-child(4){height:4cqw}
+.phone .si em{width:6.6cqw;height:3.4cqw;margin-left:1.6cqw;border-radius:1cqw;border:.5cqw solid #111;box-shadow:inset -2.2cqw 0 0 #fff;background:#111}
+.phone img{display:block;width:100%;height:auto;aspect-ratio:1/2;object-fit:cover;object-position:top}
+.phone .ph{aspect-ratio:1/2;background:#2a302e}
+.phone .hi{position:absolute;left:50%;bottom:2.2cqw;width:34cqw;height:1.3cqw;margin-left:-17cqw;border-radius:1cqw;background:rgba(0,0,0,.75);z-index:2}

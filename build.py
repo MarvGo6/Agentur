@@ -92,7 +92,7 @@ def frame(slug, mobil=False, eager=False):
     pic = f'<img src="/vorschau-bilder/{slug}-{art}.webp" alt="Vorschau der Website {e(name)}" width="{w}" height="{h}"{lazy} decoding="async">' if img.exists() else '<div class="ph"></div>'
     live = f'<div class="lv">{pic}<iframe data-src="/vorschau/{slug}/?embed=1" width="{w}" height="{h}" title="Live-Ansicht {e(name)}" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div>'
     if mobil:
-        return f'<div class="phone">{live}</div>'
+        return f'<div class="phone"><div class="ip"><div class="scr"><div class="sb" aria-hidden="true"><span>9:41</span><i class="di"></i><span class="si"><b></b><b></b><b></b><b></b><em></em></span></div>{live}<i class="hi" aria-hidden="true"></i></div></div></div>'
     return f'<div class="browser"><div class="bar"><i></i><i></i><i></i><span>{e(name.lower().replace(" ", "-").replace("&", "und"))}.de</span></div>{live}</div>'
 
 
