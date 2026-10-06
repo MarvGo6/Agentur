@@ -1,0 +1,18 @@
+{
+  "name": "Lotwerk",
+  "legal_name": "Lotwerk – Agentur für digitales Wachstum",
+  "tagline": "Websites, SEO und Anzeigen für Betriebe, die gefunden werden wollen.",
+  "domain": "https://lotwerk.vercel.app",
+  "email": "hallo@lotwerk.de",
+  "phone": "",
+  "city": "Deutschland",
+  "preview": true,
+  "impressum": {
+    "inhaber": "[Vor- und Nachname]",
+    "strasse": "[Straße Hausnummer]",
+    "ort": "[PLZ Ort]",
+    "email": "hallo@lotwerk.de",
+    "telefon": "[Telefonnummer]",
+    "ust": "Kleinunternehmer gemäß § 19 UStG – es wird keine Umsatzsteuer ausgewiesen."
+  }
+}
