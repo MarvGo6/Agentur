@@ -4,7 +4,7 @@
   'use strict';
   var H = document.documentElement, SB = H.getAttribute('data-sb'), KEY = H.getAttribute('data-key'), app = document.getElementById('app');
   if (!app || !SB) return;
-  var S = {}, tab = 'cockpit', CACHE = {};
+  var S = {}, tab = 'cockpit', CACHE = {}, ZURUECK = location.origin + '/intern/';
   var PRODUKTE = {  // Vorgaben je Produkt: einmalig, monatlich, Mindestlaufzeit, Verlängerung, Kündigungsfrist (Monate)
     web_start: ['Website Start', 1490, 0, 0, 0, 0], web_wachstum: ['Website Wachstum', 2990, 0, 0, 0, 0],
     pflege_start: ['Pflege Start', 0, 49, 12, 12, 3], pflege_wachstum: ['Pflege Wachstum', 0, 89, 12, 12, 3],
@@ -206,9 +206,9 @@
     try {
       if (a === 'login' || a === 'signup' || a === 'reset') {
         var f = document.getElementById('in-login'), em = f.email.value.trim(), pw = f.pw.value;
-        if (a === 'reset') { await auth('recover', { email: em }); return anmeldung('Falls das Konto existiert, kommt eine E-Mail zum Zurücksetzen.'); }
+        if (a === 'reset') { await auth('recover?redirect_to=' + encodeURIComponent(ZURUECK), { email: em }); return anmeldung('Falls das Konto existiert, kommt eine E-Mail zum Zurücksetzen.'); }
         if (!f.reportValidity()) return;
-        if (a === 'signup') { await auth('signup', { email: em, password: pw }); return anmeldung('Bestätigungs-E-Mail verschickt. Nach dem Klick auf den Link hier anmelden.'); }
+        if (a === 'signup') { await auth('signup?redirect_to=' + encodeURIComponent(ZURUECK), { email: em, password: pw }); return anmeldung('Bestätigungs-E-Mail verschickt. Nach dem Klick auf den Link hier anmelden.'); }
         setze(await auth('token?grant_type=password', { email: em, password: pw }));
         var ok = await api('rpc/ist_admin', { method: 'POST', body: {} });
         if (!ok) { S = {}; sichere(); return anmeldung('Angemeldet, aber kein Admin-Zugang. Nur die hinterlegte Inhaber-Adresse wird freigeschaltet.'); }
@@ -259,6 +259,28 @@
     } catch (e) { meldung('Fehler: ' + e.message); }
   });
 
+  async function neuesPasswort(ev) {
+    ev.preventDefault();
+    var pw = ev.target.pw.value;
+    var r = await fetch(SB + '/auth/v1/user', { method: 'PUT', headers: { apikey: KEY, Authorization: 'Bearer ' + await token(), 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+    if (!r.ok) return meldung('Passwort konnte nicht gespeichert werden.');
+    meldung('Neues Passwort gespeichert'); zeige('cockpit');
+  }
+
   lade();
+  var rueck = new URLSearchParams((location.hash || '').slice(1));
+  if (rueck.get('access_token')) {                       // Link aus einer Supabase-Mail: Sitzung übernehmen
+    setze({ access_token: rueck.get('access_token'), refresh_token: rueck.get('refresh_token'), expires_in: Number(rueck.get('expires_in') || 3600) });
+    history.replaceState(null, '', location.pathname);
+    if (rueck.get('type') === 'recovery') {
+      app.innerHTML = '<div class="in-login"><h1>Neues Passwort</h1><form id="in-neu"><label>Neues Passwort<input name="pw" type="password" autocomplete="new-password" minlength="10" required></label><button class="btn">Speichern</button></form></div>';
+      document.getElementById('in-neu').addEventListener('submit', neuesPasswort);
+      return;
+    }
+  } else if (rueck.get('error')) {
+    history.replaceState(null, '', location.pathname);
+    anmeldung(rueck.get('error_code') === 'otp_expired' ? 'Der Link war schon benutzt oder ist abgelaufen. Ist die E-Mail bestätigt, kannst du dich einfach anmelden.' : 'Der Link aus der E-Mail hat nicht funktioniert. Bitte erneut versuchen.');
+    return;
+  }
   if (S.refresh) zeige((location.hash || '').slice(1) && ANSICHT[location.hash.slice(1)] ? location.hash.slice(1) : 'cockpit'); else anmeldung();
 })();
