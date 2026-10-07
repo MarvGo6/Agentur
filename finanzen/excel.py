@@ -12,7 +12,7 @@ NORM, BOLD, H1 = Font(name=F), Font(name=F, bold=True), Font(name=F, bold=True, 
 ITAL = Font(name=F, italic=True)
 HEAD = PatternFill("solid", fgColor="0F5C4A"); HEADF = Font(name=F, bold=True, color="FFFFFF")
 KEY = PatternFill("solid", fgColor="FFFF00"); SUB = PatternFill("solid", fgColor="EFE8DB")
-EUR, NUM1, PCT = '#,##0 €;(#,##0 €);-', '#,##0.0;(#,##0.0);-', '0.0%;(0.0%);-'
+EUR, NUM1, PCT, INT = '#,##0 €;(#,##0 €);-', '#,##0.0;(#,##0.0);-', '0.0%;(0.0%);-', '0'
 TOP = Border(top=Side(style="thin"))
 G, N = M.G, M.MONATE
 
@@ -54,12 +54,20 @@ labels = [("preis_web", "Ø Website-Auftrag (einmalig)", EUR), ("preis_pflege", 
           ("preis_seo", "Ø SEO / Monat", EUR), ("preis_rec", "Recruiting-Paket / Monat", EUR), ("preis_rec_setup", "Recruiting-Einrichtung", EUR),
           ("mix_web", "Anteil Abschlüsse: Website (+ Pflege)", PCT), ("mix_prog", "Anteil Abschlüsse: Wachstumsprogramm", PCT),
           ("mix_seo", "Anteil Abschlüsse: SEO", PCT), ("mix_rec", "Anteil Abschlüsse: Recruiting", PCT),
+          ("rec_ab_monat", "Recruiting wird verkauft ab Monat (8 = Jun 27)", INT),
           ("churn_pflege", "Kündigung Pflege / Monat", PCT), ("churn_prog", "Kündigung Programm / Monat", PCT),
           ("churn_seo", "Kündigung SEO / Monat", PCT), ("churn_rec", "Kündigung Recruiting / Monat", PCT),
           ("h_setup_web", "Std. je neuer Website", NUM1), ("h_setup_prog", "Std. Einrichtung Programm", NUM1), ("h_setup_seo", "Std. Einrichtung SEO", NUM1),
           ("h_setup_rec", "Std. Einrichtung Recruiting", NUM1), ("h_mon_pflege", "Std. je Pflege-Kunde / Monat", NUM1), ("h_mon_prog", "Std. je Programm-Kunde / Monat", NUM1),
           ("h_mon_seo", "Std. je SEO-Kunde / Monat", NUM1), ("h_mon_rec", "Std. je Recruiting-Kunde / Monat", NUM1),
-          ("h_vertrieb", "Vertriebsstunden je Abschluss", NUM1), ("kapazitaet", "Arbeitsstunden pro Monat", NUM1),
+          ("h_vertrieb", "Vertriebsstunden je Abschluss", NUM1),
+          ("a_h_setup_web", "AUTOMATISIERT: Std. je neuer Website", NUM1), ("a_h_setup_prog", "AUTOMATISIERT: Std. Einrichtung Programm", NUM1),
+          ("a_h_setup_seo", "AUTOMATISIERT: Std. Einrichtung SEO", NUM1), ("a_h_setup_rec", "AUTOMATISIERT: Std. Einrichtung Recruiting", NUM1),
+          ("a_h_mon_pflege", "AUTOMATISIERT: Std. je Pflege-Kunde / Monat", NUM1), ("a_h_mon_prog", "AUTOMATISIERT: Std. je Programm-Kunde / Monat", NUM1),
+          ("a_h_mon_seo", "AUTOMATISIERT: Std. je SEO-Kunde / Monat", NUM1), ("a_h_mon_rec", "AUTOMATISIERT: Std. je Recruiting-Kunde / Monat", NUM1),
+          ("a_h_vertrieb", "AUTOMATISIERT: Vertriebsstunden je Abschluss", NUM1),
+          ("auto_ab_kunde", "Automatisierung läuft ab Abschluss Nr.", INT), ("auto_kosten", "Systemkosten Automatisierung / Monat", EUR),
+          ("kapazitaet", "Arbeitsstunden pro Monat", NUM1),
           ("fix_kosten", "Fixkosten / Monat", EUR), ("marketing", "Eigenes Marketing / Monat", EUR)]
 kopf(A, 4, ["Annahme", "Wert"])
 R = {}
@@ -67,10 +75,10 @@ for i, (k, lab, fmt) in enumerate(labels, start=5):
     A.cell(i, 1, lab).font = NORM
     c = A.cell(i, 2, G[k]); c.font = BLUE; c.number_format = fmt
     R[k] = f"Annahmen!$B${i}"
-for k in ("kapazitaet", "mix_rec", "h_vertrieb"):
+for k in ("kapazitaet", "mix_rec", "h_vertrieb", "rec_ab_monat", "auto_ab_kunde"):
     A[R[k].split("!")[1].replace("$", "")].fill = KEY
 r0 = 5 + len(labels) + 1
-A.cell(r0, 1, "Std. je neuem Abschluss (Ø, inkl. Vertrieb)").font = BOLD
+A.cell(r0, 1, "Std. je neuem Abschluss (Ø von Hand, alle Produkte, inkl. Vertrieb)").font = BOLD
 hn = "+".join(f"{R['mix_' + p]}*({R['h_setup_' + p]}+{R['h_mon_' + M.KUNDE[p]]}+{R['h_vertrieb']})" for p in M.PRODUKTE)
 c = A.cell(r0, 2, "=" + hn); c.number_format = NUM1; c.font = BOLD
 R["h_neu"] = f"Annahmen!$B${r0}"
@@ -87,17 +95,21 @@ A.column_dimensions["A"].width = 44
 for c in "BCD": A.column_dimensions[c].width = 14
 
 # ================================================================== Solo-Szenarien
-LINES = [("Monat", "label"), ("Abschluss-Ziel (Vertrieb)", "ziel"), ("Laufende Stunden (Bestand)", "laufend"), ("Möglich nach Stunden", "kap"),
-         ("Abschlüsse", "deals"), (None, None), ("Aktive Pflege-Kunden", "k_pflege"), ("Aktive Programm-Kunden", "k_prog"),
+LINES = [("Monat", "label"), ("Abschluss-Ziel (Vertrieb)", "ziel"), ("Recruiting im Verkauf (1 = ja)", "recflag"),
+         ("Automatisierung aktiv (1 = ja)", "autoflag"), ("Std. je neuem Abschluss", "hneu"), ("Laufende Stunden (Bestand)", "laufend"),
+         ("Möglich nach Stunden", "kap"), ("Abschlüsse", "deals"), ("Abschlüsse kumuliert", "kum"), (None, None), ("Aktive Pflege-Kunden", "k_pflege"), ("Aktive Programm-Kunden", "k_prog"),
          ("Aktive SEO-Kunden", "k_seo"), ("Aktive Recruiting-Kunden", "k_rec"), (None, None), ("MRR", "mrr"), ("Einmalumsatz", "einmal"),
          ("Umsatz", "umsatz"), ("Kosten", "kosten"), ("Ergebnis vor Steuern (= Einkommen Gründer)", "erg"), ("Kasse kumuliert", "kasse"),
          ("Belegte Stunden", "stunden")]
 ROWS = {}
 
 
-def solo_sheet(name):
-    ws = wb.create_sheet(f"Solo {name}")
-    ws["A1"] = f"Solo-Plan · Szenario {name} (24 Monate ab Nov 2026)"; ws["A1"].font = H1
+def blatt(name, var): return f"Solo {name}" + (" auto" if var == "auto" else "")
+
+
+def solo_sheet(name, var):
+    ws = wb.create_sheet(blatt(name, var))
+    ws["A1"] = f"Solo-Plan · Szenario {name} · {M.VARIANTEN[var]} (24 Monate ab Nov 2026)"; ws["A1"].font = H1
     ws["A2"] = "Abschlüsse = Minimum aus Vertriebstempo und freien Stunden. Kundenzahlen sind Erwartungswerte."; ws["A2"].font = ITAL
     Rr = {}; row = 3
     for lab, key in LINES:
@@ -113,48 +125,60 @@ def solo_sheet(name):
         for m in range(1, N + 1):
             col, pc = L(m + 1), (L(m) if m > 1 else None)
             prev = lambda k: f"{pc}{Rr[k]}" if pc else "0"
+            H = lambda k: f"({R[k]}+{col}{Rr['autoflag']}*({R['a_' + k]}-{R[k]}))"
+            mx = lambda p: (f"{R['mix_rec']}*{col}{Rr['recflag']}" if p == "rec"
+                            else f"{R['mix_' + p]}/(1-{R['mix_rec']}*(1-{col}{Rr['recflag']}))")
             if key == "label":
                 f = M.label(m)
             elif key == "ziel":
                 f = f"={ZR[name][0] if m <= 2 else ZR[name][1]}"
+            elif key == "recflag":
+                f = f"=IF({m}>={R['rec_ab_monat']},1,0)"
+            elif key == "autoflag":
+                f = "=0" if var == "hand" else f"=IF({prev('kum')}>={R['auto_ab_kunde']}-1,1,0)"
+            elif key == "hneu":
+                f = "=" + "+".join(f"{mx(p)}*({H('h_setup_' + p)}+{H('h_mon_' + M.KUNDE[p])}+{H('h_vertrieb')})" for p in M.PRODUKTE)
             elif key == "laufend":
-                f = "=" + "+".join(f"{prev('k_' + s)}*{R['h_mon_' + s]}" for s in ("pflege", "prog", "seo", "rec"))
+                f = "=" + "+".join(f"{prev('k_' + s)}*{H('h_mon_' + s)}" for s in ("pflege", "prog", "seo", "rec"))
             elif key == "kap":
-                f = f"=MAX(0,({R['kapazitaet']}-{col}{Rr['laufend']})/{R['h_neu']})"
+                f = f"=MAX(0,({R['kapazitaet']}-{col}{Rr['laufend']})/{col}{Rr['hneu']})"
             elif key == "deals":
                 f = f"=MIN({col}{Rr['ziel']},{col}{Rr['kap']})"
+            elif key == "kum":
+                f = f"={prev('kum')}+{col}{Rr['deals']}"
             elif key.startswith("k_"):
                 s = key[2:]; p = {"pflege": "web", "prog": "prog", "seo": "seo", "rec": "rec"}[s]
-                f = f"={prev(key)}*(1-{R['churn_' + s]})+{col}{Rr['deals']}*{R['mix_' + p]}"
+                f = f"={prev(key)}*(1-{R['churn_' + s]})+{col}{Rr['deals']}*{mx(p)}"
             elif key == "mrr":
                 f = "=" + "+".join(f"{col}{Rr['k_' + s]}*{R['preis_' + s]}" for s in ("pflege", "prog", "seo", "rec"))
             elif key == "einmal":
-                f = f"={col}{Rr['deals']}*{R['mix_web']}*{R['preis_web']}+{col}{Rr['deals']}*{R['mix_prog']}*{R['preis_prog_setup']}+{col}{Rr['deals']}*{R['mix_rec']}*{R['preis_rec_setup']}"
+                f = f"={col}{Rr['deals']}*({mx('web')}*{R['preis_web']}+{mx('prog')}*{R['preis_prog_setup']}+{mx('rec')}*{R['preis_rec_setup']})"
             elif key == "umsatz":
                 f = f"={col}{Rr['mrr']}+{col}{Rr['einmal']}"
             elif key == "kosten":
-                f = f"={R['fix_kosten']}+{R['marketing']}"
+                f = f"={R['fix_kosten']}+{R['marketing']}+{col}{Rr['autoflag']}*{R['auto_kosten']}"
             elif key == "erg":
                 f = f"={col}{Rr['umsatz']}-{col}{Rr['kosten']}"
             elif key == "kasse":
                 f = f"={prev('kasse')}+{col}{Rr['erg']}" if pc else f"={col}{Rr['erg']}"
             elif key == "stunden":
-                f = f"={col}{Rr['laufend']}+{col}{Rr['deals']}*{R['h_neu']}"
+                f = f"={col}{Rr['laufend']}+{col}{Rr['deals']}*{col}{Rr['hneu']}"
             c = ws.cell(row, m + 1, f)
             if key == "label":
                 c.font, c.fill = HEADF, HEAD
             else:
-                c.number_format = NUM1 if key in ("ziel", "laufend", "kap", "deals", "stunden") or key.startswith("k_") else EUR
+                c.number_format = INT if key in ("recflag", "autoflag") else NUM1 if key in ("ziel", "hneu", "laufend", "kap", "deals", "kum", "stunden") or key.startswith("k_") else EUR
                 c.font = BOLD if key in ("deals", "mrr", "umsatz", "erg", "kasse") else NORM
                 if key in ("mrr", "umsatz", "erg"): c.border = TOP
     ws.cell(Rr["label"], 1).font, ws.cell(Rr["label"], 1).fill = HEADF, HEAD
     ws.column_dimensions["A"].width = 44
     for m in range(1, N + 1): ws.column_dimensions[L(m + 1)].width = 10
     ws.freeze_panes = "B5"
-    ROWS[name] = Rr
+    ROWS[blatt(name, var)] = Rr
 
 
-for n in M.SZENARIEN: solo_sheet(n)
+SOLO = [(n, v) for n in M.SZENARIEN for v in M.VARIANTEN]
+for n, v in SOLO: solo_sheet(n, v)
 
 # ================================================================== Ausbau ab 10k
 X = wb.create_sheet("Ausbau ab 10k")
@@ -183,7 +207,7 @@ for j, v in enumerate(a["ramp"]):
     X.cell(r + j, 1, f"Leistung neuer Closer im Monat {j+1}").font = NORM
     c = X.cell(r + j, 2, v); c.font = BLUE; c.number_format = PCT; PR[f"r{j+1}"] = f"$B${r+j}"
 st = r + 4
-B = ROWS["Basis"]; last = L(N + 1)
+B = ROWS["Solo Basis"]; last = L(N + 1)
 X.cell(st, 1, "Zielmonat 10.000 € MRR (aus Solo Basis)").font = BOLD
 c = X.cell(st, 2, f"=COUNTIF('Solo Basis'!B{B['mrr']}:{last}{B['mrr']},\"<10000\")+1"); c.font = GREEN; PR["ziel"] = f"$B${st}"
 for j, (s, lab) in enumerate([("pflege", "Pflege"), ("seo", "SEO"), ("prog", "Programm"), ("rec", "Recruiting")], start=1):
@@ -265,30 +289,30 @@ X.freeze_panes = "E5"
 # ================================================================== Übersicht
 U["A1"] = "Übersicht – Solo-Plan bis 10.000 € MRR, danach Ausbau mit Team"; U["A1"].font = H1
 U["A2"] = "Ergebnis vor Steuern. Im Solo-Plan ist das Ergebnis das Einkommen des Gründers (davon 35–40 % für Steuern/Sozialversicherung zurücklegen)."; U["A2"].font = ITAL
-kopf(U, 4, ["Solo-Plan", *M.SZENARIEN.keys()])
+kopf(U, 4, ["Solo-Plan", *[f"{n} · {'Hand' if v == 'hand' else 'auto'}" for n, v in SOLO]])
 kpis = [("MRR Monat 6 (Apr 27)", lambda R_: f"G{R_['mrr']}", EUR), ("MRR Monat 12 (Okt 27)", lambda R_: f"M{R_['mrr']}", EUR),
         ("MRR Monat 24 (Okt 28)", lambda R_: f"{last}{R_['mrr']}", EUR)]
 row = 5
 for lab, f, fmt in kpis:
     U.cell(row, 1, lab).font = NORM
-    for j, n in enumerate(M.SZENARIEN):
-        c = U.cell(row, 2 + j, f"='Solo {n}'!{f(ROWS[n])}"); c.font = GREEN; c.number_format = fmt
+    for j, (n, v) in enumerate(SOLO):
+        c = U.cell(row, 2 + j, f"='{blatt(n, v)}'!{f(ROWS[blatt(n, v)])}"); c.font = GREEN; c.number_format = fmt
     row += 1
 U.cell(row, 1, "Monat, in dem 10.000 € MRR erreicht werden").font = BOLD
-for j, n in enumerate(M.SZENARIEN):
-    Rr = ROWS[n]
-    c = U.cell(row, 2 + j, f"=IF(MAX('Solo {n}'!B{Rr['mrr']}:{last}{Rr['mrr']})>=10000,COUNTIF('Solo {n}'!B{Rr['mrr']}:{last}{Rr['mrr']},\"<10000\")+1,\"nicht in 24 Monaten\")")
+for j, (n, v) in enumerate(SOLO):
+    Rr = ROWS[blatt(n, v)]
+    c = U.cell(row, 2 + j, f"=IF(MAX('{blatt(n, v)}'!B{Rr['mrr']}:{last}{Rr['mrr']})>=10000,COUNTIF('{blatt(n, v)}'!B{Rr['mrr']}:{last}{Rr['mrr']},\"<10000\")+1,\"nicht in 24 Monaten\")")
     c.font = GREEN; c.fill = KEY
 row += 1
 for lab, rng, fmt in [("Einkommen erste 12 Monate (vor Steuern)", ("B", "M", "erg"), EUR), ("Abschlüsse erste 12 Monate", ("B", "M", "deals"), NUM1)]:
     U.cell(row, 1, lab).font = NORM
-    for j, n in enumerate(M.SZENARIEN):
-        Rr = ROWS[n]
-        c = U.cell(row, 2 + j, f"=SUM('Solo {n}'!{rng[0]}{Rr[rng[2]]}:{rng[1]}{Rr[rng[2]]})"); c.font = GREEN; c.number_format = fmt
+    for j, (n, v) in enumerate(SOLO):
+        Rr = ROWS[blatt(n, v)]
+        c = U.cell(row, 2 + j, f"=SUM('{blatt(n, v)}'!{rng[0]}{Rr[rng[2]]}:{rng[1]}{Rr[rng[2]]})"); c.font = GREEN; c.number_format = fmt
     row += 1
 U.cell(row, 1, "Belegte Stunden Monat 12").font = NORM
-for j, n in enumerate(M.SZENARIEN):
-    c = U.cell(row, 2 + j, f"='Solo {n}'!M{ROWS[n]['stunden']}"); c.font = GREEN; c.number_format = NUM1
+for j, (n, v) in enumerate(SOLO):
+    c = U.cell(row, 2 + j, f"='{blatt(n, v)}'!M{ROWS[blatt(n, v)]['stunden']}"); c.font = GREEN; c.number_format = NUM1
 row += 2
 kopf(U, row, ["Ausbau ab 10.000 € MRR (Team)", "Wert"]); row += 1
 for lab, f, fmt in [("Team-Start", f"=\"{MI.LABELS[0]}\"", "@"), ("Umsatz erste 12 Team-Monate", f"='Ausbau ab 10k'!Q{RW['umsatz']}", EUR),
@@ -298,22 +322,22 @@ for lab, f, fmt in [("Team-Start", f"=\"{MI.LABELS[0]}\"", "@"), ("Umsatz erste 
                     ("Jahresumsatz-Tempo im 12. Team-Monat", f"='Ausbau ab 10k'!P{RW['tempo']}", EUR)]:
     U.cell(row, 1, lab).font = NORM; c = U.cell(row, 2, f); c.font = GREEN; c.number_format = fmt; row += 1
 U.column_dimensions["A"].width = 46
-for c in "BCD": U.column_dimensions[c].width = 20
+for c in "BCDEFG": U.column_dimensions[c].width = 17
 # Diagramm MRR Solo
 d0 = row + 2
 U.cell(d0, 1, "MRR je Monat (Solo)").font = BOLD
-for j, n in enumerate(M.SZENARIEN): U.cell(d0, 2 + j, n).font = BOLD
+for j, (n, v) in enumerate(SOLO): U.cell(d0, 2 + j, f"{n} · {'Hand' if v == 'hand' else 'auto'}").font = BOLD
 for m in range(1, N + 1):
     U.cell(d0 + m, 1, M.label(m)).font = NORM
-    for j, n in enumerate(M.SZENARIEN):
-        c = U.cell(d0 + m, 2 + j, f"='Solo {n}'!{L(m + 1)}{ROWS[n]['mrr']}"); c.font = GREEN; c.number_format = EUR
-ch = LineChart(); ch.title = "MRR im Solo-Plan"; ch.y_axis.title = "€"; ch.x_axis.title = "Monat"
-ch.add_data(Reference(U, min_col=2, max_col=4, min_row=d0, max_row=d0 + N), titles_from_data=True)
+    for j, (n, v) in enumerate(SOLO):
+        c = U.cell(d0 + m, 2 + j, f"='{blatt(n, v)}'!{L(m + 1)}{ROWS[blatt(n, v)]['mrr']}"); c.font = GREEN; c.number_format = EUR
+ch = LineChart(); ch.title = "MRR Basis: von Hand vs. automatisiert ab Kunde 5"; ch.y_axis.title = "€"; ch.x_axis.title = "Monat"
+ch.add_data(Reference(U, min_col=4, max_col=5, min_row=d0, max_row=d0 + N), titles_from_data=True)
 ch.set_categories(Reference(U, min_col=1, min_row=d0 + 1, max_row=d0 + N))
 for s, col in zip(ch.series, ("C26A2E", "1A8A68", "5B6FC4")):
     s.graphicalProperties.line.solidFill = col; s.graphicalProperties.line.width = 28000; s.smooth = False
 ch.height, ch.width = 9, 18
-U.add_chart(ch, "F4")
+U.add_chart(ch, "I4")
 
 for ws in wb.worksheets:
     for row_ in ws.iter_rows():

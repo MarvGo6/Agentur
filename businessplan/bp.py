@@ -195,7 +195,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 {verdienst_tab()}
 <p class="small">* Einrichtung, laufende Betreuung über 12 Monate und 10 Vertriebsstunden je Abschluss (Recherche, Anschreiben, Gespräch, Angebot). Pflege wird mit der Website verkauft und hat keinen eigenen Vertriebsaufwand.</p>
 <h3>Was daraus folgt</h3>
-<ul><li><strong>Recruiting-Paket</strong> bringt mit {e0(rec['eur_h'])} je Stunde und {e0(rec['umsatz_j1'])} im ersten Jahr am meisten – und trifft den größten Engpass der Zielgruppen.</li>
+<ul><li><strong>Recruiting-Paket</strong> (Verkauf ab Juni 2027) bringt mit {e0(rec['eur_h'])} je Stunde und {e0(rec['umsatz_j1'])} im ersten Jahr am meisten – und trifft den größten Engpass der Zielgruppen.</li>
 <li><strong>Einzelne Websites</strong> lohnen sich allein am wenigsten ({e0(ws['eur_h'])} je Stunde bei Website Start). Sie sind Einstieg, nicht Ziel – das Ziel ist immer ein laufender Vertrag.</li>
 <li><strong>Abos bauen sich auf:</strong> Ein Programm-Kunde bringt jeden Monat {eur(P['programm'])} – ohne erneuten Vertrieb. Der MRR wächst, solange Abschlüsse die Kündigungen übersteigen.</li></ul>
 <h3>Vom Gewinn zum Netto</h3>
@@ -247,7 +247,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 
 <section class="page">{kap(7, "Finanzplan Solo")}
 {szen_tab()}
-<p class="small">* Ergebnis vor Steuern = Einkommen des Gründers. Kosten: {eur(G['fix_kosten'])} Fixkosten und {eur(G['marketing'])} Marketing pro Monat. Kündigungen pro Monat: Pflege {G['churn_pflege']:.0%}, Programm {G['churn_prog']:.0%}, SEO {G['churn_seo']:.0%}, Recruiting {G['churn_rec']:.0%}. Mix der Abschlüsse je 25 % Website, Programm, SEO, Recruiting.</p>
+<p class="small">* Ergebnis vor Steuern = Einkommen des Gründers. Kosten: {eur(G['fix_kosten'])} Fixkosten und {eur(G['marketing'])} Marketing pro Monat. Kündigungen pro Monat: Pflege {G['churn_pflege']:.0%}, Programm {G['churn_prog']:.0%}, SEO {G['churn_seo']:.0%}, Recruiting {G['churn_rec']:.0%}. Mix der Abschlüsse je 25 % Website, Programm, SEO, Recruiting; Recruiting wird erst ab Juni 2027 verkauft, bis dahin je ein Drittel Website, Programm, SEO. Stunden „von Hand“ gerechnet – mit Automatisierung ab Kunde 5 siehe Betriebsplan.</p>
 <h3>Basis-Szenario nach Quartalen</h3>
 <table><thead><tr><th>Zeitraum</th><th class=r>Abschl.</th><th class=r>Umsatz</th><th class=r>Ergebnis*</th><th class=r>MRR Ende</th><th class=r>Prog / SEO / Rec / Pflege</th><th class=r>Std.</th></tr></thead><tbody>{quartale()}</tbody></table>
 <h3>Kapital</h3>
@@ -258,11 +258,11 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <section class="page">{kap(8, "Meilensteine und Prüfpunkte")}
 <table><thead><tr><th>Prüfpunkt</th><th>Plan (Basis)</th><th>Wenn deutlich darunter</th></tr></thead><tbody>
 <tr><td><b>{B[2]['label']}</b></td><td>MRR ≈ {e0(B[2]['mrr'])}, 6–7 Abschlüsse, Vorschau-Websites als Routine</td><td>Branche wechseln, Ansprache kürzen, mehr Telefon-Nachfass</td></tr>
-<tr><td><b>{B[5]['label']}</b></td><td>MRR ≈ {e0(B[5]['mrr'])}, Stundenbudget zu ≈ {B[5]['stunden']/170:.0%} belegt</td><td>Mehr Abos statt Einzel-Websites, Recruiting-Paket stärker anbieten</td></tr>
+<tr><td><b>{B[5]['label']}</b></td><td>MRR ≈ {e0(B[5]['mrr'])}, Stundenbudget zu ≈ {B[5]['stunden']/170:.0%} belegt</td><td>Mehr Abos statt Einzel-Websites, Wachstumsprogramm stärker anbieten, Automatisierung (ab Kunde 5) fertig</td></tr>
 <tr><td><b>{s0['label']}</b></td><td><b>10.000 € MRR</b> – Entscheidung über den Teamaufbau</td><td>Solo weiterführen, bis 10.000 € erreicht sind</td></tr>
 <tr><td><b>{B[11]['label']}</b></td><td>Ohne Team: MRR ≈ {e0(B[11]['mrr'])} bei voller Auslastung</td><td>–</td></tr></tbody></table>
 <h3>Die ersten 30 Tage</h3>
-<ol><li>Name, Domain, Gewerbe, Finanzamt</li><li>Impressum ausfüllen, Website von Vorschau auf öffentlich schalten</li><li>Google-Unternehmensprofil für die Agentur</li><li>Erste Branche wählen (Empfehlung: Pflegedienste oder Dachdecker & Solar – Recruiting-Bedarf)</li>
+<ol><li>Name, Domain, Gewerbe, Finanzamt</li><li>Impressum ausfüllen, Website von Vorschau auf öffentlich schalten</li><li>Google-Unternehmensprofil für die Agentur</li><li>Erste Branche wählen (Empfehlung: Dachdecker & Solar oder Steuerberater – hoher Wert je Kunde, passt zum Wachstumsprogramm)</li>
 <li>Liste mit 100 Betrieben, Vorlage für die Kurzanalyse</li><li>Täglich 6 Betriebe anschreiben, Vorschau-Websites für Interessierte</li><li>Angebots-, Vertrags- und AV-Vorlagen</li></ol>
 </section>
 
@@ -297,7 +297,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 <h3>Grenzen des Modells</h3>
 <ul><li>Kundenzahlen sind Durchschnittswerte; Abschlüsse kommen in Wirklichkeit unregelmäßig.</li><li>Steuern, Krankenversicherung und Altersvorsorge sind nicht abgezogen.</li><li>Zahlungsziele und Ausfälle sind nicht modelliert.</li></ul>
 <h3>Größte Hebel</h3>
-<ul><li><strong>Recruiting-Paket</strong> zuerst anbieten – höchster Verdienst je Stunde.</li><li><strong>Ein Abschluss mehr pro Monat</strong> bringt das 10.000-€-Ziel um Monate nach vorn.</li><li><strong>Standardisierung</strong> erhöht die Solo-Obergrenze über {e0(B[23]['mrr'])} hinaus.</li></ul>
+<ul><li><strong>Wachstumsprogramm</strong> zuerst anbieten – es trägt das MRR. <strong>Recruiting</strong> ab Juni 2027 als Zusatz für Bestandskunden (höchster Verdienst je Stunde).</li><li><strong>Ein Abschluss mehr pro Monat</strong> bringt das 10.000-€-Ziel um Monate nach vorn.</li><li><strong>Standardisierung</strong> erhöht die Solo-Obergrenze über {e0(B[23]['mrr'])} hinaus.</li></ul>
 <div class="box warn">Fazit: 10.000 € MRR sind allein in {ZB} bis {ziel('Konservativ')} Monaten erreichbar – ohne Startkapital und ohne öffentliches Auftreten. Danach trägt ein schrittweise aufgebautes Team die Agentur in Richtung 1 Mio. € Jahresumsatz.</div>
 </section>
 </body></html>"""

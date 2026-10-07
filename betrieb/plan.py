@@ -12,14 +12,13 @@ from content import PREISE as P, eur
 NAME = json.loads((ROOT / "config.json").read_text())["name"]
 def e0(v): return eur(round(v))
 
-# ------------------------------------------------------------------ Wirkung der Automatisierung (Zielzustand)
-AUTO = dict(M.G, h_setup_web=10, h_setup_prog=12, h_setup_seo=5, h_setup_rec=6,
-            h_mon_pflege=0.1, h_mon_prog=5, h_mon_seo=3, h_mon_rec=4, h_vertrieb=7, fix_kosten=M.G["fix_kosten"] + 150)
-HEUTE, AUTOM = M.rechne("Basis"), M.rechne("Basis", AUTO)
+# ------------------------------------------------------------------ Wirkung der Automatisierung (Variante "automatisiert ab Kunde 5" im Finanzmodell)
+AUTO = {k: M.G["a_" + k] for k in M.STUNDEN_KEYS}
+HEUTE, AUTOM = M.rechne("Basis"), M.rechne("Basis", variante="auto")
 M.SZENARIEN["Maximal"] = [6, 8]                      # Nachfrage unbegrenzt -> reine Kapazitätsgrenze
-CAP0, CAP1 = M.rechne("Maximal")[23]["mrr"], M.rechne("Maximal", AUTO)[23]["mrr"]
+CAP0, CAP1 = M.rechne("Maximal")[23]["mrr"], M.rechne("Maximal", variante="auto")[23]["mrr"]
 del M.SZENARIEN["Maximal"]
-H0, H1 = M.h_neu(), M.h_neu(AUTO)
+H0, H1 = M.h_neu(), M.h_neu(auto_an=True)
 ERG0, ERG1 = sum(x["ergebnis"] for x in HEUTE[:24]), sum(x["ergebnis"] for x in AUTOM[:24])
 def kunden(x): return x["k_pflege"] + x["k_prog"] + x["k_seo"] + x["k_rec"]
 def monat_ab(n): return next(x["label"] for x in HEUTE if kunden(x) >= n)
@@ -82,7 +81,7 @@ def mrr_vergleich():
     sx = lambda m: l + (m - 1) / 23 * (W - l - r); sy = lambda v: t + (1 - v / ymax) * (H - t - b)
     g = [f'<line x1="{l}" x2="{W-r}" y1="{sy(v):.1f}" y2="{sy(v):.1f}" stroke="#e4ddd0"/><text x="{l-8}" y="{sy(v)+4:.1f}" text-anchor="end">{eur(v)}</text>' for v in range(0, ymax + 1, 8000)]
     g += [f'<text x="{sx(m):.1f}" y="{H-b+18}" text-anchor="middle">{M.label(m)}</text>' for m in (1, 6, 12, 18, 24)]
-    for rows, c, n in ((HEUTE, "#c26a2e", "heute (alles von Hand)"), (AUTOM, "#1a8a68", "automatisiert (Zielzustand)")):
+    for rows, c, n in ((HEUTE, "#c26a2e", "heute (alles von Hand)"), (AUTOM, "#1a8a68", "automatisiert ab Kunde 5")):
         g.append(f'<polyline points="{" ".join(f"{sx(x["monat"]):.1f},{sy(x["mrr"]):.1f}" for x in rows)}" fill="none" stroke="{c}" stroke-width="2.4"/>')
         g.append(f'<text x="{sx(24)+8:.1f}" y="{sy(rows[-1]["mrr"])+4:.1f}" fill="{c}" font-weight="600">{e0(rows[-1]["mrr"])}</text><text x="{sx(24)+8:.1f}" y="{sy(rows[-1]["mrr"])+16:.1f}" font-size="8.5">{n}</text>')
     g.append(f'<line x1="{l}" x2="{W-r}" y1="{sy(10000):.1f}" y2="{sy(10000):.1f}" stroke="#1c2220" stroke-dasharray="4 4"/><text x="{l+6}" y="{sy(10000)-5:.1f}" fill="#1c2220">10.000 € – Start Team</text>')
@@ -235,7 +234,7 @@ pre{{padding:8pt;white-space:pre-wrap;line-height:1.35}}
 <h1>{NAME} als System</h1><p style="font:500 15pt Fraunces,serif;margin-top:10pt">Wie die Agentur so aufgebaut wird, dass du verkaufst und entscheidest – und der Rest automatisch läuft.</p>
 <p style="max-width:130mm;margin-top:16pt">Dieser Plan vertieft den Businessplan um den Betrieb: Rollen, Werkzeuge, die fünf Kernabläufe, das Dashboard, den Fahrplan in fünf Stufen, Kosten, Risiken – und im Anhang den Prompt, mit dem die Umsetzung später an KI übergeben wird.</p></div>
 <div class="kpis"><div class="kpi"><b>{e0(CAP0)}</b>Obergrenze allein heute (MRR)</div><div class="kpi"><b>{e0(CAP1)}</b>Obergrenze allein mit Automatisierung</div><div class="kpi"><b>{H0:.0f} → {H1:.0f} h</b>Stunden je neuem Abschluss</div><div class="kpi"><b>ca. 80–260 €</b>Systemkosten pro Monat je Stufe</div></div>
-<p class="small">Zahlen aus dem Finanzmodell (finanzen/modell.py), Szenario Basis, Monat 1 = November 2026. Die Automatisierung ist als Zielzustand gerechnet; sie entsteht schrittweise (Kapitel 9). Werkzeugpreise sind ca.-Werte, vor Abschluss prüfen.</p></section>
+<p class="small">Zahlen aus dem Finanzmodell (finanzen/modell.py), Szenario Basis, Monat 1 = November 2026. Die Automatisierung greift im Modell ab dem 5. Abschluss; was dafür gebaut wird, steht im Automatisierungsplan. Recruiting wird erst ab Juni 2027 verkauft. Werkzeugpreise sind ca.-Werte, vor Abschluss prüfen.</p></section>
 
 <section class="page">{kap(1, "Zusammenfassung")}
 <p>Im Solo-Plan bist du ab <b>{VOLL}</b> voll ausgelastet – nicht der Markt begrenzt das Wachstum, sondern deine 170 Stunden. Jeder neue Abschluss kostet heute im Schnitt <b>{H0:.1f} Stunden</b> im ersten Monat, jeder laufende Kunde mehrere Stunden pro Monat. Genau dort setzt das System an.</p>
@@ -251,7 +250,7 @@ pre{{padding:8pt;white-space:pre-wrap;line-height:1.35}}
 <li><b>Freigeben:</b> Jede KI-Änderung kommt als Vorschlag mit Vorschau – ein Klick.</li>
 <li>Qualität: Stichproben, Kundenfeedback, Verbesserung der Bausteine.</li></ul></div></div>
 {mrr_vergleich()}
-<div class="box">Gleiche Vertriebsleistung (Basis: 2–3 Abschlüsse/Monat), weniger Stunden je Kunde: Nach 24 Monaten <b>{e0(HEUTE[23]['mrr'])} → {e0(AUTOM[23]['mrr'])} MRR</b>, Ergebnis vor Steuern über 24 Monate <b>{e0(ERG0)} → {e0(ERG1)}</b> (inkl. ca. 150 € höherer Systemkosten pro Monat). Mehr Vertrieb erhöht die Obergrenze allein auf rund <b>{e0(CAP1)}</b>.</div>
+<div class="box">Gleiche Vertriebsleistung (Basis: 2–3 Abschlüsse/Monat), weniger Stunden je Kunde: Nach 24 Monaten <b>{e0(HEUTE[23]['mrr'])} → {e0(AUTOM[23]['mrr'])} MRR</b>, Ergebnis vor Steuern über 24 Monate <b>{e0(ERG0)} → {e0(ERG1)}</b> (inkl. ca. {e0(M.G['auto_kosten'])} höherer Systemkosten pro Monat). Mehr Vertrieb erhöht die Obergrenze allein auf rund <b>{e0(CAP1)}</b>.</div>
 </section>
 
 <section class="page">{kap(2, "Struktur: Wer macht was")}
@@ -288,7 +287,7 @@ pre{{padding:8pt;white-space:pre-wrap;line-height:1.35}}
 {tab(["Aufgabe", "heute", "mit System", "Wodurch"], [[a, f"{h0:g} h", f"<b>{h1:g} h</b>", w] for a, h0, h1, w in STUNDEN])}
 <div class="cols"><div class="box">Ø Stunden je neuem Abschluss (inkl. erstem Betreuungsmonat und Vertrieb): <b>{H0:.1f} h → {H1:.1f} h</b>.</div>
 <div class="box">Obergrenze MRR allein (volle 170 h, unbegrenzte Nachfrage): <b>{e0(CAP0)} → {e0(CAP1)}</b>.</div></div>
-<p class="small">Annahmen für den Zielzustand; tatsächliche Werte im Dashboard (Zeiterfassung) messen und das Modell monatlich nachziehen.</p>
+<p class="small">Werte „mit System“ gelten im Modell ab Kunde 5; tatsächliche Werte im Dashboard (Zeiterfassung) messen und das Modell monatlich nachziehen.</p>
 {kap(7, "Dashboard")}
 {cockpit()}
 <p class="leg">Entwurf des Cockpits (Beispielwerte). Mobil zuerst, Dunkelmodus.</p>

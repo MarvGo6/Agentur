@@ -25,6 +25,10 @@ Berichte, Abrechnung und Kennzahlen laufen automatisiert oder werden von KI vorb
 - Cloudflare (DNS, Turnstile), ntfy (Push), Claude API
 - **Nicht anfassen:** Supabase-Projekt des Vertriebs-OS (`mscipkkvljajnwjfabjv`) – anderes Geschäft, getrennt halten.
 
+**Automatisierungen:** vollständige Liste mit Reihenfolge, Stunden-Ersparnis und Kosten in `betrieb/Automatisierungsplan.pdf`
+(Quelle: `betrieb/automatisierung.py`). IDs dort (V1–V6, E1–E5, Ü1–Ü3, B1–B9, F1–F5, S1–S2) in Commits und PRs nennen.
+Das Finanzmodell rechnet „von Hand“ und „automatisiert ab Kunde 5“; Recruiting wird erst ab Juni 2027 verkauft.
+
 **Preise (Quelle der Wahrheit: `content.py` → `PREISE`):** Website Start 1.490 €, Website Wachstum 2.990 €,
 Pflege 49/89 €/Monat, SEO Lokal 390 €, SEO Plus 690 €/Monat, Google Ads 390 € + 290 €/Monat,
 Recruiting 1.490 € + 790 €/Monat, Wachstumsprogramm 1.490 € Einrichtung + 1.190 €/Monat (12 Monate).
@@ -109,4 +113,5 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 ## Änderungsprotokoll
 - 2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).
 - 2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.
+- 2026-10-07: Automatisierungsplan (30 Automatisierungen, 5 Phasen), Finanzmodell mit zwei Varianten, Recruiting ab Juni 2027.
 - 2026-10-07: Cookie-Konformität (Zählung ohne Endgerätezugriff, Einwilligungs-Baustein, Analyse-Prüfungen), Dashboard als zentrale Steuerung erweitert.
