@@ -73,7 +73,10 @@ Harte Regeln:
 - Verwende ausschließlich Fakten aus den gelieferten Angaben. Erfinde keine Zahlen, Jahre, Zertifikate, Preise, Namen, Bewertungen oder Zitate.
 - Fehlt eine Angabe, die ein Text braucht, schreibe genau „[PRÜFEN]“ an die Stelle und nimm die Frage in „offene_fragen“ auf.
 - Lokale Suchmaschinen- und KI-Sichtbarkeit: Leistung und Ort natürlich nennen, Fragen so beantworten, wie Kunden sie stellen.
-- Kurze Sätze. Keine Wiederholungen zwischen den Seiten."""
+- Kurze Sätze. Keine Wiederholungen zwischen den Seiten.
+- Keine Werbe- und KI-Floskeln: nicht „maßgeschneidert“, „ganzheitlich“, „aus einer Hand“, „Ihr Partner für …“, „mit Leidenschaft“, „ehrlich“, „echt“,
+  „Mehrwert“, „innovativ“, „nahtlos“, „auf das nächste Level“, „in der heutigen Zeit“, „nicht nur …, sondern auch“. Keine Dreier-Aufzählungen als Stilmittel.
+- Gedankenstriche nicht als Satzverbinder benutzen; lieber Punkt, Komma oder Doppelpunkt."""
 
 
 def client():

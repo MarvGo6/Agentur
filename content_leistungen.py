@@ -11,7 +11,7 @@ TIEFE = {
  "intro_h2": "Was Google Ads für einen lokalen Betrieb leisten",
  "intro": [
   "Google Ads sind die Anzeigen über und neben den normalen Suchergebnissen und in Google Maps. Sie zahlen nur, wenn jemand klickt. Für lokale Betriebe ist das der schnellste Weg zu Anfragen: Die Anzeige erscheint genau dann, wenn jemand „Dachdecker Bielefeld“ oder „Tierarzt Notdienst“ eingibt.",
-  "Der Unterschied zwischen Geld verbrennen und Aufträgen liegt in drei Dingen: Auf welche Suchbegriffe Sie bieten, wohin der Klick führt und ob Sie messen, was danach passiert. Genau daran arbeiten wir jeden Monat.",
+  "Ob daraus Aufträge werden, hängt vor allem von drei Dingen ab: Auf welche Suchbegriffe Sie bieten, wohin der Klick führt und ob Sie messen, was danach passiert. Genau daran arbeiten wir jeden Monat.",
  ],
  "fuer_wen": [
   ("Notdienste und dringende Anliegen", "Rohrbruch, Sturmschaden, krankes Tier: Wer jetzt sucht, ruft das erste passende Ergebnis an. Ohne Anzeige sind Sie dort oft nicht zu sehen."),
@@ -63,7 +63,7 @@ TIEFE = {
  "intro": [
   "Bei lokalen Suchen wie „Friseur in der Nähe“ oder „Steuerberater Münster“ zeigt Google zuerst eine Karte mit drei Betrieben, darunter die normalen Ergebnisse. Lokale SEO sorgt dafür, dass Sie an beiden Stellen auftauchen. Sie ist der Teil der Suchmaschinenoptimierung, der sich um Ort, Nähe und Vertrauen dreht.",
   "Google bewertet dabei vor allem drei Dinge: Relevanz (passt Ihr Angebot zur Suche?), Entfernung (wie nah sind Sie?) und Bekanntheit (Bewertungen, Erwähnungen, Links). Die Entfernung können wir nicht ändern. Relevanz und Bekanntheit schon.",
-  "Dazu kommt ein neuer Weg: Immer mehr Menschen fragen ChatGPT, Gemini oder Googles KI-Übersicht nach Empfehlungen. Diese Systeme greifen auf dieselben Grundlagen zurück: klare Seiten, strukturierte Daten, einheitliche Einträge und Bewertungen.",
+  "Dazu kommt ein neuer Weg: Immer mehr Menschen fragen ChatGPT, Gemini oder Googles KI-Übersicht nach Empfehlungen. Diese Systeme greifen auf dieselben Grundlagen zurück: verständliche Seiten, strukturierte Daten, einheitliche Einträge und Bewertungen.",
  ],
  "fuer_wen": [
   ("Betriebe mit festem Einzugsgebiet", "Handwerk, Praxen, Salons, Kanzleien: Kunden kommen aus 10 bis 30 km Umkreis und suchen mit Ortsangabe oder „in der Nähe“."),
@@ -77,7 +77,7 @@ TIEFE = {
   ], None),
   ("Eine Seite pro Leistung und Ort", [
    "Eine einzige Seite „Unsere Leistungen“ kann nicht für zehn verschiedene Suchen gut ranken. Wir bauen für jede wichtige Leistung eine eigene Seite und für die wichtigsten Orte im Einzugsgebiet eigene Abschnitte oder Seiten.",
-   "Wichtig: Jede Ortsseite braucht echten, eigenen Inhalt, zum Beispiel Einsätze in diesem Ort, Anfahrt und Besonderheiten. Kopierte Seiten mit ausgetauschtem Ortsnamen wertet Google ab. Solche Seiten bauen wir nicht.",
+   "Wichtig: Jede Ortsseite braucht eigenen Inhalt, zum Beispiel Einsätze in diesem Ort, Anfahrt und Besonderheiten. Kopierte Seiten mit ausgetauschtem Ortsnamen wertet Google ab. Solche Seiten bauen wir nicht.",
   ], None),
   ("Bewertungen: mehr, regelmäßiger, beantwortet", [
    "Die Zahl, die Aktualität und die Antworten auf Bewertungen beeinflussen Ranking und Klickrate. Wir richten einen einfachen Ablauf ein: Nach jedem Auftrag bekommt der Kunde einen Kurzlink per SMS oder E-Mail. Gekaufte oder vorformulierte Bewertungen gibt es bei uns nicht. Das verstößt gegen Googles Richtlinien und gegen das Wettbewerbsrecht.",
@@ -105,7 +105,7 @@ TIEFE = {
              ("Positionen für Ihre Kernbegriffe", "5 bis 10 Begriffe, monatlich aus mehreren Orten gemessen"), ("Nennung in KI-Antworten", "Werden Sie bei „bester … in …“ genannt?")],
  "faq": [
   ("Was ist der Unterschied zwischen SEO und Google Ads?", "Bei Google Ads zahlen Sie für jeden Klick, die Anzeigen stoppen, sobald das Budget endet. SEO baut Sichtbarkeit in den unbezahlten Ergebnissen auf. Das dauert länger, bleibt aber bestehen."),
-  ("Kann ich bei ChatGPT gezielt empfohlen werden?", "Garantieren kann das niemand. Aber KI-Assistenten nutzen öffentliche Quellen: Ihre Website, Ihr Profil, Bewertungen, Verzeichnisse. Je klarer und einheitlicher diese sind, desto eher werden Sie genannt. Wir messen das monatlich."),
+  ("Kann ich erreichen, dass ChatGPT mich empfiehlt?", "Garantieren kann das niemand. Aber KI-Assistenten nutzen öffentliche Quellen: Ihre Website, Ihr Profil, Bewertungen, Verzeichnisse. Je klarer und einheitlicher diese sind, desto eher werden Sie genannt. Wir messen das monatlich."),
   ("Was brauchen Sie von mir?", "Zugang zum Google-Profil (oder wir legen es mit Ihnen an), Fotos aus Ihrem Betrieb und etwa 30 Minuten im Monat für Fragen und Freigaben."),
  ],
 },
@@ -116,7 +116,7 @@ TIEFE = {
  "intro_h2": "Was eine Website für einen lokalen Betrieb leisten muss",
  "intro": [
   "Die meisten Besucher kommen über das Handy, haben ein konkretes Anliegen und wenig Geduld. Eine gute Betriebs-Website beantwortet deshalb in wenigen Sekunden: Was bieten Sie an, wo, für wen, und wie erreiche ich Sie? Alles andere kommt danach.",
-  "Wir bauen Websites, die drei Aufgaben erfüllen: gefunden werden (Technik und Inhalte für Google und KI-Suche), überzeugen (echte Fotos, klare Leistungen, Bewertungen) und Anfragen auslösen (Anrufknopf, kurze Formulare, Online-Termin).",
+  "Wir bauen Websites, die drei Aufgaben erfüllen: gefunden werden (Technik und Inhalte für Google und KI-Suche), überzeugen (Fotos aus dem Betrieb, klare Leistungen, Bewertungen) und Anfragen auslösen (Anrufknopf, kurze Formulare, Online-Termin).",
  ],
  "fuer_wen": [
   ("Betriebe ohne eigene Website", "Bisher nur Google-Profil oder Facebook? Eine eigene Seite macht Sie unabhängig und bringt Anfragen, die nicht über Portale laufen."),
@@ -140,7 +140,7 @@ TIEFE = {
   ], None),
  ],
  "kosten": {
-  "text": "Sie zahlen einen Festpreis für den Bau und einen Monatsbetrag für Hosting, Sicherheit und kleine Änderungen. Kein Stundenzettel, keine Überraschungen.",
+  "text": "Sie zahlen einen Festpreis für den Bau und einen Monatsbetrag für Hosting, Sicherheit und kleine Änderungen. Was es kostet, steht vorher fest.",
   "zeilen": [("Website Start (bis 5 Seiten)", eur(P["web_start"]) + " einmalig"), ("Website Wachstum (bis 15 Seiten, Orts- und Karriereseiten)", eur(P["web_wachstum"]) + " einmalig"),
              ("Pflege & Hosting Start / Wachstum", f"{P['pflege_start']} € bzw. {P['pflege_wachstum']} € im Monat, 12 Monate Laufzeit"), ("Zahlung", "50 % bei Auftrag, 50 % nach Abnahme")],
   "hinweis": "Domain, Inhalte und Dateien gehören Ihnen. Wenn Sie die Pflege beenden, bekommen Sie alles übergeben.",
@@ -166,7 +166,7 @@ TIEFE = {
  "intro_h2": "Warum Stellenanzeigen allein oft nicht mehr reichen",
  "intro": [
   "Wer heute eine Pflegefachkraft, einen Gesellen oder eine Fachangestellte sucht, konkurriert mit vielen Betrieben um wenige Menschen. Die meisten davon haben bereits einen Job und schauen nicht aktiv in Stellenbörsen. Sie wechseln trotzdem, wenn das Angebot passt und die Bewerbung einfach ist.",
-  "Unser Recruiting setzt deshalb dort an, wo diese Menschen ohnehin sind: auf Instagram, Facebook und in der Google-Suche. Die Anzeige führt auf eine Karriereseite, die ehrlich zeigt, wie es bei Ihnen ist. Die Bewerbung dauert eine Minute.",
+  "Unser Recruiting setzt deshalb dort an, wo diese Menschen ohnehin sind: auf Instagram, Facebook und in der Google-Suche. Die Anzeige führt auf eine Karriereseite, die zeigt, wie der Arbeitsalltag bei Ihnen aussieht. Die Bewerbung dauert eine Minute.",
  ],
  "fuer_wen": [
   ("Pflegedienste und Einrichtungen", "Pflegefachkräfte, Pflegehilfskräfte und Auszubildende, oft in Teilzeit und mit Wunsch nach verlässlichen Dienstplänen."),
@@ -174,7 +174,7 @@ TIEFE = {
   ("Praxen und Kanzleien", "Medizinische, tiermedizinische und Steuerfachangestellte, die planbare Arbeitszeiten suchen."),
  ],
  "abschnitte": [
-  ("Die Karriereseite: ehrlich statt austauschbar", [
+  ("Die Karriereseite: konkret statt austauschbar", [
    "Sätze wie „junges dynamisches Team“ lesen Bewerber in jeder Anzeige. Überzeugend sind konkrete Angaben: Gehaltsrahmen, Arbeitszeiten, Dienstplan, Fahrzeug, Urlaub, wer die Kollegen sind. Wir sammeln diese Argumente mit Ihnen und zeigen sie mit echten Fotos aus Ihrem Betrieb.",
   ], None),
   ("Bewerbung in 60 Sekunden", [
@@ -211,7 +211,7 @@ TIEFE = {
 # ---------------------------------------------------------------------------------------------- Wachstumsprogramm
 "wachstum": {
  "seo": "Online-Marketing für lokale Betriebe: Website, SEO und Ads",
- "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads aus einer Hand, mit festem Ziel und Monatsgespräch. 1.490 € Einrichtung, 1.190 € im Monat.",
+ "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads zusammen geplant, mit festem Ziel und Monatsgespräch. 1.490 € Einrichtung, 1.190 € im Monat.",
  "intro_h2": "Warum die Bausteine zusammen besser wirken",
  "intro": [
   "Anzeigen bringen schnell Besucher. SEO bringt auf Dauer Besucher, ohne pro Klick zu zahlen. Die Website entscheidet, wie viele davon anfragen. Wer nur einen dieser Bausteine angeht, verschenkt oft die Wirkung der anderen: Gute Anzeigen auf eine schwache Seite kosten viel, eine gute Seite ohne Sichtbarkeit bringt wenig.",
@@ -219,8 +219,8 @@ TIEFE = {
  ],
  "fuer_wen": [
   ("Betriebe mit hohem Auftragswert", "Wenn ein Neukunde mehrere tausend Euro bringt, rechnet sich ein festes Monatsbudget für Sichtbarkeit schnell."),
-  ("Wer wachsen oder ein neues Standbein aufbauen will", "Neue Leistung, neuer Ort, zweiter Standort: Das Programm baut die Sichtbarkeit gezielt dafür auf."),
-  ("Wer einen Ansprechpartner statt drei Dienstleistern will", "Eine Zuständigkeit, ein Bericht, ein Gespräch im Monat."),
+  ("Wer wachsen oder ein neues Standbein aufbauen will", "Neue Leistung, neuer Ort, zweiter Standort: Das Programm baut die Sichtbarkeit genau dafür auf."),
+  ("Wer einen Ansprechpartner statt drei Dienstleistern will", "Sie haben einen Ansprechpartner und bekommen einen gemeinsamen Bericht für alles."),
  ],
  "abschnitte": [
   ("Die ersten 30 Tage", [
@@ -230,7 +230,7 @@ TIEFE = {
    "Wir bauen Seiten für Leistungen und Orte aus, richten den Bewertungsablauf ein und schärfen die Anzeigen nach. Budget fließt dorthin, wo Anfragen am günstigsten entstehen.",
   ], None),
   ("Monat 7 bis 12", [
-   "Mit wachsender organischer Sichtbarkeit können Anzeigen oft gezielter eingesetzt werden. Wir bauen aus, was wirkt, und lassen weg, was nichts bringt. Jedes Quartal legen wir gemeinsam die nächsten Schritte fest.",
+   "Mit wachsender organischer Sichtbarkeit können Anzeigen oft sparsamer eingesetzt werden. Wir bauen aus, was wirkt, und lassen weg, was nichts bringt. Jedes Quartal legen wir gemeinsam die nächsten Schritte fest.",
   ], None),
  ],
  "kosten": {

@@ -208,37 +208,37 @@ def b_cta(d):
     return f'<section class="sec" style="padding-top:20px"><div class="w"><div class="cta-band"><div><h2>{d["h2"]}</h2><p>{d["p"]}</p></div><a class="btn" href="{d["btn"][1]}">{d["btn"][0]}</a></div></div></section>'
 
 FORMS = {
- "termin": lambda d: f'''<h3>Termin anfragen</h3><p class="ok">Wählen Sie Leistung und Wunschzeit – wir bestätigen per SMS.</p><form class="demo-form">
+ "termin": lambda d: f'''<h3>Termin anfragen</h3><p class="ok">Wählen Sie Leistung und Wunschzeit. Wir bestätigen per SMS.</p><form class="demo-form">
 <label>Leistung<select>{"".join(f"<option>{o}</option>" for o in d.get("optionen", ["Schnitt &amp; Styling", "Farbe / Balayage", "Herrenschnitt", "Beratung"]))}</select></label>
 <label>Wunschtermin</label><div class="slots"><i>Di 10:30</i><i class="on">Di 14:00</i><i>Mi 09:00</i><i>Mi 16:30</i><i>Do 11:00</i><i>Fr 15:30</i></div>
 <div class="row"><label>Name<input placeholder="Vor- und Nachname"></label><label>Handy<input placeholder="Für die Bestätigung"></label></div>
-<button class="btn">Termin anfragen</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
+<button class="btn">Termin anfragen</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
  "anfrage": lambda d: f'''<h3>Kostenlose Ersteinschätzung</h3><p class="ok">Fotos genügen oft für eine erste Einschätzung. Rückruf innerhalb von 24 Stunden.</p><form class="demo-form">
 <div class="opt"><label><input type="radio" name="t" checked> Dachsanierung</label><label><input type="radio" name="t"> Photovoltaik</label><label><input type="radio" name="t"> Reparatur / Sturmschaden</label><label><input type="radio" name="t"> Flachdach</label></div>
 <div class="row"><label>Name<input placeholder="Ihr Name"></label><label>Telefon<input placeholder="Für den Rückruf"></label></div>
 <label>Postleitzahl<input placeholder="z. B. 12345"></label><div class="drop">📷 Fotos vom Dach hierher ziehen (optional)</div>
-<button class="btn">Anfrage senden</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
- "erstgespraech": lambda d: f'''<h3>Erstgespräch buchen</h3><p class="ok">20 Minuten per Video oder Telefon – kostenlos und unverbindlich.</p><form class="demo-form">
+<button class="btn">Anfrage senden</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
+ "erstgespraech": lambda d: f'''<h3>Erstgespräch buchen</h3><p class="ok">20 Minuten per Video oder Telefon, kostenlos und unverbindlich.</p><form class="demo-form">
 <label>Worum geht es?<select><option>Laufende Buchhaltung &amp; Lohn</option><option>Jahresabschluss</option><option>Kanzleiwechsel</option><option>Gründung</option></select></label>
 <label>Freie Termine diese Woche</label><div class="slots"><i>Mo 08:30</i><i>Di 12:00</i><i class="on">Mi 10:00</i><i>Do 17:30</i><i>Fr 09:00</i></div>
 <div class="row"><label>Name<input></label><label>Betrieb<input placeholder="z. B. Malerbetrieb"></label></div><label>E-Mail<input></label>
-<button class="btn">Termin bestätigen</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
+<button class="btn">Termin bestätigen</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
  "bewerbung": lambda d: f'''<h3>Bewerbung in 60 Sekunden</h3><p class="ok">Kein Lebenslauf, kein Anschreiben. Wir rufen Sie innerhalb von 48 Stunden an.</p><form class="demo-form">
 <label>Ihre Qualifikation</label><div class="opt"><label><input type="radio" name="q" checked> Pflegefachkraft</label><label><input type="radio" name="q"> Pflegehelfer:in</label><label><input type="radio" name="q"> Azubi</label></div>
 <label>Wunsch-Stunden</label><div class="opt"><label><input type="radio" name="s"> Vollzeit</label><label><input type="radio" name="s" checked> Teilzeit</label><label><input type="radio" name="s"> Minijob</label></div>
 <div class="row"><label>Vorname<input></label><label>Handy<input placeholder="Für den Rückruf"></label></div>
-<button class="btn acc">Jetzt bewerben</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
+<button class="btn acc">Jetzt bewerben</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
  "rueckruf": lambda d: f'''<h3>Rückruf anfordern</h3><p class="ok">Für Fragen zur Vorsorge oder zu Kosten. Im Trauerfall rufen Sie bitte direkt an.</p><form class="demo-form">
 <div class="row"><label>Name<input></label><label>Telefon<input></label></div>
 <label>Wann passt es Ihnen?<select><option>Vormittags</option><option>Nachmittags</option><option>Abends</option></select></label>
 <label>Ihr Anliegen (optional)<textarea rows="3"></textarea></label>
-<button class="btn">Rückruf anfordern</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
- "tierarzt": lambda d: f'''<h3>Termin oder Rezept</h3><p class="ok">Anfrage online – wir bestätigen werktags innerhalb von zwei Stunden.</p><form class="demo-form">
+<button class="btn">Rückruf anfordern</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
+ "tierarzt": lambda d: f'''<h3>Termin oder Rezept</h3><p class="ok">Anfrage online. Wir bestätigen werktags innerhalb von zwei Stunden.</p><form class="demo-form">
 <div class="opt"><label><input type="radio" name="a" checked> Terminanfrage</label><label><input type="radio" name="a"> Rezept / Futter bestellen</label></div>
 <div class="row"><label>Ihr Tier<select><option>Hund</option><option>Katze</option><option>Kaninchen</option><option>Anderes</option></select></label><label>Name des Tieres<input placeholder="z. B. Mia"></label></div>
 <label>Anliegen<select><option>Impfung / Vorsorge</option><option>Zahnkontrolle</option><option>Physiotherapie</option><option>Krankheit / Beschwerden</option></select></label>
 <div class="row"><label>Ihr Name<input></label><label>Telefon<input></label></div>
-<button class="btn">Anfrage senden</button><p class="ok">Vorschau – das Formular sendet nichts.</p></form>''',
+<button class="btn">Anfrage senden</button><p class="ok">Vorschau: Das Formular sendet nichts.</p></form>''',
 }
 
 def b_contact(d):
@@ -298,39 +298,39 @@ DEMOS["friseur"] = {
  "strip": ["Di–Fr 9–19 Uhr · Sa 8–15 Uhr", "Marktstraße 8 · Musterstadt", '<span class="stars">★★★★★</span> 4,9 bei Google (Beispiel)'],
  "nav": [("Leistungen", "#leistungen"), ("Preise", "#preise"), ("Team", "#team"), ("Salon", "#salon")], "cta": ("Termin buchen", "#kontakt"),
  "hero": {"eb": "Friseursalon in Musterstadt", "h1": "Schnitte, die auch am dritten Tag noch sitzen.",
-          "lead": "Zwei Stühle, viel Zeit für Beratung und Farben, die zu Ihnen passen. Termine online buchen – auch abends um zehn.",
+          "lead": "Zwei Stühle, viel Zeit für Beratung und Farben, die zu Ihnen passen. Termine online buchen, auch abends um zehn.",
           "ctas": [("Freien Termin finden", "#kontakt"), ("Preise ansehen", "#preise")],
-          "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> aus 187 Bewertungen', "Nur mit Termin – keine Wartezeit", "Olaplex &amp; vegane Farben"],
+          "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> aus 187 Bewertungen', "Nur mit Termin, ohne Wartezeit", "Olaplex &amp; vegane Farben"],
           "floats": fl("left:-18px;top:34px;width:250px", "<h4>Nächste freie Termine</h4><div class='slots'><i>Heute 16:30</i><i class='on'>Mi 10:00</i><i>Do 14:30</i></div>")
                   + fl("right:-12px;bottom:30px;width:240px", "<div class='stars'>★★★★★</div><p style='margin:6px 0 4px'>„Endlich jemand, der zuhört. Beste Farbe seit Jahren.“</p><span class='muted'>Lea, Neukundin</span>")},
  "sections": [
-  ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Alles, was Ihr Haar braucht", "p": "Jede Behandlung beginnt mit einer ehrlichen Beratung – kostenlos und ohne Zeitdruck.", "cols": 3, "items": [
-    ("scissors", "Schnitt &amp; Styling", "Waschen, Beratung, Schnitt und Föhnen – passend zu Gesicht, Haarstruktur und Alltag.", "Damen ab", "54 €"),
-    ("drop", "Farbe &amp; Balayage", "Natürliche Verläufe, Grauabdeckung oder ein ganz neuer Look – mit pflegenden, veganen Farben.", "ab", "89 €"),
+  ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Alles, was Ihr Haar braucht", "p": "Jede Behandlung beginnt mit einer Beratung, kostenlos und ohne Zeitdruck.", "cols": 3, "items": [
+    ("scissors", "Schnitt &amp; Styling", "Waschen, Beratung, Schnitt und Föhnen, passend zu Gesicht, Haarstruktur und Alltag.", "Damen ab", "54 €"),
+    ("drop", "Farbe &amp; Balayage", "Natürliche Verläufe, Grauabdeckung oder ein ganz neuer Look mit pflegenden, veganen Farben.", "ab", "89 €"),
     ("spark", "Pflege &amp; Treatments", "Olaplex-Kur, Kopfhautpflege und Glossing für Glanz, der bleibt.", "ab", "29 €")]}),
-  ("split", {"id": "salon", "eb": "Der Salon", "h2": "Klein, ruhig und mit Zeit für Sie", "p": "Bei uns gibt es keine Fließbandtermine. Zwei Stühle, ein Termin nach dem anderen – und am Ende eine Frisur, die Sie zu Hause selbst hinbekommen.",
+  ("split", {"id": "salon", "eb": "Der Salon", "h2": "Klein, ruhig und mit Zeit für Sie", "p": "Bei uns gibt es keine Fließbandtermine. Zwei Stühle, ein Termin nach dem anderen, und am Ende eine Frisur, die Sie zu Hause selbst hinbekommen.",
     "fotos": [(705255, "Salon mit hellen Stühlen"), (3356170, "Haarschnitt im Salon"), (2799605, "Styling mit Rundbürste"), (853427, "Friseurstühle vor Spiegeln")],
     "list": ["Eine Ansprechpartnerin vom Waschen bis zum Föhnen", "Tipps für das Styling zu Hause", "Kaffee, Tee und WLAN"], "cta": ("Termin buchen", "#kontakt"),
     "vis": '<div class="ba"><div style="background:linear-gradient(160deg,#c9a28f,#7d5446)">Vorher</div><div style="background:linear-gradient(160deg,#e0b9a3,#a9604d)">Nachher</div><div style="background:linear-gradient(160deg,#b98d7a,#4c3029)">Balayage</div><div style="background:linear-gradient(160deg,#d8c2b5,#8c6b5f)">Bob</div></div>'}),
   ("prices", {"id": "preise", "cls": "tint", "eb": "Preise", "h2": "Transparente Preise", "p": "Alle Preise inklusive Waschen, Beratung und Styling. Für sehr langes Haar kann ein Aufschlag anfallen.", "rows": [
     ("Damenschnitt", "Waschen, Schnitt, Föhnen", "ab 54 €"), ("Herrenschnitt", "Waschen, Schnitt, Styling", "32 €"), ("Ansatzfarbe", "inkl. Schnitt", "ab 89 €"),
     ("Balayage", "inkl. Glossing und Schnitt", "ab 169 €"), ("Olaplex-Treatment", "als Zusatz", "29 €"), ("Kinder bis 12 Jahre", "", "22 €")],
-    "side": '<div class="card"><h3>Neu bei uns?</h3><p>Beim ersten Termin nehmen wir uns 15 Minuten extra für die Beratung – ohne Aufpreis.</p><a class="btn" style="margin-top:18px" href="#kontakt">Ersttermin buchen</a></div>'}),
+    "side": '<div class="card"><h3>Neu bei uns?</h3><p>Beim ersten Termin nehmen wir uns 15 Minuten extra für die Beratung, ohne Aufpreis.</p><a class="btn" style="margin-top:18px" href="#kontakt">Ersttermin buchen</a></div>'}),
   ("team", {"id": "team", "eb": "Team", "h2": "Die Menschen hinter dem Spiegel", "people": [
     ("S", "Sabine Kante", "Inhaberin · Farbe &amp; Balayage", "#b5705f"), ("M", "Mila Roth", "Schnitt &amp; Kurzhaar", "#7c5a50"), ("J", "Jonas Peh", "Herren &amp; Barber · samstags", "#3b302d")]}),
   ("quotes", {"cls": "tint", "eb": "Stimmen", "h2": "Was Kundinnen sagen", "p": "Beispieltexte für die Vorschau.", "items": [
     ("Endlich ein Salon, in dem man sich nicht abgefertigt fühlt. Die Farbe ist genau so geworden, wie ich sie wollte.", "Lea M.", "Balayage"),
     ("Online gebucht, pünktlich drangekommen, toller Schnitt. Komme wieder.", "Tim K.", "Herrenschnitt"),
-    ("Sabine hat mir ehrlich gesagt, was zu meinem Haar passt – und was nicht. Genau das habe ich gesucht.", "Jana R.", "Schnitt &amp; Pflege")]}),
+    ("Sabine hat mir gesagt, was zu meinem Haar passt und was nicht. Das habe ich gesucht.", "Jana R.", "Schnitt &amp; Pflege")]}),
   ("faq", {"eb": "Fragen", "h2": "Gut zu wissen", "items": [
     ("Kann ich auch ohne Termin kommen?", "Wir arbeiten nur mit Termin, damit niemand warten muss. Kurzfristige Lücken sehen Sie online."),
-    ("Wie kurzfristig kann ich absagen?", "Bis 24 Stunden vorher kostenlos – einfach über den Link in der Bestätigung."),
+    ("Wie kurzfristig kann ich absagen?", "Bis 24 Stunden vorher kostenlos, über den Link in der Bestätigung."),
     ("Welche Farben verwenden Sie?", "Vegane, ammoniakarme Farben und Olaplex für den Schutz der Haarstruktur."),
     ("Kann ich mit Karte zahlen?", "Ja, mit EC-Karte, Kreditkarte, Apple Pay und Google Pay.")]}),
-  ("contact", {"eb": "Termin", "h2": "In 30 Sekunden zum Termin", "p": "Wählen Sie Leistung und Zeit – die Bestätigung kommt per SMS.", "form": "termin",
+  ("contact", {"eb": "Termin", "h2": "In 30 Sekunden zum Termin", "p": "Wählen Sie Leistung und Zeit. Die Bestätigung kommt per SMS.", "form": "termin",
     "info": [("map", "Marktstraße 8, Musterstadt", "Parkplätze im Hof, Bus 4 bis Marktplatz"), ("clock", "Öffnungszeiten", "Di–Fr 9–19 Uhr · Sa 8–15 Uhr"), ("phone", "0123 456 789", "Lieber telefonisch? Gern zu den Öffnungszeiten.")]}),
  ],
- "footer": {"about": "Friseursalon für Schnitt und Farbe. Zwei Stühle, viel Zeit, ehrliche Beratung.", "cols": [("Salon", ["Marktstraße 8", "12345 Musterstadt", "0123 456 789"]), ("Öffnungszeiten", ["Di–Fr 9–19 Uhr", "Sa 8–15 Uhr", "So/Mo geschlossen"]), ("Mehr", ["Gutscheine", "Impressum", "Datenschutz"])]},
+ "footer": {"about": "Friseursalon für Schnitt und Farbe. Zwei Stühle und genug Zeit für die Beratung.", "cols": [("Salon", ["Marktstraße 8", "12345 Musterstadt", "0123 456 789"]), ("Öffnungszeiten", ["Di–Fr 9–19 Uhr", "Sa 8–15 Uhr", "So/Mo geschlossen"]), ("Mehr", ["Gutscheine", "Impressum", "Datenschutz"])]},
  "mbar": [("Termin buchen", "#kontakt"), ("Anrufen", "#kontakt")],
 }
 
@@ -342,10 +342,10 @@ DEMOS["barber"] = {
  "vars": {"bg": "#111214", "bg2": "#18191c", "card": "#1c1d21", "ink": "#f2efe9", "muted": "#a7a29a", "line": "#2c2d32", "brand": "#c8a165", "brand-ink": "#111214",
           "accent": "#c8a165", "soft": "#2a2620", "display": "Archivo,Inter,sans-serif", "body": "Inter,system-ui,sans-serif", "dw": "800", "dls": "-.02em", "br": "4px", "mr": "4px", "cr": "8px", "rr": "10px",
           "strip": "#c8a165", "strip-ink": "#111214", "dark": "#18191c", "dark-ink": "#f2efe9", "ft": "#0a0a0b", "stage": "#141518", "star": "#c8a165"},
- "strip": ["Di–Fr 10–20 Uhr · Sa 9–18 Uhr", "Termine online – Walk-ins wenn frei", '<span class="stars">★★★★★</span> 4,9 bei Google (Beispiel)'],
+ "strip": ["Di–Fr 10–20 Uhr · Sa 9–18 Uhr", "Termine online, Walk-ins wenn frei", '<span class="stars">★★★★★</span> 4,9 bei Google (Beispiel)'],
  "nav": [("Services", "#leistungen"), ("Preise", "#preise"), ("Barber", "#team"), ("Shop", "#shop")], "cta": ("Jetzt buchen", "#kontakt"),
  "hero": {"eb": "Barbershop im Szeneviertel", "h1": "Saubere Fades. Scharfe Konturen. Kein Warten.",
-          "lead": "Haare, Bart und Rasur bei drei Barbern, die ihr Handwerk lieben. Buch deinen Slot online – und sitz pünktlich im Stuhl.",
+          "lead": "Haare, Bart und Rasur bei drei Barbern, die sich Zeit für jeden Schnitt nehmen. Buch deinen Slot online und sitz pünktlich im Stuhl.",
           "ctas": [("Slot buchen", "#kontakt"), ("Preise", "#preise")],
           "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> · 412 Bewertungen', "Fade ab 32 €", "Heißtuch-Rasur"],
           "floats": fl("left:-16px;top:40px;width:240px", "<h4>Heute frei bei Can</h4><div class='slots'><i>16:00</i><i class='on'>17:30</i><i>19:00</i></div>")
@@ -353,14 +353,14 @@ DEMOS["barber"] = {
  "sections": [
   ("strip", {"fotos": [(12304508, "Fade-Haarschnitt mit der Maschine"), (897265, "Klassische Rasur im Barbershop"), (9992819, "Bärtiger Kunde im Barbershop")], "cap": "Skin Fade, Taper, Bart in Form, Rasur mit dem Messer."}),
   ("services", {"id": "leistungen", "eb": "Services", "h2": "Was wir machen", "cols": 3, "items": [
-    ("scissors", "Haarschnitt &amp; Fade", "Skin Fade, Taper oder klassischer Schnitt – mit Waschen und Styling.", "ab", "32 €"),
+    ("scissors", "Haarschnitt &amp; Fade", "Skin Fade, Taper oder klassischer Schnitt, mit Waschen und Styling.", "ab", "32 €"),
     ("spark", "Bart in Form", "Konturen mit dem Messer, Länge mit der Maschine, Pflege mit Öl und Balm.", "ab", "22 €"),
     ("drop", "Heißtuch-Rasur", "Die klassische Nassrasur mit heißen Tüchern und Messer. Zeit für dich.", "", "35 €")]}),
   ("prices", {"id": "preise", "cls": "tint", "eb": "Preise", "h2": "Klare Preise. Keine Überraschungen.", "rows": [
     ("Haarschnitt / Fade", "inkl. Waschen &amp; Styling", "32 €"), ("Haare + Bart", "inkl. Heißtuch", "49 €"), ("Bart trimmen &amp; Konturen", "", "22 €"),
     ("Heißtuch-Rasur", "mit Messer", "35 €"), ("Kids bis 12", "", "22 €"), ("Konturen nachziehen", "zwischen zwei Terminen", "12 €")],
-    "side": '<div class="card"><h3>Stammkunden-Abo</h3><p>Zwei Schnitte im Monat zum Festpreis von 59 € – fester Slot bei deinem Barber inklusive.</p><a class="btn" style="margin-top:18px" href="#kontakt">Abo anfragen</a></div>'}),
-  ("split", {"id": "shop", "eb": "Der Shop", "h2": "Drei Stühle. Gute Musik. Kein Fließband.", "p": "Jeder Termin hat 30 Minuten – genug Zeit für einen sauberen Übergang und ein kurzes Gespräch. Kaffee oder ein kaltes Getränk gibt es dazu.",
+    "side": '<div class="card"><h3>Stammkunden-Abo</h3><p>Zwei Schnitte im Monat zum Festpreis von 59 €, fester Slot bei deinem Barber inklusive.</p><a class="btn" style="margin-top:18px" href="#kontakt">Abo anfragen</a></div>'}),
+  ("split", {"id": "shop", "eb": "Der Shop", "h2": "Drei Stühle. Gute Musik. Kein Fließband.", "p": "Jeder Termin hat 30 Minuten. Genug Zeit für einen sauberen Übergang und ein kurzes Gespräch. Kaffee oder ein kaltes Getränk gibt es dazu.",
     "fotos": [(2318055, "Kunden im Barbershop"), (6007400, "Bartpflege mit dem Rasiermesser"), (3998421, "Barber bei der Arbeit"), (7697316, "Goldenes Rasiermesser")],
     "list": ["Termine pro Barber buchbar", "Erinnerung per SMS", "Kartenzahlung &amp; Apple Pay"], "cta": ("Slot buchen", "#kontakt"),
     "vis": '<div class="card"><h3>Walk-ins?</h3><p>Gerne, wenn ein Stuhl frei ist. Freie Slots siehst du online in Echtzeit.</p></div>'}),
@@ -370,7 +370,7 @@ DEMOS["barber"] = {
     ("Bester Fade in der Gegend. Online gebucht, null Wartezeit, Can ist ein Künstler.", "Murat K.", "Skin Fade"),
     ("Die Heißtuch-Rasur ist pure Entspannung. Komme jetzt alle drei Wochen.", "Jonas B.", "Rasur"),
     ("Endlich ein Barber, bei dem der Bart nicht schief wird. Klare Preise, gute Vibes.", "Ali S.", "Haare + Bart")]}),
-  ("contact", {"eb": "Buchen", "h2": "Slot sichern in 20 Sekunden", "p": "Wähl Service und Uhrzeit – Bestätigung kommt per SMS.", "form": "termin", "optionen": ["Haarschnitt / Fade", "Haare + Bart", "Bart trimmen", "Heißtuch-Rasur"],
+  ("contact", {"eb": "Buchen", "h2": "Slot sichern in 20 Sekunden", "p": "Wähl Service und Uhrzeit. Die Bestätigung kommt per SMS.", "form": "termin", "optionen": ["Haarschnitt / Fade", "Haare + Bart", "Bart trimmen", "Heißtuch-Rasur"],
     "info": [("map", "Kiezstraße 21, Musterstadt", "Zwei Minuten von der U-Bahn"), ("clock", "Di–Fr 10–20 · Sa 9–18 Uhr", "So/Mo geschlossen"), ("phone", "0123 456 789", "Lieber per WhatsApp? Gleiche Nummer.")]}),
  ],
  "footer": {"about": "Barbershop für Fades, Bärte und klassische Rasuren. Drei Stühle, keine Wartezeit mit Termin.", "cols": [("Shop", ["Kiezstraße 21", "12345 Musterstadt", "0123 456 789"]), ("Öffnungszeiten", ["Di–Fr 10–20 Uhr", "Sa 9–18 Uhr", "So/Mo geschlossen"]), ("Mehr", ["Gutscheine", "Impressum", "Datenschutz"])]},
@@ -387,29 +387,29 @@ DEMOS["dachdecker-solar"] = {
  "strip": ['<i class="live"></i> <b>24/7 Notdienst: 0123 456 789</b>', "Meisterbetrieb · Innungsmitglied", "Einsatzgebiet 30 km um Musterstadt"],
  "nav": [("Leistungen", "#leistungen"), ("Photovoltaik", "#pv"), ("Referenzen", "#referenzen"), ("Ablauf", "#ablauf"), ("Karriere", "#karriere")], "cta": ("Angebot anfordern", "#kontakt"),
  "hero": {"eb": "Dachdecker-Meisterbetrieb · Musterstadt &amp; Umgebung", "h1": "Ein dichtes Dach. Und Strom vom eigenen.",
-          "lead": "Dachsanierung, Reparatur und Photovoltaik aus einer Hand – vom eigenen Team, mit Festpreis-Angebot und einem Ansprechpartner von der Besichtigung bis zur Abnahme.",
+          "lead": "Dachsanierung, Reparatur und Photovoltaik vom eigenen Team, mit Festpreis-Angebot und einem Ansprechpartner von der Besichtigung bis zur Abnahme.",
           "ctas": [("Kostenlose Ersteinschätzung", "#kontakt"), ("Notdienst anrufen", "#kontakt")],
           "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> · 126 Bewertungen', "<b>1.400+</b> Dächer seit 1987", "Festpreis-Angebot in 5 Tagen"],
           "floats": fl("left:-16px;top:40px;width:230px", "<h4 style='color:var(--brand)'>● Sturmschaden?</h4><div class='k'>60 Min.</div><span class='muted'>Durchschnittliche Anfahrt im Notdienst</span>")
-                  + fl("right:-14px;bottom:36px;width:250px", "<h4>Dach + PV aus einer Hand</h4><span class='muted'>Ein Gerüst, ein Termin, ein Ansprechpartner – spart bis zu 15 % gegenüber getrennter Vergabe.</span>")},
+                  + fl("right:-14px;bottom:36px;width:250px", "<h4>Dach und PV zusammen</h4><span class='muted'>Ein Gerüst für beides spart Kosten und Abstimmung gegenüber getrennter Vergabe.</span>")},
  "sections": [
   ("stats", {"items": [("37 Jahre", "Meisterbetrieb in zweiter Generation"), ("1.400+", "sanierte Dächer im Landkreis"), ("320", "Photovoltaik-Anlagen montiert"), ("10 Jahre", "Gewährleistung auf Dacharbeiten")]}),
   ("strip", {"fotos": [(33404248, "Dachdecker deckt ein neues Dach"), (9875419, "Montage eines Solarmoduls"), (9729882, "Solarmodule auf einem Altbau")], "cap": "Aus unseren Projekten: Neueindeckung, PV-Montage, Altbausanierung."}),
-  ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Alles rund ums Dach", "p": "Vom Ziegel bis zur Solaranlage – vom eigenen Team, nicht von Subunternehmern.", "cols": 3, "items": [
-    ("home", "Dachsanierung", "Neueindeckung, Dämmung nach GEG und neue Dachfenster – mit Förderberatung."),
-    ("sun", "Photovoltaik &amp; Speicher", "Planung, Montage und Anmeldung – ideal in Kombination mit der Sanierung."),
-    ("wrench", "Reparatur &amp; Notdienst", "Sturmschäden, undichte Stellen, Dachrinnen – 24 Stunden erreichbar."),
+  ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Alles rund ums Dach", "p": "Vom Ziegel bis zur Solaranlage: alles vom eigenen Team, nicht von Subunternehmern.", "cols": 3, "items": [
+    ("home", "Dachsanierung", "Neueindeckung, Dämmung nach GEG und neue Dachfenster, mit Förderberatung."),
+    ("sun", "Photovoltaik &amp; Speicher", "Planung, Montage und Anmeldung. Am besten zusammen mit der Sanierung."),
+    ("wrench", "Reparatur &amp; Notdienst", "Sturmschäden, undichte Stellen, Dachrinnen. 24 Stunden erreichbar."),
     ("shield", "Flachdach", "Abdichtung mit Bitumen oder Kunststoff, Gründächer und Wartung."),
     ("drop", "Klempnerarbeiten", "Dachrinnen, Fallrohre und Kaminverkleidungen aus Zink und Kupfer."),
     ("file", "Förderung &amp; Gutachten", "Wir kümmern uns um BAFA- und KfW-Anträge und die Unterlagen für Ihre Versicherung.")]}),
-  ("split", {"id": "pv", "cls": "dark", "eb": "Photovoltaik", "h2": "Dach neu? Dann gleich mit Solar.", "p": "Wer saniert, steht schon auf dem Gerüst. Wir planen Dach und Anlage zusammen – das spart Gerüstkosten, Termine und Abstimmung zwischen Gewerken.",
+  ("split", {"id": "pv", "cls": "dark", "eb": "Photovoltaik", "h2": "Dach neu? Dann gleich mit Solar.", "p": "Wer saniert, steht schon auf dem Gerüst. Wir planen Dach und Anlage zusammen. Das spart Gerüstkosten, Termine und Abstimmung zwischen Gewerken.",
     "vis_foto": (12243093, "Wohnhaus mit Solaranlage auf dem Dach"), "overlay": True,
     "list": ["Ertragsprognose für Ihr Dach in 48 Stunden", "Speicher und Wallbox auf Wunsch", "Anmeldung beim Netzbetreiber inklusive"], "cta": ("PV-Check anfordern", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow">Beispielrechnung</span><h3 style="font-size:1.6rem">Einfamilienhaus, 9,8 kWp</h3><table class="tbl" style="margin-top:14px;background:transparent;border-color:rgba(255,255,255,.15)"><tbody><tr><td>Jahresertrag</td><td class="r">ca. 9.300 kWh</td></tr><tr><td>Eigenverbrauch mit Speicher</td><td class="r">ca. 65 %</td></tr><tr><td>Ersparnis pro Jahr</td><td class="r">ca. 1.900 €</td></tr></tbody></table><p style="margin-top:12px;font-size:.85rem">Unverbindliche Beispielwerte, abhängig von Ausrichtung und Verbrauch.</p></div>'}),
-  ("tags", {"id": "referenzen", "eb": "Referenzen", "h2": "40 Projekte allein im letzten Jahr", "p": "Fragen Sie Ihre Nachbarn – gut möglich, dass wir dort schon waren.",
+  ("tags", {"id": "referenzen", "eb": "Referenzen", "h2": "40 Projekte allein im letzten Jahr", "p": "Fragen Sie Ihre Nachbarn. Gut möglich, dass wir dort schon waren.",
     "items": ["Musterstadt", "Nordheim", "Altdorf", "Bergen", "Lindau-Süd", "Wiesental", "Kirchberg", "Am See", "Feldkirchen", "Oberau"], "vis": f'<div class="mapbox">{mappins()}</div>'}),
   ("steps", {"id": "ablauf", "cls": "tint", "eb": "Ablauf", "h2": "In fünf Schritten zum neuen Dach", "items": [
-    ("Anfrage", "Fotos schicken oder anrufen – Rückruf innerhalb von 24 Stunden."), ("Besichtigung", "Kostenlos vor Ort, mit Drohnenaufnahme des Daches."),
+    ("Anfrage", "Fotos schicken oder anrufen. Rückruf innerhalb von 24 Stunden."), ("Besichtigung", "Kostenlos vor Ort, mit Drohnenaufnahme des Daches."),
     ("Festpreis-Angebot", "Innerhalb von fünf Werktagen, inklusive Förderprüfung."), ("Ausführung", "Eigenes Team, feste Bauleitung, tägliches Aufräumen."), ("Abnahme", "Gemeinsamer Rundgang, Fotodokumentation, 10 Jahre Gewährleistung.")]}),
   ("quotes", {"eb": "Stimmen", "h2": "Was Bauherren sagen", "p": "Beispieltexte für die Vorschau.", "items": [
     ("Nach dem Sturm waren sie in einer Stunde da und haben provisorisch abgedichtet. Zwei Wochen später war das Dach komplett neu.", "Familie Özdemir", "Notdienst &amp; Sanierung"),
@@ -418,10 +418,10 @@ DEMOS["dachdecker-solar"] = {
   ("split", {"id": "karriere", "cls": "tint", "rev": True, "eb": "Karriere", "h2": "Wir suchen Dachdecker:innen", "p": "Unbefristet, übertariflich, mit eigenem Firmenwagen ab dem ersten Tag. Bewerbung per WhatsApp oder in zwei Minuten online.",
     "list": ["4-Tage-Woche im Winter möglich", "Moderne Ausrüstung und Kran", "Weiterbildung zum Meister wird unterstützt"], "cta": ("Jetzt bewerben", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow">Offene Stellen</span><h3>Dachdecker:in (Geselle)</h3><p>Vollzeit · ab sofort</p><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><h3>PV-Monteur:in</h3><p>Vollzeit · Quereinstieg möglich</p><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><h3>Ausbildung Dachdecker:in</h3><p>Start 1. August</p></div>'}),
-  ("contact", {"cls": "", "eb": "Kontakt", "h2": "Fotos schicken, Einschätzung bekommen", "p": "Für viele Fragen reicht ein Handyfoto. Wir melden uns innerhalb von 24 Stunden – im Notfall sofort.", "form": "anfrage",
-    "info": [("phone", "Notdienst 24/7: 0123 456 789", "Sturm, Wasser, Schäden – rund um die Uhr"), ("map", "Gewerbering 4, Musterstadt", "Einsatzgebiet: 30 km Umkreis"), ("clock", "Büro", "Mo–Fr 7–17 Uhr")]}),
+  ("contact", {"cls": "", "eb": "Kontakt", "h2": "Fotos schicken, Einschätzung bekommen", "p": "Für viele Fragen reicht ein Handyfoto. Wir melden uns innerhalb von 24 Stunden, im Notfall sofort.", "form": "anfrage",
+    "info": [("phone", "Notdienst 24/7: 0123 456 789", "Sturm, Wasser, Schäden: rund um die Uhr"), ("map", "Gewerbering 4, Musterstadt", "Einsatzgebiet: 30 km Umkreis"), ("clock", "Büro", "Mo–Fr 7–17 Uhr")]}),
  ],
- "footer": {"about": "Dachdecker-Meisterbetrieb seit 1987. Dachsanierung, Reparatur, Flachdach und Photovoltaik aus einer Hand.", "cols": [("Kontakt", ["Gewerbering 4", "12345 Musterstadt", "Notdienst 0123 456 789"]), ("Leistungen", ["Dachsanierung", "Photovoltaik", "Reparatur", "Flachdach"]), ("Unternehmen", ["Referenzen", "Karriere", "Impressum"])]},
+ "footer": {"about": "Dachdecker-Meisterbetrieb seit 1987. Dachsanierung, Reparatur, Flachdach und Photovoltaik vom eigenen Team.", "cols": [("Kontakt", ["Gewerbering 4", "12345 Musterstadt", "Notdienst 0123 456 789"]), ("Leistungen", ["Dachsanierung", "Photovoltaik", "Reparatur", "Flachdach"]), ("Unternehmen", ["Referenzen", "Karriere", "Impressum"])]},
  "mbar": [("Anfrage", "#kontakt"), ("Notdienst", "#kontakt")],
 }
 
@@ -435,10 +435,10 @@ DEMOS["steuerberater"] = {
  "strip": ["Wir nehmen aktuell neue Mandate aus dem Handwerk an", "Mo–Do 8–17 · Fr 8–14 Uhr", "0123 456 789"],
  "nav": [("Für Handwerker", "#handwerk"), ("Leistungen", "#leistungen"), ("Kanzleiwechsel", "#wechsel"), ("Team", "#team"), ("Karriere", "#karriere")], "cta": ("Erstgespräch buchen", "#kontakt"),
  "hero": {"eb": "Steuerberatung · Musterstadt", "h1": "Ihr Handwerk läuft. Wir sorgen dafür, dass die Zahlen mitlaufen.",
-          "lead": "Wir betreuen über 140 Handwerksbetriebe – mit monatlichen Zahlen, die Sie verstehen, festen Ansprechpartnern und Antworten innerhalb von 24 Stunden.",
+          "lead": "Wir betreuen über 140 Handwerksbetriebe mit monatlichen Zahlen, die Sie verstehen, festen Ansprechpartnern und Antworten innerhalb von 24 Stunden.",
           "ctas": [("20-Minuten-Erstgespräch", "#kontakt"), ("So läuft der Wechsel", "#wechsel")],
           "chips": ["<b>140+</b> Handwerksbetriebe", "DATEV-Digitalkanzlei", "Fachberater für Unternehmensnachfolge"],
-          "floats": fl("left:-18px;top:46px;width:250px", "<h4>Ihre Monatszahlen</h4><div class='k' style='font-family:var(--body);font-weight:700'>+12,4 %</div><span class='muted'>Rohertrag ggü. Vorjahr – jeden Monat im Postfach.</span>")
+          "floats": fl("left:-18px;top:46px;width:250px", "<h4>Ihre Monatszahlen</h4><div class='k' style='font-family:var(--body);font-weight:700'>+12,4 %</div><span class='muted'>Rohertrag ggü. Vorjahr, jeden Monat im Postfach.</span>")
                   + fl("right:-12px;bottom:36px;width:240px", "<h4>Nächster freier Termin</h4><div class='slots'><i class='on'>Mi 10:00</i><i>Do 17:30</i></div><span class='muted' style='display:block;margin-top:8px'>Erstgespräch per Video</span>")},
  "sections": [
   ("split", {"id": "handwerk", "eb": "Für wen wir arbeiten", "h2": "Spezialisiert auf Handwerk und Bau", "p": "Wir kennen die Fragen, die Sie nachts wachhalten: Liquidität bei langen Zahlungszielen, Abschlagsrechnungen, Fahrzeugflotte, Nachfolge. Deshalb beraten wir fast ausschließlich Handwerksbetriebe.",
@@ -446,9 +446,9 @@ DEMOS["steuerberater"] = {
     "list": ["Maler, Elektro, SHK, Dach, Tischler, Bau", "5 bis 80 Mitarbeitende", "Inhabergeführt, regional verwurzelt"], "cta": ("Passt das zu Ihnen?", "#kontakt"),
     "vis": '<div class="card" style="padding:36px;border-left:3px solid var(--accent)"><p style="font:400 1.7rem/1.35 var(--display);color:var(--ink);margin:0">„Wir nehmen nur so viele Mandate an, wie wir gut betreuen können. Aktuell haben wir Kapazität für vier neue Handwerksbetriebe.“</p><p style="margin-top:18px">— Dr. Martin Weidner, Steuerberater</p></div>'}),
   ("services", {"id": "leistungen", "cls": "tint", "eb": "Leistungen", "h2": "Mehr als Belege buchen", "cols": 3, "items": [
-    ("file", "Finanz- und Lohnbuchhaltung", "Digital mit DATEV Unternehmen online. Belege per App – kein Pendelordner mehr."),
+    ("file", "Finanz- und Lohnbuchhaltung", "Digital mit DATEV Unternehmen online. Belege per App statt Pendelordner."),
     ("chart", "Monatliches Controlling", "Eine Seite, fünf Kennzahlen, ein kurzer Kommentar. Damit Sie früh gegensteuern können."),
-    ("brief", "Jahresabschluss &amp; Steuern", "Bilanz, Steuererklärungen und Gestaltung – vorausschauend statt rückblickend."),
+    ("brief", "Jahresabschluss &amp; Steuern", "Bilanz, Steuererklärungen und Gestaltung, vorausschauend statt rückblickend."),
     ("users", "Lohn &amp; Personal", "Lohnabrechnung, Baulohn, SOKA-BAU, Dienstwagen und Mitarbeiter-Benefits."),
     ("shield", "Betriebsprüfung", "Vorbereitung, Begleitung und klare Kommunikation mit dem Finanzamt."),
     ("hand", "Nachfolge &amp; Übergabe", "Bewertung, Übergabeplanung und steuerlich sinnvolle Gestaltung.")]}),
@@ -465,11 +465,11 @@ DEMOS["steuerberater"] = {
     "list": ["4-Tage-Woche möglich", "Fortbildung zum Steuerfachwirt bezahlt", "Moderne, voll digitale Kanzlei"], "cta": ("Offene Stellen", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow">Aus dem Team</span><p style="font:400 1.45rem/1.4 var(--display);margin:0;color:#fff">„Ich weiß bei jedem Mandanten, was er baut. Das macht die Arbeit viel greifbarer.“</p><p style="margin-top:14px">— Lena, seit 2021 bei uns</p></div>'}),
   ("faq", {"eb": "Fragen", "h2": "Häufige Fragen", "items": [
-    ("Was kostet die Betreuung?", "Das Honorar richtet sich nach der Steuerberatervergütungsverordnung. Wir vereinbaren einen festen Monatsbetrag – ohne Überraschungen."),
+    ("Was kostet die Betreuung?", "Das Honorar richtet sich nach der Steuerberatervergütungsverordnung. Wir vereinbaren einen festen Monatsbetrag."),
     ("Wie lange dauert ein Kanzleiwechsel?", "In der Regel vier bis sechs Wochen. Zum Jahreswechsel ist es besonders einfach."),
     ("Muss ich vorbeikommen?", "Nein. Wir arbeiten digital, Gespräche gern per Video. Persönlich sind wir natürlich auch für Sie da."),
     ("Betreuen Sie auch Gründer?", "Ja, wenn Sie im Handwerk gründen oder einen Betrieb übernehmen.")]}),
-  ("contact", {"eb": "Erstgespräch", "h2": "Lernen wir uns kennen", "p": "Im Erstgespräch klären wir, wo Sie stehen und ob wir der richtige Partner sind – ehrlich und ohne Verkaufsdruck.", "form": "erstgespraech",
+  ("contact", {"eb": "Erstgespräch", "h2": "Lernen wir uns kennen", "p": "Im Erstgespräch klären wir, wo Sie stehen und ob wir zu Ihnen passen. Ohne Verkaufsdruck.", "form": "erstgespraech",
     "info": [("map", "Am Rathausplatz 3, Musterstadt", "Parkhaus gegenüber"), ("phone", "0123 456 789", "Mo–Do 8–17 · Fr 8–14 Uhr"), ("chat", "Antwort binnen 24 Stunden", "Für Mandanten garantiert")]}),
  ],
  "footer": {"about": "Steuerberatung für Handwerk und Bau. Digital, persönlich, vorausschauend.", "cols": [("Kanzlei", ["Am Rathausplatz 3", "12345 Musterstadt", "0123 456 789"]), ("Leistungen", ["Buchhaltung", "Controlling", "Jahresabschluss", "Nachfolge"]), ("Mehr", ["Karriere", "Impressum", "Datenschutz"])]},
@@ -486,28 +486,28 @@ DEMOS["pflegedienst"] = {
  "strip": ["Pflegeberatung: 0123 456 789", "Mo–Fr 8–17 Uhr · Rufbereitschaft 24/7", "Alle Kassen · Zugelassen nach § 72 SGB XI"],
  "nav": [("Leistungen", "#leistungen"), ("Kosten", "#kosten"), ("Karriere", "#karriere"), ("Über uns", "#team")], "cta": ("Beratung anfragen", "#kontakt"),
  "hero": {"eb": "Ambulante Pflege in Musterstadt &amp; Umland", "h1": "Zuhause gut versorgt. Mit Menschen, die Zeit haben.",
-          "lead": "Wir pflegen, wo Sie sich am wohlsten fühlen – mit festen Bezugspflegekräften, verlässlichen Zeiten und Hilfe bei allen Anträgen.",
+          "lead": "Wir pflegen bei Ihnen zu Hause, mit festen Bezugspflegekräften, verlässlichen Zeiten und Hilfe bei allen Anträgen.",
           "ctas": [("Ich suche Pflege", "#kontakt"), ("Ich suche einen Job", "#karriere")],
           "chips": ['<span class="stars">★★★★★</span> <b>4,8</b> bei Google', "Alle Kassen", "Freie Kapazitäten in 4 Orten"],
           "floats": fl("left:-16px;top:40px;width:240px", "<h4>Rückruf heute noch</h4><span class='muted'>Anfragen bis 15 Uhr beantworten wir am selben Tag.</span>")
                   + fl("right:-14px;bottom:40px;width:250px;border-left:4px solid var(--accent)", "<h4 style='color:var(--accent)'>Wir stellen ein</h4><b>Bewerbung in 60 Sekunden</b><br><span class='muted'>Ohne Lebenslauf, Rückruf in 48 h</span>")},
  "sections": [
   ("paths", {"items": [("Für Angehörige", "Pflege organisieren", "Was steht uns zu, was kostet das, wie schnell geht es? Wir beraten kostenlos und kommen zum Erstbesuch nach Hause.", "#kontakt", "#e3efe7", "#1f2e27"),
-                       ("Für Pflegekräfte", "Arbeiten mit Zeit für Menschen", "Feste Touren, Dienstwagen auch privat, 30 Tage Urlaub. Bewerbung in 60 Sekunden – ohne Lebenslauf.", "#karriere", "#e07a4f", "#ffffff")]}),
+                       ("Für Pflegekräfte", "Arbeiten mit Zeit für Menschen", "Feste Touren, Dienstwagen auch privat, 30 Tage Urlaub. Bewerbung in 60 Sekunden, ohne Lebenslauf.", "#karriere", "#e07a4f", "#ffffff")]}),
   ("services", {"id": "leistungen", "eb": "Leistungen", "h2": "Was wir für Sie tun", "p": "Alle Leistungen rechnen wir direkt mit Pflege- und Krankenkasse ab.", "cols": 3, "items": [
-    ("hand", "Grundpflege", "Hilfe beim Waschen, Anziehen, Essen und Bewegen – würdevoll und in Ihrem Tempo."),
+    ("hand", "Grundpflege", "Hilfe beim Waschen, Anziehen, Essen und Bewegen, in Ihrem Tempo."),
     ("steth", "Behandlungspflege", "Medikamente, Wundversorgung, Injektionen und Verbände nach ärztlicher Verordnung."),
-    ("home", "Hauswirtschaft", "Einkaufen, Kochen, Wäsche und Ordnung – damit der Alltag leichter wird."),
-    ("users", "Verhinderungspflege", "Entlastung für pflegende Angehörige – stundenweise oder mehrere Tage."),
-    ("chat", "Pflegeberatung § 37.3", "Die Pflichtberatung für Pflegegeldempfänger – auf Wunsch auch bei Ihnen zu Hause."),
-    ("file", "Hilfe bei Anträgen", "Pflegegrad beantragen, Widerspruch, Hilfsmittel – wir unterstützen Sie Schritt für Schritt.")]}),
+    ("home", "Hauswirtschaft", "Einkaufen, Kochen, Wäsche und Ordnung, damit der Alltag leichter wird."),
+    ("users", "Verhinderungspflege", "Entlastung für pflegende Angehörige, stundenweise oder mehrere Tage."),
+    ("chat", "Pflegeberatung § 37.3", "Die Pflichtberatung für Pflegegeldempfänger, auf Wunsch auch bei Ihnen zu Hause."),
+    ("file", "Hilfe bei Anträgen", "Pflegegrad beantragen, Widerspruch, Hilfsmittel: Wir unterstützen Sie Schritt für Schritt.")]}),
   ("strip", {"fotos": [(271353, "Pflegekraft hält die Hand einer älteren Frau"), (8460373, "Lächelnde Pflegekraft in Dienstkleidung")]}),
   ("prices", {"id": "kosten", "cls": "tint", "eb": "Kosten", "h2": "Was kostet ambulante Pflege?", "p": "Die Pflegekasse übernimmt je nach Pflegegrad einen festen Betrag pro Monat (Pflegesachleistung). Wir erstellen Ihnen vorab einen kostenlosen Kostenvoranschlag.", "rows": [
     ("Pflegegrad 2", "Pflegesachleistung pro Monat", "bis 796 €"), ("Pflegegrad 3", "Pflegesachleistung pro Monat", "bis 1.497 €"), ("Pflegegrad 4", "Pflegesachleistung pro Monat", "bis 1.859 €"),
     ("Pflegegrad 5", "Pflegesachleistung pro Monat", "bis 2.299 €"), ("Entlastungsbetrag", "ab Pflegegrad 1, zusätzlich", "131 €")],
     "note": "Beispielwerte zur Orientierung, Stand 2026. Maßgeblich sind die aktuellen gesetzlichen Beträge.",
     "side": '<div class="card"><h3>Noch kein Pflegegrad?</h3><p>Wir helfen beim Antrag und bereiten Sie auf den Besuch des Medizinischen Dienstes vor. Das ist kostenlos.</p><a class="btn" style="margin-top:18px" href="#kontakt">Beratung anfragen</a></div>'}),
-  ("split", {"id": "karriere", "cls": "dark", "eb": "Karriere", "h2": "Pflege, wie du sie gelernt hast", "p": "Bei uns hast du feste Patienten statt ständig neuer Gesichter, planbare Dienste und ein Team, das zusammenhält. Bewirb dich in 60 Sekunden – wir rufen dich an.",
+  ("split", {"id": "karriere", "cls": "dark", "eb": "Karriere", "h2": "Pflege, wie du sie gelernt hast", "p": "Bei uns hast du feste Patienten statt ständig neuer Gesichter, planbare Dienste und ein Team, das zusammenhält. Bewirb dich in 60 Sekunden, wir rufen dich an.",
     "list": ["3.900–4.400 € für Pflegefachkräfte (Vollzeit)", "Dienstwagen, auch privat nutzbar", "Wunschdienstplan und 30 Tage Urlaub", "Keine geteilten Dienste"],
     "vis": f'<div class="form">{FORMS["bewerbung"]({})}</div>'}),
   ("team", {"id": "team", "eb": "Über uns", "h2": "Ein Team aus der Region", "p": "28 Mitarbeitende, vier Touren, ein Ziel: dass Sie zu Hause bleiben können.", "people": [
@@ -534,14 +534,14 @@ DEMOS["bestatter"] = {
  "strip": ['<b>Tag und Nacht erreichbar: 0123 456 789</b>', "Musterstadt · Nordheim · Altdorf · Bergen", "Familienbetrieb in dritter Generation"],
  "nav": [("Im Trauerfall", "#trauerfall"), ("Bestattungsarten", "#arten"), ("Vorsorge", "#vorsorge"), ("Über uns", "#familie")], "cta": ("0123 456 789", "#kontakt"),
  "hero": {"eb": "Bestattungen in Musterstadt", "h1": "Wir sind da. Tag und Nacht.",
-          "lead": "Wenn ein Mensch stirbt, müssen Sie nichts sofort entscheiden. Rufen Sie uns an – wir nehmen uns Zeit, erklären die nächsten Schritte und kümmern uns um alles Weitere.",
+          "lead": "Wenn ein Mensch stirbt, müssen Sie nichts sofort entscheiden. Rufen Sie uns an. Wir nehmen uns Zeit, erklären die nächsten Schritte und kümmern uns um alles Weitere.",
           "ctas": [("Jetzt anrufen", "#kontakt"), ("Was ist jetzt zu tun?", "#trauerfall")],
           "chips": ["Seit 1952 in Familienhand", "Eigener Abschiedsraum", "Transparente Kosten"],
           "floats": fl("left:-14px;bottom:40px;width:270px", "<h4>Rund um die Uhr erreichbar</h4><div class='k'>0123 456 789</div><span class='muted'>Auch an Sonn- und Feiertagen.</span>")},
  "sections": [
-  ("steps", {"id": "trauerfall", "eb": "Im Trauerfall", "h2": "Was jetzt zu tun ist", "p": "Drei Schritte – den Rest übernehmen wir.", "items": [
+  ("steps", {"id": "trauerfall", "eb": "Im Trauerfall", "h2": "Was jetzt zu tun ist", "p": "Drei Schritte, den Rest übernehmen wir.", "items": [
     ("Ruhe bewahren", "Bei einem Tod zu Hause rufen Sie den Hausarzt oder den ärztlichen Bereitschaftsdienst (116 117) für die Todesbescheinigung. Im Pflegeheim oder Krankenhaus übernimmt das die Einrichtung."),
-    ("Uns anrufen", "Wir kommen – zu jeder Uhrzeit – und besprechen in Ruhe, was Ihnen wichtig ist. Sie haben Zeit für den Abschied."),
+    ("Uns anrufen", "Wir kommen zu jeder Uhrzeit und besprechen in Ruhe, was Ihnen wichtig ist. Sie haben Zeit für den Abschied."),
     ("Unterlagen bereitlegen", "Personalausweis, Geburts- und ggf. Heiratsurkunde, Versicherungskarte. Alles Weitere erledigen wir mit Ihnen.")]}),
   ("prices", {"id": "arten", "cls": "tint", "eb": "Bestattungsarten &amp; Kosten", "h2": "Orientierung statt Ungewissheit", "p": "Unsere Leistungen zu festen Preisen. Friedhofsgebühren und Fremdleistungen wie Blumen oder Traueranzeigen kommen je nach Wunsch hinzu.", "rows": [
     ("Feuerbestattung", "Überführung, Formalitäten, Sarg, Einäscherung, Urne", "ab 1.890 €"), ("Erdbestattung", "Überführung, Formalitäten, Sarg, hygienische Versorgung", "ab 2.690 €"),
@@ -549,20 +549,20 @@ DEMOS["bestatter"] = {
     ("Trauerfeier", "Abschiedsraum, Dekoration, Begleitung", "ab 390 €")],
     "note": "Beispielpreise der Vorschau. Sie erhalten vor jeder Beauftragung einen schriftlichen Kostenvoranschlag.",
     "side": '<div class="card"><h3>Kein Kleingedrucktes</h3><p>Wir erklären jede Position und zeigen Ihnen, wo Sie sparen können. Es entstehen keine Kosten ohne Ihre Zustimmung.</p></div>'}),
-  ("split", {"id": "vorsorge", "eb": "Vorsorge", "h2": "Selbst bestimmen, Angehörige entlasten", "p": "Mit einem Vorsorgevertrag legen Sie fest, wie Ihr Abschied aussehen soll – und sichern die Kosten über ein Treuhandkonto ab. Das Gespräch ist kostenlos und unverbindlich.",
+  ("split", {"id": "vorsorge", "eb": "Vorsorge", "h2": "Selbst bestimmen, Angehörige entlasten", "p": "Mit einem Vorsorgevertrag legen Sie fest, wie Ihr Abschied aussehen soll, und sichern die Kosten über ein Treuhandkonto ab. Das Gespräch ist kostenlos und unverbindlich.",
     "vis_foto": (158251, "Sonnenlicht im Wald"), "overlay": True,
-    "list": ["Wünsche schriftlich festhalten", "Kosten absichern – insolvenzgeschützt", "Gespräch bei Ihnen zu Hause oder bei uns"], "cta": ("Vorsorgegespräch vereinbaren", "#kontakt"),
+    "list": ["Wünsche schriftlich festhalten", "Kosten insolvenzgeschützt absichern", "Gespräch bei Ihnen zu Hause oder bei uns"], "cta": ("Vorsorgegespräch vereinbaren", "#kontakt"),
     "vis": '<div class="card" style="padding:40px;text-align:center"><div style="width:64px;height:64px;margin:0 auto 18px;color:var(--accent)">' + ic("candle") + '</div><p style="font:500 1.7rem/1.35 var(--display);margin:0">„Meine Kinder sollen nicht rätseln müssen, was ich mir gewünscht hätte.“</p><p class="muted" style="margin-top:14px">Häufigster Grund für eine Vorsorge</p></div>'}),
-  ("split", {"id": "familie", "cls": "dark", "rev": True, "eb": "Über uns", "h2": "Drei Generationen, ein Versprechen", "p": "1952 gründete Wilhelm Hollmann das Bestattungshaus. Heute führen Katrin und Jan Hollmann den Betrieb – mit eigenem Abschiedsraum, eigenen Fahrzeugen und viel Zeit für jede Familie.",
+  ("split", {"id": "familie", "cls": "dark", "rev": True, "eb": "Über uns", "h2": "Drei Generationen, ein Versprechen", "p": "1952 gründete Wilhelm Hollmann das Bestattungshaus. Heute führen Katrin und Jan Hollmann den Betrieb, mit eigenem Abschiedsraum, eigenen Fahrzeugen und viel Zeit für jede Familie.",
     "list": ["Persönliche Begleitung durch die Familie", "Abschiednahme am offenen Sarg möglich", "Trauerbegleitung auch nach der Beisetzung"],
     "vis": '<div class="team" style="--n:2"><div class="person"><div class="ph" style="--ph:#4a5157"><span>KH</span></div><h3 style="color:#fff">Katrin Hollmann</h3><p>Bestattermeisterin</p></div><div class="person"><div class="ph" style="--ph:#9a7d4c"><span>JH</span></div><h3 style="color:#fff">Jan Hollmann</h3><p>Geprüfter Bestatter</p></div></div>'}),
-  ("strip", {"fotos": [(8963669, "Weiße Lilien auf einem Grabstein"), (8963947, "Weiße Blumen auf Stein")], "cap": "Baum-, See-, Erd- oder Feuerbestattung – wir zeigen Ihnen alle Möglichkeiten."}),
+  ("strip", {"fotos": [(8963669, "Weiße Lilien auf einem Grabstein"), (8963947, "Weiße Blumen auf Stein")], "cap": "Baum-, See-, Erd- oder Feuerbestattung: Wir zeigen Ihnen alle Möglichkeiten."}),
   ("faq", {"eb": "Fragen", "h2": "Was Angehörige uns oft fragen", "items": [
     ("Wie schnell muss ich mich entscheiden?", "Sie haben Zeit. In den meisten Bundesländern muss eine Bestattung erst innerhalb von 7 bis 10 Tagen erfolgen."),
     ("Kann ich mich in Ruhe verabschieden?", "Ja. In unserem Abschiedsraum können Sie sich in Ruhe und ohne Zeitdruck verabschieden."),
     ("Wer zahlt die Bestattung?", "In der Regel die Erben. Bei finanziellen Schwierigkeiten unterstützen wir bei Anträgen auf Kostenübernahme."),
-    ("Kommen Sie auch nach Hause?", "Ja, wir kommen zu Ihnen – für das Gespräch ebenso wie zur Überführung.")]}),
-  ("contact", {"eb": "Kontakt", "h2": "Wir sind für Sie da", "p": "Im Trauerfall rufen Sie bitte direkt an – Tag und Nacht. Für Vorsorge- und Kostenfragen können Sie auch einen Rückruf anfordern.", "form": "rueckruf",
+    ("Kommen Sie auch nach Hause?", "Ja, wir kommen zu Ihnen, für das Gespräch ebenso wie zur Überführung.")]}),
+  ("contact", {"eb": "Kontakt", "h2": "Wir sind für Sie da", "p": "Im Trauerfall rufen Sie bitte direkt an, Tag und Nacht. Für Vorsorge- und Kostenfragen können Sie auch einen Rückruf anfordern.", "form": "rueckruf",
     "info": [("phone", "0123 456 789", "Tag und Nacht, auch an Feiertagen"), ("map", "Friedhofstraße 2, Musterstadt", "Parkplätze direkt am Haus"), ("flower", "Abschiedsraum", "Besuche nach Vereinbarung, auch am Wochenende")]}),
  ],
  "footer": {"about": "Bestattungshaus in Familienhand seit 1952. Erd-, Feuer-, Baum- und Seebestattungen in Musterstadt und Umgebung.", "cols": [("Kontakt", ["Friedhofstraße 2", "12345 Musterstadt", "0123 456 789 (24 h)"]), ("Leistungen", ["Im Trauerfall", "Bestattungsarten", "Vorsorge", "Trauerbegleitung"]), ("Mehr", ["Über uns", "Impressum", "Datenschutz"])]},
@@ -579,7 +579,7 @@ DEMOS["tierarzt"] = {
  "strip": ['<i class="live"></i> Jetzt geöffnet · bis 19 Uhr', "Notdienst heute: Tierklinik Nordheim, 0123 999 000", "Termine: 0123 456 789"],
  "nav": [("Leistungen", "#leistungen"), ("Sprechzeiten", "#zeiten"), ("Team", "#team"), ("Karriere", "#karriere")], "cta": ("Termin anfragen", "#kontakt"),
  "hero": {"eb": "Kleintierpraxis in Musterstadt", "h1": "Ruhige Hände für Hund, Katze und Co.",
-          "lead": "Drei Tierärztinnen, moderne Diagnostik und katzenfreundliche Abläufe. Termine und Rezepte bestellen Sie bequem online – ohne Warteschleife.",
+          "lead": "Drei Tierärztinnen, moderne Diagnostik und katzenfreundliche Abläufe. Termine und Rezepte bestellen Sie online, ohne Warteschleife.",
           "ctas": [("Termin online anfragen", "#kontakt"), ("Rezept bestellen", "#kontakt")],
           "chips": ['<span class="stars">★★★★★</span> <b>4,9</b> · 310 Bewertungen', "Katzenfreundliche Abläufe", "Eigener Röntgen- &amp; Zahnbereich"],
           "floats": fl("left:-16px;top:40px;width:235px", "<h4><span class='live' style='display:inline-block;width:8px;height:8px;border-radius:50%;background:#3ddc84;margin-right:6px'></span>Heute geöffnet</h4><div class='k'>8–19 Uhr</div><span class='muted'>Akute Fälle ohne Termin bis 18 Uhr</span>")
@@ -589,11 +589,11 @@ DEMOS["tierarzt"] = {
     ("shield", "Vorsorge &amp; Impfungen", "Impfplan, Entwurmung, Gesundheits-Check und Beratung für Welpen und Kitten."),
     ("tooth", "Zahnheilkunde", "Zahnsteinentfernung, Zahnröntgen und Extraktionen unter schonender Narkose."),
     ("steth", "Innere Medizin", "Labordiagnostik, Ultraschall und Röntgen direkt in der Praxis."),
-    ("heart", "Senioren-Check", "Frühzeitig erkennen, was ältere Tiere belastet – Niere, Herz, Gelenke."),
-    ("paw", "Physiotherapie", "Nach Operationen und bei Arthrose – mit Unterwasserlaufband."),
+    ("heart", "Senioren-Check", "Frühzeitig erkennen, was ältere Tiere belastet: Niere, Herz, Gelenke."),
+    ("paw", "Physiotherapie", "Nach Operationen und bei Arthrose, mit Unterwasserlaufband."),
     ("pill", "Online-Rezepte &amp; Futter", "Dauermedikamente und Diätfutter online bestellen und abholen.")]}),
   ("strip", {"fotos": [(6816836, "Katze bei der Ohrenreinigung"), (6235231, "Tierarzt untersucht einen Collie"), (7469222, "Tierärztin untersucht einen Hund")], "cap": "Ruhige Abläufe, eigener Katzenwartebereich, moderne Diagnostik."}),
-  ("split", {"id": "zeiten", "cls": "tint", "eb": "Sprechzeiten", "h2": "Wann wir für Sie da sind", "p": "Routinetermine nach Vereinbarung, akute Fälle kommen ohne Termin – bitte rufen Sie kurz vorher an.",
+  ("split", {"id": "zeiten", "cls": "tint", "eb": "Sprechzeiten", "h2": "Wann wir für Sie da sind", "p": "Routinetermine nach Vereinbarung, akute Fälle kommen ohne Termin. Bitte rufen Sie kurz vorher an.",
     "list": ["Mo–Fr 8–12 und 14–19 Uhr", "Sa 9–12 Uhr", "Akutsprechstunde täglich bis 18 Uhr"], "cta": ("Termin anfragen", "#kontakt"),
     "vis": '<div class="notice" style="display:block;padding:30px"><h3 style="color:var(--brand)">Notfall außerhalb der Sprechzeiten?</h3><p>Der tierärztliche Notdienst wird im Wechsel organisiert. Den aktuellen Notdienst zeigen wir immer ganz oben auf dieser Seite.</p><a class="btn acc" href="#kontakt">Notdienst anzeigen</a></div>'}),
   ("stats", {"items": [("3", "Tierärztinnen, 7 TFA"), ("310+", "Bewertungen mit 4,9 Sternen"), ("2 h", "Antwort auf Online-Anfragen"), ("12.000", "betreute Patienten")]}),
@@ -607,7 +607,7 @@ DEMOS["tierarzt"] = {
     "list": ["Übertarifliche Bezahlung", "Fortbildungsbudget 1.000 € pro Jahr", "Haustier darf mit zur Arbeit"], "cta": ("Jetzt bewerben", "#kontakt"),
     "vis": '<div class="card" style="padding:34px"><span class="eyebrow" style="color:var(--accent)">Offene Stellen</span><h3>Tiermedizinische:r Fachangestellte:r</h3><p>Voll- oder Teilzeit</p><hr style="border:0;border-top:1px solid rgba(255,255,255,.15);margin:18px 0"><h3>Tierärztin / Tierarzt</h3><p>Kleintier, ab sofort</p></div>'}),
   ("faq", {"eb": "Fragen", "h2": "Häufige Fragen", "items": [
-    ("Muss ich einen Termin vereinbaren?", "Für Routineuntersuchungen ja – so vermeiden wir Wartezeiten. Akute Fälle behandeln wir täglich bis 18 Uhr auch ohne Termin."),
+    ("Muss ich einen Termin vereinbaren?", "Für Routineuntersuchungen ja. So vermeiden wir Wartezeiten. Akute Fälle behandeln wir täglich bis 18 Uhr auch ohne Termin."),
     ("Kann ich mit Karte zahlen?", "Ja, mit EC- und Kreditkarte. Bei größeren Behandlungen ist auch Ratenzahlung möglich."),
     ("Wie bestelle ich ein Rezept?", "Über das Formular auf dieser Seite. Abholbereit meist am nächsten Werktag."),
     ("Behandeln Sie auch Kaninchen und Meerschweinchen?", "Ja, wir behandeln alle gängigen Kleintiere.")]}),
