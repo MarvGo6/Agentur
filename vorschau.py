@@ -576,7 +576,7 @@ DEMOS["bestatter"] = {
 
 DEMOS["tierarzt"] = {
  "layout": "blob",
- "hero_foto": (6235242, "Tierarzt hält einen kleinen Hund im Arm"),
+ "hero_foto": (7469222, "Tierärztin untersucht einen Hund"),
  "name": "Tierarztpraxis am Mühlbach", "branche": "Tierarztpraxis", "claim": "Kleintierpraxis", "mark": "M", "art": "tierarzt",
  "fonts": [("Outfit", "outfit")],
  "vars": {"bg": "#ffffff", "bg2": "#f0f7f7", "card": "#ffffff", "ink": "#12302f", "muted": "#557371", "line": "#d8e8e7", "brand": "#0e7c86", "brand-ink": "#ffffff", "accent": "#f2b63c", "accent-ink": "#12302f",
@@ -597,7 +597,7 @@ DEMOS["tierarzt"] = {
     ("heart", "Senioren-Check", "Frühzeitig erkennen, was ältere Tiere belastet: Niere, Herz, Gelenke."),
     ("paw", "Physiotherapie", "Nach Operationen und bei Arthrose, mit Unterwasserlaufband."),
     ("pill", "Online-Rezepte &amp; Futter", "Dauermedikamente und Diätfutter online bestellen und abholen.")]}),
-  ("strip", {"fotos": [(6816836, "Katze bei der Ohrenreinigung"), (6235231, "Tierarzt untersucht einen Collie"), (7469222, "Tierärztin untersucht einen Hund")], "cap": "Ruhige Abläufe, eigener Katzenwartebereich, moderne Diagnostik."}),
+  ("strip", {"fotos": [(6816836, "Katze bei der Ohrenreinigung"), (6816839, "Krallenpflege in der Praxis")], "cap": "Ruhige Abläufe, eigener Katzenwartebereich, moderne Diagnostik."}),
   ("split", {"id": "zeiten", "cls": "tint", "eb": "Sprechzeiten", "h2": "Wann wir für Sie da sind", "p": "Routinetermine nach Vereinbarung, akute Fälle kommen ohne Termin. Bitte rufen Sie kurz vorher an.",
     "list": ["Mo–Fr 8–12 und 14–19 Uhr", "Sa 9–12 Uhr", "Akutsprechstunde täglich bis 18 Uhr"], "cta": ("Termin anfragen", "#kontakt"),
     "vis": '<div class="notice" style="display:block;padding:30px"><h3 style="color:var(--brand)">Notfall außerhalb der Sprechzeiten?</h3><p>Der tierärztliche Notdienst wird im Wechsel organisiert. Den aktuellen Notdienst zeigen wir immer ganz oben auf dieser Seite.</p><a class="btn acc" href="#kontakt">Notdienst anzeigen</a></div>'}),
