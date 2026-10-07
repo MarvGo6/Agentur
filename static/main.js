@@ -39,7 +39,7 @@
   // Anonyme Zählung ohne Zugriff auf Informationen im Endgerät (§ 25 TDDDG): nur die aufgerufene Seite und das Ereignis.
   // Keine Cookies, kein localStorage, keine Bildschirmgröße, kein Referrer, keine Kennung.
   var f=document.getElementById('anfrage'),sb=document.documentElement.getAttribute('data-sb'),key=document.documentElement.getAttribute('data-key');
-  if(!sb||!key||location.hostname==='localhost'||/embed=1/.test(location.search))return;
+  if(!sb||!key||location.hostname==='localhost'||/embed=1/.test(location.search)||/^\/(intern|inhalte)\//.test(location.pathname))return;
   function z(ereignis){try{fetch(sb+'/rest/v1/seitenaufrufe',{method:'POST',keepalive:true,headers:{'apikey':key,'Content-Type':'application/json','Prefer':'return=minimal'},
     body:JSON.stringify({pfad:location.pathname.slice(0,200),ereignis:ereignis})}).catch(function(){})}catch(e){}}
   z('aufruf');

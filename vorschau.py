@@ -249,7 +249,9 @@ BLOCKS = {"stats": b_stats, "services": b_services, "split": b_split, "steps": b
           "quotes": b_quotes, "strip": b_strip, "faq": b_faq, "tags": b_tags, "paths": b_paths, "custom": b_custom, "cta": b_cta, "contact": b_contact}
 
 
-def page(d, agentur, back):
+def page(d, agentur, back, echt=None):
+    """echt=None: Demo-Vorschau. echt=dict: echte Kunden-Website (sites/generator.py) mit eigenem Titel, Meta, Schema,
+    Rechtstexten im Fußbereich und Skript – ohne Vorschau-Leiste."""
     fonts = "".join(f'@font-face{{font-family:"{n}";src:url(/fonts/{f}.woff2) format("woff2");font-weight:300 800;font-display:swap}}' for n, f in d["fonts"])
     vars_ = ";".join(f"--{k}:{v}" for k, v in d["vars"].items())
     nav = "".join(f'<a href="{h}">{t}</a>' for t, h in d["nav"])
@@ -263,20 +265,20 @@ def page(d, agentur, back):
     ft = d["footer"]
     mbar = "".join(f'<a class="btn sm{"" if i == 0 else " alt"}" href="{u}">{t}</a>' for i, (t, u) in enumerate(d["mbar"]))
     return f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{d["name"]} – Vorschau | {agentur}</title><meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Vorschau einer Beispiel-Website von {agentur} für einen fiktiven Betrieb ({d["branche"]}).">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/demo.css">
+{echt["head"] if echt else f"""<title>{d["name"]} – Vorschau | {agentur}</title><meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Vorschau einer Beispiel-Website von {agentur} für einen fiktiven Betrieb ({d["branche"]}).">"""}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/{"site" if echt else "demo"}.css">
 <style>{fonts}:root{{{vars_}}}</style></head><body class="L-{d.get("layout", "split")}">
-<div class="demo-bar">Vorschau einer Beispiel-Website von {agentur} · {d["name"]} ist ein fiktiver Betrieb · <a href="{back}">← Zurück zum Beispiel</a></div>
+{echt.get("bar", "") if echt else f'<div class="demo-bar">Vorschau einer Beispiel-Website von {agentur} · {d["name"]} ist ein fiktiver Betrieb · <a href="{back}">← Zurück zum Beispiel</a></div>'}
 <div class="strip"><div class="w">{strip}</div></div>
-<header class="hd"><div class="w"><a class="brand" href="#"><span class="mark">{d["mark"]}</span><span>{d["name"]}<small>{d["claim"]}</small></span></a><nav class="nav">{nav}</nav><a class="btn sm" href="{d["cta"][1]}">{d["cta"][0]}</a></div></header>
-<section class="hero"><div class="w"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1><p class="lead">{h["lead"]}</p><div class="acts">{acts}</div><div class="chips">{chips}</div></div>
-<div class="stage"><div class="art">{ART[d["art"]]}{foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else ""}</div>{tiles}{h["floats"]}</div></div></section>
+<header class="hd"><div class="w"><a class="brand" href="{"/" if echt else "#"}"><span class="mark">{d["mark"]}</span><span>{d["name"]}<small>{d["claim"]}</small></span></a><nav class="nav">{nav}</nav><a class="btn sm" href="{d["cta"][1]}">{d["cta"][0]}</a></div></header>
+{f"""<section class="hero" style="padding:44px 0 8px"><div class="w" style="grid-template-columns:1fr"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1>{f'<p class="lead">{h["lead"]}</p>' if h["lead"].strip() else ""}</div></div></section>""" if echt and echt.get("schlicht") else f"""<section class="hero"><div class="w"><div><span class="eyebrow">{h["eb"]}</span><h1>{h["h1"]}</h1><p class="lead">{h["lead"]}</p><div class="acts">{acts}</div><div class="chips">{chips}</div></div>
+<div class="stage"><div class="art">{ART[d["art"]]}{foto(*d["hero_foto"], cls="foto hero-img").replace(' loading="lazy"', ' fetchpriority="high"') if d.get("hero_foto") else ""}</div>{tiles}{h["floats"]}</div></div></section>"""}
 {trust}{body}
 <footer class="ft"><div class="w"><div class="cols"><div><div class="brand" style="color:#fff"><span class="mark">{d["mark"]}</span><span>{d["name"]}</span></div><p style="margin-top:16px;max-width:26em">{ft["about"]}</p></div>
 {"".join(f'<div><h4>{t}</h4><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for t, xs in ft["cols"])}</div>
-<div class="bottom"><span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels</span></div></div></footer>
-<div class="mbar">{mbar}</div><script src="/demo.js" defer></script></body></html>"""
+<div class="bottom">{echt["bottom"] if echt else f'<span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels</span>'}</div></div></footer>
+<div class="mbar">{mbar}</div>{echt["scripts"] if echt else '<script src="/demo.js" defer></script>'}</body></html>"""
 
 
 def fl(style, inner):

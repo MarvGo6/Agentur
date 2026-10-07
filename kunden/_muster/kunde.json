@@ -1,0 +1,33 @@
+{
+  "_hinweis": "Musterkunde (erfunden) zum Testen von Generator und Abnahme-Prüfung. Echte Kunden: kunden/<slug>/kunde.json, Felder siehe sites/README.md.",
+  "slug": "_muster",
+  "domain": "muster-bedachungen.example",
+  "branche": "Dachdecker",
+  "vorlage": "dachdecker-solar",
+  "schema_typ": "RoofingContractor",
+  "firma": {
+    "name": "Muster Bedachungen",
+    "claim": "Dachdecker-Meisterbetrieb",
+    "adresse": { "strasse": "Musterweg 1", "plz": "12345", "ort": "Musterstadt" },
+    "telefon": "01234 567890",
+    "email": "info@muster-bedachungen.example",
+    "oeffnungszeiten": ["Mo–Fr 7–17 Uhr"],
+    "oeffnungszeiten_schema": ["Mo-Fr 07:00-17:00"]
+  },
+  "marke": { "farben": { "brand": "#1f5f8b" }, "mark": "M" },
+  "seo": { "title": "Dachdecker in Musterstadt – Muster Bedachungen", "description": "Dachsanierung, Reparatur und Flachdach in Musterstadt und Umgebung. Meisterbetrieb, Festpreis-Angebot, Rückruf innerhalb von 24 Stunden." },
+  "hero": { "eb": "Dachdecker-Meisterbetrieb in Musterstadt", "h1": "Ihr Dach in guten Händen.", "lead": "Sanierung, Reparatur und Flachdach vom eigenen Team – mit Festpreis-Angebot und einem Ansprechpartner.", "chips": ["Meisterbetrieb", "Festpreis-Angebot"] },
+  "cta": "Angebot anfordern",
+  "einzugsgebiet": ["Musterstadt", "Nordheim", "Altdorf"],
+  "leistungen": [
+    { "slug": "dachsanierung", "titel": "Dachsanierung", "icon": "home", "kurz": "Neueindeckung und Dämmung nach GEG.", "text": "Wir sanieren Steildächer vom Abriss bis zur Abnahme.\n\nVor dem Angebot sehen wir uns das Dach vor Ort an.", "punkte": ["Besichtigung vor Ort", "Festpreis-Angebot"],
+      "faq": [["Wie lange dauert eine Sanierung?", "Bei einem Einfamilienhaus meist zwei bis drei Wochen."]],
+      "ortstexte": { "Nordheim": "In Nordheim sanieren wir vor allem Dächer aus den 1970er-Jahren.\n\nDie Anfahrt ist für Sie kostenlos." } },
+    { "slug": "reparatur", "titel": "Reparatur", "icon": "wrench", "kurz": "Undichte Stellen, Sturmschäden, Dachrinnen.", "text": "Wir kommen schnell und dichten zuerst provisorisch ab.\n\nDanach bekommen Sie ein Angebot für die dauerhafte Lösung." }
+  ],
+  "ablauf": [["Anfrage", "Anrufen oder Formular senden."], ["Besichtigung", "Kostenlos vor Ort."], ["Angebot", "Festpreis innerhalb einer Woche."], ["Ausführung", "Eigenes Team, feste Termine."]],
+  "faq": [["Was kostet die Besichtigung?", "Die Besichtigung ist kostenlos."]],
+  "formular": { "schluessel": "14aa55644496d6d421ff932c", "titel": "Angebot anfordern" },
+  "rechtliches": { "impressum": { "inhaber": "Max Muster", "ust_hinweis": "USt-IdNr. folgt", "kammer": "Handwerkskammer Musterstadt" } },
+  "tracking": {}
+}

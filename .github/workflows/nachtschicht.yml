@@ -1,0 +1,27 @@
+# Nachtschicht (S2/V3): baut nachts KI-Vorschauen für die besten Interessenten und veröffentlicht sie unter /v/… (noindex).
+# Benötigte Repository-Secrets: ANTHROPIC_API_KEY, SUPABASE_SERVICE_KEY. Ohne Secrets passiert nichts.
+name: Nachtschicht
+on:
+  schedule: [{ cron: "15 1 * * *" }]   # 03:15 Uhr deutscher Sommerzeit
+  workflow_dispatch: {}
+permissions: { contents: write }
+jobs:
+  vorschauen:
+    runs-on: ubuntu-latest
+    if: ${{ vars.NACHTSCHICHT != 'aus' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Vorschauen bauen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ] || [ -z "$SUPABASE_SERVICE_KEY" ]; then echo "Secrets fehlen – übersprungen."; exit 0; fi
+          pip install -q anthropic pydantic
+          python3 sites/vorschau_ki.py --anzahl 3
+      - name: Veröffentlichen
+        run: |
+          git config user.name "Lotwerk Nachtschicht"; git config user.email "nachtschicht@users.noreply.github.com"
+          git add vorschauen && git commit -m "Nachtschicht: neue KI-Vorschauen" && git push || echo "Nichts Neues."

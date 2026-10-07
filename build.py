@@ -29,9 +29,9 @@ NAV = [("/leistungen/", "Leistungen"), ("/branchen/", "Branchen"), ("/beispiele/
        ("/preise/", "Preise"), ("/ratgeber/", "Ratgeber")]
 
 
-def layout(path, title, desc, body, schema=None, crumbs=None):
+def layout(path, title, desc, body, schema=None, crumbs=None, noindex=False, js=None):
     nav = "".join(f'<a href="{h}"{" aria-current=page" if path.startswith(h) else ""}>{t}</a>' for h, t in NAV)
-    robots = '<meta name="robots" content="noindex,nofollow">' if C["preview"] else '<meta name="robots" content="index,follow">'
+    robots = '<meta name="robots" content="noindex,nofollow">' if C["preview"] or noindex else '<meta name="robots" content="index,follow">'
     ld = [{"@context": "https://schema.org", "@type": "ProfessionalService", "name": NAME, "url": DOMAIN + "/",
            "email": C["email"], "areaServed": "DE", "description": C["tagline"]}]
     if crumbs:
@@ -51,7 +51,7 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
 <link rel="canonical" href="{DOMAIN}{path}"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="{e(full_title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{DOMAIN}{path}"><meta property="og:locale" content="de_DE">
 <meta name="theme-color" content="#f2f0eb"><link rel="preload" href="/fonts/intertight.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css">{'<link rel="stylesheet" href="/intern.css">' if js else ""}
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head><body>{bar}<a class="skip" href="#inhalt">Zum Inhalt</a>
 <header class="top"><div class="wrap"><a class="logo" href="/" aria-label="{NAME} Startseite">{LOGO}{NAME}</a>
@@ -64,14 +64,14 @@ def layout(path, title, desc, body, schema=None, crumbs=None):
 <div><p class="fh">Branchen</p>{"".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}</div>
 <div><p class="fh">Agentur</p><a href="/beispiele/">Beispiele</a><a href="/ablauf/">Ablauf</a><a href="/preise/">Preise</a><a href="/faq/">Häufige Fragen</a><a href="/kontakt/">Kontakt</a></div>
 </div><div class="ft-mark" aria-hidden="true">{NAME}<span>.</span></div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a></span></div></div></footer>
-<script src="/main.js" defer></script></body></html>"""
+<script src="/main.js" defer></script>{f'<script src="/{js}" defer></script>' if js else ""}</body></html>"""
 
 
 def write(path, title, desc, body, prio=0.6, **kw):
     out = DIST / path.strip("/") / "index.html" if path != "/404.html" else DIST / "404.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(layout(path, title, desc, body, **kw), encoding="utf-8")
-    if path not in ("/404.html", "/danke/"):
+    if path not in ("/404.html", "/danke/") and not kw.get("noindex"):
         PAGES.append((path, prio))
 
 
@@ -410,8 +410,41 @@ HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origi
            "Content-Security-Policy": f"default-src 'self'; connect-src 'self'{(' ' + C['supabase_url']) if C.get('supabase_url') else ''}; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
 
 
+def intern():
+    """Steuerzentrale (nur Admins, Supabase-Anmeldung) und Inhalte-Formular für Kunden – beide nicht in der Sitemap, noindex."""
+    write("/intern/", "Steuerzentrale", "Interner Bereich.", '<section class="in-wrap"><div class="wrap" id="app"><noscript>Bitte JavaScript aktivieren.</noscript></div></section>',
+          noindex=True, js="intern.js")
+    feld = lambda n, l, typ="text", req=False, ph="": f'<label>{l}<input name="{n}" type="{typ}"{" required" if req else ""} placeholder="{e(ph)}"></label>'
+    text = lambda n, l, ph="", rows=3: f'<label>{l}<textarea name="{n}" rows="{rows}" placeholder="{e(ph)}"></textarea></label>'
+    form = f"""<form id="inhalte" class="in-form" hidden>
+<fieldset><legend>1 · Ihr Betrieb</legend>{feld("betrieb", "Name des Betriebs", req=True)}{feld("adresse", "Adresse")}<div class="in-two">{feld("telefon", "Telefon", "tel")}{feld("email", "E-Mail für Anfragen", "email", True)}</div>
+{text("oeffnungszeiten", "Öffnungszeiten", "z. B. Mo–Fr 7–17 Uhr, Notdienst 24/7")}{text("einzugsgebiet", "Einzugsgebiet", "Orte, die Sie anfahren bzw. aus denen Ihre Kunden kommen")}</fieldset>
+<fieldset><legend>2 · Leistungen und Preise</legend>{text("leistungen", "Was bieten Sie an?", "Eine Leistung pro Zeile", 5)}{text("top3", "Welche drei Leistungen bringen das meiste Geld?", "", 3)}
+{text("preise", "Preise oder Preisrahmen, die wir zeigen dürfen", "Leer lassen, wenn keine Preise gezeigt werden sollen")}</fieldset>
+<fieldset><legend>3 · Was Sie auszeichnet</legend>{text("besonderheiten", "Was unterscheidet Sie von anderen?", "z. B. Meisterbetrieb seit 1987, Spezialisierung – bitte nur Belegbares", 4)}
+{text("team", "Team (Namen, Rollen – nur mit Einverständnis)", "", 3)}{feld("google_profil", "Link zu Ihrem Google-Profil", "url", ph="https://g.page/…")}
+<label class="check"><input type="checkbox" name="bewertungen_zitieren" value="ja"> <span>Wir dürfen Google-Bewertungen auf der Website zitieren.</span></label></fieldset>
+<fieldset><legend>4 · Fotos und Logo</legend><p class="in-muted">15–30 Fotos sind ideal: Team, Arbeiten, Räume, Fahrzeuge. Logo gern als SVG oder PDF. Höchstens 15 MB pro Datei.</p>
+<label class="btn ghost in-file">Dateien auswählen<input id="in-upload" type="file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/svg+xml,application/pdf"></label><ul id="in-dateien" class="in-list"></ul>
+{text("farben", "Farben oder Wünsche zur Gestaltung", "z. B. Firmenfarbe Dunkelblau, Websites, die Ihnen gefallen")}</fieldset>
+<fieldset><legend>5 · Zugänge und Freigabe</legend>{feld("domain", "Ihre Domain (falls vorhanden)", ph="betrieb.de")}{feld("domain_anbieter", "Bei welchem Anbieter liegt die Domain?", ph="z. B. IONOS, Strato")}
+{feld("alte_website", "Bisherige Website", "url")}{text("stellen", "Nur bei Recruiting: offene Stellen, Gehaltsrahmen, Arbeitszeiten, Vorteile")}
+{feld("ansprechpartner", "Wer gibt Inhalte frei und ist Ansprechpartner?", req=True)}</fieldset>
+<label class="check"><input type="checkbox" name="bestaetigung" value="ja" required> <span>Die Angaben stimmen, und wir haben die Rechte an den hochgeladenen Fotos.</span></label>
+<div class="in-row"><button class="btn">Angaben abschicken</button><span class="in-muted">Alles wird automatisch zwischengespeichert.</span></div></form>"""
+    write("/inhalte/", "Ihre Inhalte für die Website", "Inhalte-Formular für Kunden.",
+          f'<section class="in-wrap"><div class="wrap narrow"><p class="kicker">Inhalte-Formular</p><h1>Ihre Inhalte für die neue Website</h1><p id="in-info" class="lead">Lädt …</p><p id="in-status" role="status"></p>{form}</div></section>',
+          noindex=True, js="inhalte.js")
+
+
 def extras():
     shutil.copytree(ROOT / "static", DIST, dirs_exist_ok=True)
+    vorschauen = sorted((ROOT / "vorschauen").glob("*/kunde.json"))  # V3: KI-Vorschauen für Interessenten (noindex, nicht in der Sitemap)
+    if vorschauen:
+        import sys; sys.path.insert(0, str(ROOT / "sites")); import generator
+        for k in vorschauen:
+            out, _ = generator.bauen(k.parent, vorschau=True)
+            shutil.copytree(out, DIST / "v" / k.parent.name, dirs_exist_ok=True)
     (DIST / "favicon.svg").write_text(FAVICON)
     robots = "User-agent: *\nDisallow: /\n" if C["preview"] else f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n"
     (DIST / "robots.txt").write_text(robots)
@@ -431,7 +464,7 @@ def extras():
 if __name__ == "__main__":
     shutil.rmtree(DIST, ignore_errors=True)
     DIST.mkdir()
-    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kontakt, rechtliches, vorschauseiten):
+    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kontakt, rechtliches, vorschauseiten, intern):
         f()
     extras()
     n = len(list(DIST.rglob("*.html")))

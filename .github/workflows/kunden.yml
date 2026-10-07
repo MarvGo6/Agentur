@@ -1,0 +1,35 @@
+# E3/E4: Bei jeder Änderung an einer Kunden-Website: bauen, Abnahme-Prüfung (inkl. Lighthouse), Bericht als Artefakt.
+# Schlägt die Prüfung fehl, ist der Pull Request rot – Livegang erst nach Freigabe und grüner Prüfung.
+name: Kunden-Websites prüfen
+on:
+  pull_request:
+    paths: ["kunden/**", "sites/**", "vorschau.py", "static/demo.css"]
+  push:
+    branches: [main]
+    paths: ["kunden/**", "sites/**"]
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Werkzeuge
+        run: |
+          npm i -g playwright@1 lighthouse@12
+          npx playwright install --with-deps chromium
+          echo "CHROMIUM=$(node -e "console.log(require('playwright').chromium.executablePath())" 2>/dev/null || true)" >> $GITHUB_ENV
+      - name: Bauen und prüfen
+        run: |
+          export NODE_PATH=$(npm root -g) CHROME_PATH=$CHROMIUM
+          status=0
+          for k in kunden/*/; do
+            python3 sites/generator.py "$k" || status=1
+            python3 sites/pruefung.py "$k/dist" --json "$k/pruefung.json" || status=1
+          done
+          exit $status
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: pruefberichte, path: "kunden/*/pruefung.json" }

@@ -1,4 +1,7 @@
-dist/
-__pycache__/
 *.pyc
 .bildcache/
+__pycache__/
+dist/
+kunden/*/dist/
+kunden/*/pruefung.json
+vorschauen/*/vorschau/
