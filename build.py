@@ -86,7 +86,7 @@ def write(path, title, desc, body, prio=0.6, **kw):
         PAGES.append((path, prio))
 
 
-def cta(titel="Wo verlieren Sie heute Anfragen?", text="In 20 Minuten sehen wir uns Ihre Website, Ihr Google-Profil und drei Mitbewerber an. Danach wissen Sie, was sich für Ihren Betrieb lohnt, auch wenn wir nicht zusammenarbeiten.", btn="Kostenlose Ersteinschätzung erhalten", href=EINSCH):
+def cta(titel="Wo verlieren Sie heute Anfragen?", text="In 20 Minuten sehen wir uns Ihre Website und Ihr Google-Profil an. Danach wissen Sie, was sich für Ihren Betrieb lohnt, auch wenn wir nicht zusammenarbeiten.", btn="Kostenlose Ersteinschätzung erhalten", href=EINSCH):
     return f'''<section class="cta-x"><div class="wrap"><div><p class="kicker">Nächster Schritt</p><h2>{titel}</h2></div><div><p>{text}</p><a class="btn" href="{href}">{btn} <span class="ar">→</span></a>
 <p class="cta-alt">Lieber direkt? <a href="mailto:{C["email"]}">{C["email"]}</a> · {PHONE}</p></div></div></section>'''
 
@@ -129,21 +129,25 @@ def bilder_laden():
     (DIST / "bilder").mkdir(parents=True, exist_ok=True)
     ok = 0
     for pid in vorschau.alle_fotos():
-        hit = next(BILDCACHE.glob(f"{pid}.*"), None)
-        if not hit:
-            url = f"https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&fm=webp&w=1400"
-            try:
-                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Lotwerk-Build)"})
-                with urllib.request.urlopen(req, timeout=20) as r:
-                    typ, data = r.headers.get("Content-Type", ""), r.read()
-                if typ.startswith("image/") and len(data) > 5000:
-                    hit = BILDCACHE / f"{pid}.{'webp' if 'webp' in typ else 'jpg'}"
-                    hit.write_bytes(data)
-            except Exception:
-                hit = None
-        if hit:
-            shutil.copy(hit, DIST / "bilder" / hit.name)
-            vorschau.FOTO[pid] = hit.name
+        groessen = {}
+        for w in vorschau.BREITEN:                     # je Foto drei Breiten, damit Handy und Kacheln kleine Dateien laden
+            hit = next(BILDCACHE.glob(f"{pid}-{w}.*"), None)
+            if not hit:
+                url = f"https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&fm=webp&w={w}"
+                try:
+                    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Lotwerk-Build)"})
+                    with urllib.request.urlopen(req, timeout=20) as r:
+                        typ, data = r.headers.get("Content-Type", ""), r.read()
+                    if typ.startswith("image/") and len(data) > 2000:
+                        hit = BILDCACHE / f"{pid}-{w}.{'webp' if 'webp' in typ else 'jpg'}"
+                        hit.write_bytes(data)
+                except Exception:
+                    hit = None
+            if hit:
+                shutil.copy(hit, DIST / "bilder" / hit.name)
+                groessen[w] = hit.name
+        if groessen:
+            vorschau.FOTO[pid] = groessen
             ok += 1
     print(f"Fotos: {ok} von {len(vorschau.alle_fotos())} geladen")
 
@@ -335,7 +339,7 @@ def preise():
           box("Website Wachstum", eur(P["web_wachstum"]), f"einmalig · Pflege {P['pflege_wachstum']} €/Monat (12 Monate)", ["Bis zu 15 Seiten", "Eigene Seiten je Leistung und Ort", "Karriere- oder Bewerbungsbereich", "Ratgeber-Bereich", "Anruf- und Formularmessung"], feat=True) + \
           box("Wachstumsprogramm", eur(P["programm"]), f"pro Monat · 12 Monate · {eur(P['prog_setup'])} Einrichtung", ["Website Wachstum inklusive", "SEO Plus inklusive", "Google-Ads-Betreuung inklusive", "Monatsgespräch und Bericht", "Gemeinsames, messbares Ziel"], k="wachstum", note=f"Einzeln im ersten Jahr: {eur(P['web_wachstum'] + 12*P['pflege_wachstum'] + 12*P['seo_plus'] + P['ads_setup'] + 12*P['ads'])}")
     monat = [("SEO Lokal", P["seo_lokal"], "Profil, Verzeichnisse, 1 neue Seite pro Monat, Bericht. 6 Monate Mindestlaufzeit."),
-             ("SEO Plus", P["seo_plus"], "Wie Lokal, plus 2–3 Inhalte pro Monat, Bewertungsprozess, Wettbewerbsanalyse."),
+             ("SEO Plus", P["seo_plus"], "Wie Lokal, plus 2–3 Inhalte pro Monat, Bewertungsprozess."),
              ("Google-Ads-Betreuung", P["ads"], f"Einrichtung {P['ads_setup']} € einmalig. Monatlich kündbar, Budget separat."),
              ("Recruiting-Paket", P["rec"], f"Karriereseite, Bewerbung in 60 Sekunden, Anzeigen im Umkreis. Einrichtung {eur(P['rec_setup'])} einmalig, Budget separat."),
              ("Pflege & Hosting Start", P["pflege_start"], "Hosting, Updates, Sicherheit, kleine Änderungen. 12 Monate Laufzeit, verlängert sich jährlich."),
@@ -352,7 +356,7 @@ def preise():
 
 def ablauf():
     steps = [("Erstgespräch (20 Min.)", "Per Telefon oder Video. Wir fragen nach Ihren Zielen, Ihren Kunden und dem, was bisher nicht funktioniert hat."),
-             ("Kurzanalyse", "Wir sehen uns Website, Google-Profil und Ihre drei stärksten Mitbewerber an. Sie bekommen die wichtigsten Punkte schriftlich."),
+             ("Kurzanalyse", "Wir sehen uns Ihre Website und Ihr Google-Profil an. Sie bekommen die wichtigsten Punkte schriftlich."),
              ("Angebot mit Festpreis", "Binnen zwei Werktagen. Mit Ziel, Umfang, Zeitplan und Preis."),
              ("Start-Workshop (60 Min.)", "Wir gehen den Kundenweg gemeinsam durch und sammeln alles, was wir für Texte brauchen."),
              ("Umsetzung", "Sie sehen nach einer Woche den ersten Entwurf im Browser. Feedback per E-Mail oder kurzem Call."),
@@ -391,7 +395,7 @@ def kontakt():
             ("recruiting", "Mitarbeiter gewinnen (Recruiting-Paket)"), ("wachstum", "Wachstumsprogramm"), ("unklar", "Noch unklar")]
     sel = "".join(f'<option data-k="{k}">{t}</option>' for k, t in opts)
     body = f"""<section class="hero"><div class="wrap k-grid"><div class="k-intro"><p class="kicker">Kontakt</p><h1>Kostenlose <em>Ersteinschätzung.</em></h1><p class="lead">Schreiben Sie kurz, worum es geht. Wir melden uns innerhalb eines Werktags mit zwei Terminvorschlägen.</p></div>
-<div class="k-more"><ol class="steps next"><li><h2>Sie schicken die Anfrage</h2><p>Zwei Minuten. Name und E-Mail reichen.</p></li><li><h2>Wir schauen vorab</h2><p>Website, Google-Profil und drei Mitbewerber in Ihrer Region.</p></li><li><h2>20 Minuten Gespräch</h2><p>Per Telefon oder Video. Sie erfahren, wo Anfragen verloren gehen, auch wenn wir danach nicht zusammenarbeiten.</p></li></ol>
+<div class="k-more"><ol class="steps next"><li><h2>Sie schicken die Anfrage</h2><p>Zwei Minuten. Name und E-Mail reichen.</p></li><li><h2>Wir schauen vorab</h2><p>Ihre Website und Ihr Google-Profil.</p></li><li><h2>20 Minuten Gespräch</h2><p>Per Telefon oder Video. Sie erfahren, wo Anfragen verloren gehen, auch wenn wir danach nicht zusammenarbeiten.</p></li></ol>
 <dl class="contact-alt"><div><dt>E-Mail</dt><dd><a href="mailto:{C['email']}">{C['email']}</a></dd></div><div><dt>Telefon</dt><dd>{PHONE}</dd></div><div><dt>Ansprechpartner</dt><dd>{PERSON}</dd></div></dl></div>
 <div class="form-wrap k-form"><form id="anfrage" data-to="{C['email']}" {f'data-sb="{C["supabase_url"]}" data-key="{C["supabase_key"]}"' if C.get("supabase_url") else ""}>
 <label>Ihr Name *<input name="name" required autocomplete="name"></label>
@@ -587,7 +591,9 @@ def extras():
     (DIST / "_headers").write_text("/*\n" + "".join(f"  {k}: {v}\n" for k, v in h.items()))
     vercel = {"cleanUrls": True, "trailingSlash": True,
               "headers": [{"source": "/(.*)", "headers": [{"key": k, "value": v} for k, v in h.items()]},
-                          {"source": "/fonts/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]}]}
+                          {"source": "/fonts/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]},
+                          {"source": "/bilder/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]},  # Name = Pexels-ID + Breite, ändert sich nie
+                          {"source": "/vorschau-bilder/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800"}]}]}
     (DIST / "vercel.json").write_text(json.dumps(vercel, indent=2))
 
 

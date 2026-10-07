@@ -39,15 +39,20 @@ _I = {
 }
 
 # ------------------------------------------------------------------ Fotos (Pexels, lizenzfrei; werden beim Build geladen)
-FOTO = {}  # id -> Dateiname in /bilder/, wird von build.py gefüllt
+FOTO = {}  # id -> {Breite: Dateiname in /bilder/}, wird von build.py gefüllt
+BREITEN = (480, 960, 1400)  # Größen je Foto; der Browser wählt per srcset die passende
+GROESSE = {"foto hero-img": "100vw", "foto tall": "(max-width:760px) 100vw, 45vw"}  # sonst: Kachel/Raster
 
 PEXELS = "https://images.pexels.com/photos/{0}/pexels-photo-{0}.jpeg?auto=compress&cs=tinysrgb&w=1400"
 
 def foto(pid, alt, cls="foto"):
     """Lokal gehostetes Foto, sonst direkt von Pexels. Lädt es nicht, blendet demo.js es aus (Zeichnung bleibt)."""
     f = FOTO.get(str(pid))
-    src = f"/bilder/{f}" if f else PEXELS.format(pid)
-    return f'<img class="{cls}" src="{src}" alt="{alt}" loading="lazy" decoding="async">'
+    if not f:
+        return f'<img class="{cls}" src="{PEXELS.format(pid)}" alt="{alt}" loading="lazy" decoding="async">'
+    srcset = ", ".join(f"/bilder/{n} {w}w" for w, n in sorted(f.items()))
+    sizes = GROESSE.get(cls, "(max-width:760px) 50vw, 30vw")
+    return f'<img class="{cls}" src="/bilder/{f[max(f)]}" srcset="{srcset}" sizes="{sizes}" alt="{alt}" loading="lazy" decoding="async">'
 
 def alle_fotos():
     ids = set()

@@ -91,7 +91,7 @@ TIEFE = {
  ],
  "kosten": {
   "text": "Lokale SEO ist laufende Arbeit: Profil pflegen, Inhalte ausbauen, Bewertungen begleiten. Deshalb arbeiten wir mit einem festen Monatspreis.",
-  "zeilen": [("SEO Lokal: Profil, Technik, Einträge, 1 neue oder überarbeitete Seite pro Monat", eur(P["seo_lokal"]) + " im Monat"), ("SEO Plus: 2–3 Seiten pro Monat, Bewertungsablauf, Wettbewerbsvergleich je Quartal", eur(P["seo_plus"]) + " im Monat"),
+  "zeilen": [("SEO Lokal: Profil, Technik, Einträge, 1 neue oder überarbeitete Seite pro Monat", eur(P["seo_lokal"]) + " im Monat"), ("SEO Plus: 2–3 Seiten pro Monat, Bewertungsablauf", eur(P["seo_plus"]) + " im Monat"),
              ("Mindestlaufzeit", "6 Monate, danach monatlich kündbar"), ("Im Wachstumsprogramm", "SEO Plus enthalten")],
   "hinweis": "Erste Veränderungen sehen Sie meist nach acht bis zwölf Wochen, belastbare Ergebnisse nach etwa sechs Monaten. Wer schneller Anfragen braucht, kombiniert SEO am Anfang mit Google Ads.",
  },

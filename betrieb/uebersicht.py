@@ -147,7 +147,7 @@ Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken</p>
 {tab(["Branche", "Paket", "1. Jahr"], pakete)}
 
 <h2><small class="nr">04</small>So arbeiten wir</h2>
-{tab(["Schritt", "Was passiert"], [["1 · Ersteinschätzung", "Kostenlos, 20 Minuten: Website, Google-Profil, drei Mitbewerber"], ["2 · Angebot", "Festpreis, auf Wunsch mit Vorschau-Website"], ["3 · Auftrag", "50 % Anzahlung, Inhalte-Formular online (Frist 7 Tage)"], ["4 · Entwurf", "Im Browser ansehen, zwei Korrekturrunden"], ["5 · Livegang", "Abnahme-Prüfung, Domain, Messung, Überwachung, 50 % Restzahlung"], ["6 · Betreuung", "Monatsbericht in Anfragen und Anrufen, Vorschläge zur Freigabe"]])}
+{tab(["Schritt", "Was passiert"], [["1 · Ersteinschätzung", "Kostenlos, 20 Minuten: Website und Google-Profil"], ["2 · Angebot", "Festpreis, auf Wunsch mit Vorschau-Website"], ["3 · Auftrag", "50 % Anzahlung, Inhalte-Formular online (Frist 7 Tage)"], ["4 · Entwurf", "Im Browser ansehen, zwei Korrekturrunden"], ["5 · Livegang", "Abnahme-Prüfung, Domain, Messung, Überwachung, 50 % Restzahlung"], ["6 · Betreuung", "Monatsbericht in Anfragen und Anrufen, Vorschläge zur Freigabe"]])}
 </section>
 
 <section class="page"><p class="teil">Teil B · Intern</p><h2><small class="nr">05</small>Plan Nov 26 – Dez 27 (Basis)</h2>

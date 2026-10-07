@@ -37,7 +37,7 @@ function lwGclid(){try{var e=JSON.parse(localStorage.getItem('lw-einwilligung')|
   addEventListener('resize',function(){frames.forEach(fit)});
   // Live-Ansichten erst nach der ersten Interaktion laden – bis dahin zeigt der Rahmen das Vorschaubild
   var los=false;function start(){if(los)return;los=true;['scroll','pointermove','touchstart','keydown'].forEach(function(t){removeEventListener(t,start)});
-    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){load(x.target);io.unobserve(x.target)}})},{rootMargin:'300px'});frames.forEach(function(f){io.observe(f)})}
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){load(x.target);io.unobserve(x.target)}})},{threshold:0.3});frames.forEach(function(f){io.observe(f)})}
     else frames.forEach(load)}
   ['scroll','pointermove','touchstart','keydown'].forEach(function(t){addEventListener(t,start,{passive:true})});
 })();
