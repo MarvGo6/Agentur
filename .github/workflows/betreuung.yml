@@ -1,0 +1,29 @@
+# Monatliche Betreuung mit KI (B3 Profil-Beiträge, B5 Verbesserungs-PRs, B7 KI-Sichtbarkeit). Ergebnisse = Entwürfe zur Freigabe.
+# Benötigte Repository-Secrets: ANTHROPIC_API_KEY, SUPABASE_SERVICE_KEY.
+name: Betreuung
+on:
+  schedule: [{ cron: "0 4 1 * *" }]
+  workflow_dispatch: {}
+permissions: { contents: write, pull-requests: write }
+jobs:
+  betreuung:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Monatsläufe
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ] || [ -z "$SUPABASE_SERVICE_KEY" ]; then echo "Secrets fehlen – übersprungen."; exit 0; fi
+          pip install -q anthropic pydantic
+          npm i -g playwright@1 && npx playwright install --with-deps chromium && export NODE_PATH=$(npm root -g)
+          git config user.name "Lotwerk Betreuung"; git config user.email "betreuung@users.noreply.github.com"
+          python3 sites/betreuung_ki.py beitraege || true
+          python3 sites/betreuung_ki.py sichtbarkeit || true
+          python3 sites/betreuung_ki.py verbesserungen || true

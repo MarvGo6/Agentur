@@ -166,3 +166,31 @@ alter table einstellungen enable row level security;  -- bewusst ohne Policy: nu
 drop policy if exists anon_zaehlen on seitenaufrufe;
 create policy anon_zaehlen on seitenaufrufe for insert to anon with check (zeit > now() - interval '5 minutes');
 grant insert (pfad, herkunft, geraet, ereignis) on seitenaufrufe to anon;
+
+
+-- ---------------------------------------------------------------- Automatisierungen (Migrationen automatisierung_grundlagen, automatisierung_admin_speicher)
+alter table websites add column if not exists formular_email text;                 -- Ü2: Empfänger der Formularanfragen
+alter table websites add column if not exists formular_schluessel text unique default encode(extensions.gen_random_bytes(12), 'hex');
+alter table anfragen add column if not exists seite text;
+alter table anfragen add column if not exists daten jsonb;
+alter table interessenten add column if not exists nachricht_entwurf text;         -- V4
+alter table interessenten add column if not exists erinnert_am date;
+alter table vertraege add column if not exists kuendigungsfrist_monate int not null default 3;   -- F3
+alter table vertraege add column if not exists verlaengerung_monate int not null default 0;
+alter table aufgaben add column if not exists schluessel text unique;                -- Automatiken legen jede Aufgabe nur einmal an
+create table if not exists inhalte_formulare (id uuid primary key default gen_random_uuid(), kunde_id uuid references kunden on delete cascade,
+  website_id uuid references websites on delete set null, titel text, token text unique not null default encode(extensions.gen_random_bytes(18), 'hex'),
+  frist date not null default (current_date + 7), daten jsonb, dateien jsonb not null default '[]', eingereicht_am timestamptz, erinnert int not null default 0,
+  angelegt timestamptz not null default now());                                       -- E1
+create table if not exists kundenberichte (id uuid primary key default gen_random_uuid(), website_id uuid not null references websites on delete cascade,
+  monat date not null, daten jsonb not null, text text, status text not null default 'entwurf' check (status in ('entwurf','freigegeben','gesendet')),
+  erstellt timestamptz not null default now(), unique (website_id, monat));          -- B2
+create table if not exists entwuerfe (id uuid primary key default gen_random_uuid(),
+  art text not null check (art in ('nachricht','profil_beitrag','bewertungsantwort','verbesserung','ads','text')),
+  kunde_id uuid references kunden on delete cascade, website_id uuid references websites on delete cascade, interessent_id uuid references interessenten on delete cascade,
+  titel text, text text not null, meta jsonb, status text not null default 'offen' check (status in ('offen','freigegeben','verworfen','veroeffentlicht')),
+  angelegt timestamptz not null default now(), entschieden_am timestamptz);          -- Freigaben in der Steuerzentrale
+-- RLS wie oben (admin_alles) für inhalte_formulare, kundenberichte, entwuerfe.
+-- Admin automatisch: Trigger lotwerk_admin auf auth.users (Adresse in einstellungen.admin_email, erst nach bestätigter E-Mail).
+-- Speicher: privater Bucket „inhalte“ (Upload nur über signierte Links der Funktion inhalte, Lesen nur Admins).
+-- Zeitpläne: lotwerk-erreichbarkeit */10, lotwerk-datenschutz am 2. 07:00 UTC, lotwerk-vertrieb Mo–Fr 05:30 UTC, lotwerk-leads Mo 05:00 UTC.

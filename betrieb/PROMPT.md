@@ -99,7 +99,7 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 
 ---
 
-## Bereits umgesetzt (Stand 2026-10-07)
+## Bereits umgesetzt (Stand 2026-10-07, Automatisierungen ohne Rechnungen/Lastschrift)
 
 - Supabase „Lotwerk Agentur“: Betriebs-Schema aus `betrieb/schema.sql` eingespielt (Interessenten, Kunden, Verträge, Rechnungen, Kosten, Zeiten, Websites, Checks, Messwerte, Aufgaben, KI-Läufe, Berichte, Seitenaufrufe, Einstellungen).
 - Edge Functions in `supabase/functions/`: `monitor` (Erreichbarkeit täglich, PageSpeed montags), `analyse` (Website-Befund + Potenzial für Interessenten), `bericht` (Wochen-/Monatsbericht, Löschfrist Seitenaufrufe). Schutz über `x-cron-secret` aus Tabelle `einstellungen`.
@@ -107,6 +107,10 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 - Website zählt anonym Seitenaufrufe und Klicks (Tabelle `seitenaufrufe`, nur INSERT für anon). Kein Zugriff auf Gerätedaten (§ 25 TDDDG): nur Pfad + Ereignis, keine Cookies, kein Referrer, keine Bildschirmgröße → kein Banner nötig.
 - Einwilligungs-Baustein für Kunden-Websites: `betrieb/bausteine/einwilligung.js` (nur einsetzen, wenn zustimmungspflichtige Dienste genutzt werden; Consent Mode v2, Zwei-Klick für Karten/Videos, Widerruf-Link). Getestet.
 - `analyse` prüft zusätzlich: Tracking ohne Einwilligung, direkt eingebettete Karten/Videos, Impressum-/Datenschutz-Link.
+- Edge Functions neu: `formular` (Ü2), `inhalte` (E1), `leads` (V1), `vertrieb` (V4); `monitor` mit Erreichbarkeit alle 10 Min., Fristen (F3), Domain-Ablauf, Löschfristen (Ü3), Datenschutz-Check monatlich; `bericht` mit Kundenberichten (B2). Gemeinsamer Code: `supabase/functions/_shared/db.ts` (KI über Claude, Mail über Resend, Aufgaben ohne Dubletten).
+- Steuerzentrale `/intern/` (S1, statisch + Supabase Auth; Cockpit, Aufgaben, Freigaben, Pipeline, Kunden/Verträge, Websites, Zeiten, Anfragen, Berichte) und Kundenformular `/inhalte/`.
+- `sites/`: Generator (E3), Abnahme-Prüfung (E4), Livegang (E5), KI-Texte (E2), KI-Vorschauen (V3), Betreuung (B3/B5/B7). GitHub Actions: Kunden-Websites prüfen, Nachtschicht, Betreuung.
+- Fehlende Schlüssel: Liste im Automatisierungsplan, Kapitel 3.
 - Abfragen: `betrieb/abfragen.sql`. Leistungen und Abnahme: `betrieb/Leistungshandbuch.pdf`.
 - Offen: `psi_key` in `einstellungen` (Google PageSpeed API-Schlüssel).
 

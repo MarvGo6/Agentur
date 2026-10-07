@@ -227,7 +227,7 @@ pre{padding:8pt;white-space:pre-wrap;line-height:1.35}
 <p>Rollen im Dashboard (Inhaber, Closer, Umsetzer), Closer sehen Pipeline + Provision, Umsetzer sehen Aufgaben + Zeiten.</p>
 <p>Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als Seiten im Dashboard.</p>
 
-<h3>Bereits umgesetzt (Stand 2026-10-07)</h3>
+<h3>Bereits umgesetzt (Stand 2026-10-07, Automatisierungen ohne Rechnungen/Lastschrift)</h3>
 <ul>
 <li>Supabase „Lotwerk Agentur“: Betriebs-Schema aus <code>betrieb/schema.sql</code> eingespielt (Interessenten, Kunden, Verträge, Rechnungen, Kosten, Zeiten, Websites, Checks, Messwerte, Aufgaben, KI-Läufe, Berichte, Seitenaufrufe, Einstellungen).</li>
 <li>Edge Functions in <code>supabase/functions/</code>: <code>monitor</code> (Erreichbarkeit täglich, PageSpeed montags), <code>analyse</code> (Website-Befund + Potenzial für Interessenten), <code>bericht</code> (Wochen-/Monatsbericht, Löschfrist Seitenaufrufe). Schutz über <code>x-cron-secret</code> aus Tabelle <code>einstellungen</code>.</li>
@@ -235,6 +235,10 @@ pre{padding:8pt;white-space:pre-wrap;line-height:1.35}
 <li>Website zählt anonym Seitenaufrufe und Klicks (Tabelle <code>seitenaufrufe</code>, nur INSERT für anon). Kein Zugriff auf Gerätedaten (§ 25 TDDDG): nur Pfad + Ereignis, keine Cookies, kein Referrer, keine Bildschirmgröße → kein Banner nötig.</li>
 <li>Einwilligungs-Baustein für Kunden-Websites: <code>betrieb/bausteine/einwilligung.js</code> (nur einsetzen, wenn zustimmungspflichtige Dienste genutzt werden; Consent Mode v2, Zwei-Klick für Karten/Videos, Widerruf-Link). Getestet.</li>
 <li><code>analyse</code> prüft zusätzlich: Tracking ohne Einwilligung, direkt eingebettete Karten/Videos, Impressum-/Datenschutz-Link.</li>
+<li>Edge Functions neu: <code>formular</code> (Ü2), <code>inhalte</code> (E1), <code>leads</code> (V1), <code>vertrieb</code> (V4); <code>monitor</code> mit Erreichbarkeit alle 10 Min., Fristen (F3), Domain-Ablauf, Löschfristen (Ü3), Datenschutz-Check monatlich; <code>bericht</code> mit Kundenberichten (B2). Gemeinsamer Code: <code>supabase/functions/_shared/db.ts</code> (KI über Claude, Mail über Resend, Aufgaben ohne Dubletten).</li>
+<li>Steuerzentrale <code>/intern/</code> (S1, statisch + Supabase Auth; Cockpit, Aufgaben, Freigaben, Pipeline, Kunden/Verträge, Websites, Zeiten, Anfragen, Berichte) und Kundenformular <code>/inhalte/</code>.</li>
+<li><code>sites/</code>: Generator (E3), Abnahme-Prüfung (E4), Livegang (E5), KI-Texte (E2), KI-Vorschauen (V3), Betreuung (B3/B5/B7). GitHub Actions: Kunden-Websites prüfen, Nachtschicht, Betreuung.</li>
+<li>Fehlende Schlüssel: Liste im Automatisierungsplan, Kapitel 3.</li>
 <li>Abfragen: <code>betrieb/abfragen.sql</code>. Leistungen und Abnahme: <code>betrieb/Leistungshandbuch.pdf</code>.</li>
 <li>Offen: <code>psi_key</code> in <code>einstellungen</code> (Google PageSpeed API-Schlüssel).</li>
 </ul>
