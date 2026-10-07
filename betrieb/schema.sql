@@ -194,3 +194,7 @@ create table if not exists entwuerfe (id uuid primary key default gen_random_uui
 -- Admin automatisch: Trigger lotwerk_admin auf auth.users (Adresse in einstellungen.admin_email, erst nach bestätigter E-Mail).
 -- Speicher: privater Bucket „inhalte“ (Upload nur über signierte Links der Funktion inhalte, Lesen nur Admins).
 -- Zeitpläne: lotwerk-erreichbarkeit */10, lotwerk-datenschutz am 2. 07:00 UTC, lotwerk-vertrieb Mo–Fr 05:30 UTC, lotwerk-leads Mo 05:00 UTC.
+
+-- Steuerzentrale: Admins lesen und bearbeiten die Anfragen der Agentur-Website (Migration steuerzentrale_anfragen_lesen)
+grant select, update on agentur_anfragen to authenticated;
+create policy admin_alles on agentur_anfragen for all to authenticated using (ist_admin()) with check (ist_admin());
