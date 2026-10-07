@@ -170,8 +170,8 @@ input:focus,textarea:focus,select:focus{outline:0;border-bottom-color:var(--acce
 .cta-x .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .cta-x .btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 @media (max-width:800px){.cta-x .wrap{grid-template-columns:1fr}}
-:root[data-theme=dark] .cta-x,:root[data-theme=dark] footer{background:#000}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .cta-x,:root:not([data-theme=light]) footer{background:#000}}
+:root[data-theme=dark] .cta-x,:root[data-theme=dark] footer,:root[data-theme=dark] .price.feat{background:#000;--paper:#f2f0eb;--ink:#000}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .cta-x,:root:not([data-theme=light]) footer,:root:not([data-theme=light]) .price.feat{background:#000;--paper:#f2f0eb;--ink:#000}}
 .cta-x+footer{border-top:1px solid color-mix(in srgb,var(--paper) 14%,transparent)}
 
 /* Fuß */
