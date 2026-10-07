@@ -24,6 +24,15 @@ PHONE = C.get("phone") or todo("TELEFONNUMMER ERGÄNZEN")
 ORT = C.get("standort") or todo("STANDORT ERGÄNZEN")
 PERSON = C.get("ansprechpartner") or todo("NAME ERGÄNZEN")
 EINSCH = "/kontakt/?thema=einschaetzung"
+# Tracking (config.json → "tracking"): leere Werte = aus. GA4, Google Ads und Meta laden nur nach Einwilligung.
+T = {k: v.strip() for k, v in (C.get("tracking") or {}).items() if not k.startswith("_") and isinstance(v, str) and v.strip()}
+EINW = any(k in T for k in ("ga4", "google_ads", "meta_pixel"))  # zustimmungspflichtige Dienste → Einwilligungs-Banner
+
+
+def ph(v):
+    """Angabe aus config.json; leer oder „[…]“ → sichtbarer Platzhalter."""
+    v = (v or "").strip()
+    return todo((v.strip("[]") if v else "ANGABE") + " ERGÄNZEN") if not v or v.startswith("[") else e(v)
 
 NAV = [("/leistungen/", "Leistungen"), ("/branchen/", "Branchen"), ("/beispiele/", "Beispiele"),
        ("/preise/", "Preise"), ("/ratgeber/", "Ratgeber")]
@@ -48,6 +57,7 @@ def layout(path, title, desc, body, schema=None, crumbs=None, noindex=False, js=
     return f"""<!doctype html>
 <html lang="de"{f' data-sb="{C["supabase_url"]}" data-key="{C["supabase_key"]}"' if C.get("supabase_url") else ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(full_title)}</title><meta name="description" content="{e(desc)}">{robots}
+{"".join(f'<meta name="{n}" content="{e(T[k])}">' for k, n in (("search_console", "google-site-verification"), ("bing", "msvalidate.01")) if k in T)}
 <link rel="canonical" href="{DOMAIN}{path}"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="{e(full_title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{DOMAIN}{path}"><meta property="og:locale" content="de_DE">
 <meta name="theme-color" content="#f2f0eb"><link rel="preload" href="/fonts/intertight.woff2" as="font" type="font/woff2" crossorigin>
@@ -63,8 +73,8 @@ def layout(path, title, desc, body, schema=None, crumbs=None, noindex=False, js=
 <div><p class="fh">Leistungen</p>{"".join(f'<a href="/leistungen/{l["slug"]}/">{l["titel"]}</a>' for l in LEISTUNGEN)}</div>
 <div><p class="fh">Branchen</p>{"".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}</div>
 <div><p class="fh">Agentur</p><a href="/beispiele/">Beispiele</a><a href="/ablauf/">Ablauf</a><a href="/preise/">Preise</a><a href="/faq/">Häufige Fragen</a><a href="/kontakt/">Kontakt</a></div>
-</div><div class="ft-mark" aria-hidden="true">{NAME}<span>.</span></div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a></span></div></div></footer>
-<script src="/main.js" defer></script>{f'<script src="/{js}" defer></script>' if js else ""}</body></html>"""
+</div><div class="ft-mark" aria-hidden="true">{NAME}<span>.</span></div><div class="legal"><span>© {date.today().year} {NAME}</span><span><a href="/impressum/" style="display:inline">Impressum</a> · <a href="/datenschutz/" style="display:inline">Datenschutz</a> · <a href="/agb/" style="display:inline">AGB</a>{' · <a href="#" data-einwilligung style="display:inline">Datenschutz-Einstellungen</a>' if EINW else ""}</span></div></div></footer>
+{'<script src="/dienste.js" defer></script><script src="/einwilligung.js" defer></script>' if EINW and not js else ""}<script src="/main.js" defer></script>{f'<script src="/{js}" defer></script>' if js else ""}</body></html>"""
 
 
 def write(path, title, desc, body, prio=0.6, **kw):
@@ -376,38 +386,133 @@ def kontakt():
     write("/danke/", "Danke für Ihre Anfrage", "Ihre Anfrage ist vorbereitet.", f'<section class="hero"><div class="wrap prose"><h1>Danke!</h1><p class="lead">{"Ihre Anfrage ist bei uns angekommen." if C.get("supabase_url") else "Ihre Nachricht ist in Ihrem E-Mail-Programm vorbereitet – bitte dort noch absenden."} Wir melden uns innerhalb eines Werktags. Hat sich kein E-Mail-Programm geöffnet? Schreiben Sie direkt an <a href="mailto:{C["email"]}">{C["email"]}</a>.</p><p><a class="btn" href="/beispiele/">In der Zwischenzeit: Beispiele ansehen</a></p></div></section>')
 
 
-DS_SUPABASE = "<p>Wenn Sie uns per E-Mail oder über das Kontaktformular schreiben, verarbeiten wir Ihre Angaben (Name, Betrieb, E-Mail, Telefon, Thema, Nachricht und die Seite, von der Sie das Formular abgeschickt haben) zur Bearbeitung der Anfrage und zur Anbahnung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO). Die Angaben aus dem Formular werden in einer Datenbank bei Supabase Inc. gespeichert; die Daten liegen in einem Rechenzentrum in der EU. Mit Supabase besteht ein Auftragsverarbeitungsvertrag. Wir löschen Anfragen, aus denen kein Auftrag entsteht, spätestens nach 12 Monaten; ansonsten gelten die gesetzlichen Aufbewahrungsfristen.</p>"
+DS_SUPABASE = "<p>Wenn Sie uns per E-Mail oder über das Kontaktformular schreiben, verarbeiten wir Ihre Angaben (Name, Betrieb, E-Mail, Telefon, Thema, Nachricht die Seite, von der Sie das Formular abgeschickt haben, und – falls Sie über einen Link mit Kampagnen-Kennzeichnung gekommen sind – dessen Quelle, z. B. „google-ads“) zur Bearbeitung der Anfrage und zur Anbahnung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO). Die Angaben aus dem Formular werden in einer Datenbank bei Supabase Inc. gespeichert; die Daten liegen in einem Rechenzentrum in der EU. Mit Supabase besteht ein Auftragsverarbeitungsvertrag. Über neue Anfragen werden wir per Push-Nachricht (ntfy.sh) informiert; diese enthält nur Thema und Betrieb, keine Kontaktdaten. Wir löschen Anfragen, aus denen kein Auftrag entsteht, spätestens nach 12 Monaten; ansonsten gelten die gesetzlichen Aufbewahrungsfristen.</p>"
 DS_MAIL = "<p>Wenn Sie uns per E-Mail oder über das Kontaktformular schreiben (das Formular öffnet Ihr E-Mail-Programm mit einer vorbereiteten Nachricht), verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage und zur Anbahnung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO). Wir löschen Anfragen, aus denen kein Auftrag entsteht, spätestens nach 12 Monaten; ansonsten gelten die gesetzlichen Aufbewahrungsfristen.</p>"
+
+
+def ds_dienste():
+    """Datenschutz-Abschnitte für zustimmungspflichtige Dienste – nur für die in config.json eingetragenen."""
+    teile = []
+    if "ga4" in T:
+        teile.append("<h3>Google Analytics 4</h3><p>Mit Ihrer Einwilligung nutzen wir Google Analytics 4 der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics setzt Cookies und verarbeitet Nutzungsdaten (z. B. aufgerufene Seiten, Verweildauer, Geräte- und Browserinformationen, ungefährer Standort), damit wir sehen, welche Inhalte hilfreich sind und woher Besucher kommen. IP-Adressen werden von Google Analytics 4 nicht gespeichert. Eine Übermittlung in die USA ist möglich; Google ist unter dem EU-US Data Privacy Framework zertifiziert. Die Daten werden nach " + todo("SPEICHERDAUER AUS GA4-EINSTELLUNG, z. B. 14 MONATE") + " gelöscht. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG.</p>")
+    if "google_ads" in T:
+        teile.append("<h3>Google Ads Conversion-Messung</h3><p>Mit Ihrer Einwilligung messen wir mit Google Ads (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland), ob Besucher nach dem Klick auf eine unserer Anzeigen eine Anfrage senden oder anrufen. Dazu wird ein Cookie mit einer Klick-Kennung gesetzt (höchstens 90 Tage). Senden Sie danach das Kontaktformular ab, speichern wir diese Klick-Kennung zusammen mit Ihrer Anfrage, um Google später mitteilen zu können, ob aus der Anzeige ein Auftrag entstanden ist. Wir erhalten von Google nur zusammengefasste Zahlen, keine Angaben zu einzelnen Personen. Eine Übermittlung in die USA ist möglich; Google ist unter dem EU-US Data Privacy Framework zertifiziert. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG.</p>")
+    if "meta_pixel" in T:
+        teile.append("<h3>Meta-Pixel</h3><p>Mit Ihrer Einwilligung nutzen wir das Meta-Pixel der Meta Platforms Ireland Limited, Merrion Road, Dublin 4, Irland, um zu messen, ob Anzeigen auf Facebook und Instagram zu Anfragen führen. Dabei werden Cookies gesetzt und Nutzungsdaten (z. B. aufgerufene Seiten, Geräteinformationen, IP-Adresse) an Meta übertragen, das sie auch eigenen Profilen zuordnen kann. Für die Erhebung und Übermittlung sind wir mit Meta gemeinsam verantwortlich (Art. 26 DSGVO, Vereinbarung: facebook.com/legal/controller_addendum). Eine Übermittlung in die USA ist möglich; Meta ist unter dem EU-US Data Privacy Framework zertifiziert. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG.</p>")
+    return "".join(teile)
 
 
 def rechtliches():
     DS_FORM = DS_SUPABASE if C.get("supabase_url") else DS_MAIL
     i = C["impressum"]
+    zusatz = "".join(f"<h2>{t}</h2><p>{e(i[k])}</p>" for k, t in (("ustid", "Umsatzsteuer-Identifikationsnummer"), ("register", "Registereintrag")) if (i.get(k) or "").strip())
     imp = f"""<section class="hero"><div class="wrap prose"><h1>Impressum</h1>
-<h2>Angaben gemäß § 5 DDG</h2><p>{i["inhaber"]}<br>{NAME}<br>{i["strasse"]}<br>{i["ort"]}</p>
-<h2>Kontakt</h2><p>Telefon: {i["telefon"]}<br>E-Mail: <a href="mailto:{i["email"]}">{i["email"]}</a></p>
-<h2>Umsatzsteuer</h2><p>{i["ust"]}</p>
-<h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2><p>{i["inhaber"]}, Anschrift wie oben.</p>
+<h2>Angaben gemäß § 5 DDG</h2><p>{ph(i["inhaber"])}<br>{NAME}<br>{ph(i["strasse"])}<br>{ph(i["ort"])}</p>
+<h2>Kontakt</h2><p>Telefon: {ph(i["telefon"])}<br>E-Mail: <a href="mailto:{i["email"]}">{i["email"]}</a></p>
+<h2>Umsatzsteuer</h2><p>{e(i["ust"])}</p>{zusatz}
+<h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2><p>{ph(i["inhaber"])}, Anschrift wie oben.</p>
 <h2>Verbraucherstreitbeilegung</h2><p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 <h2>Haftung für Inhalte und Links</h2><p>Wir erstellen die Inhalte dieser Seiten mit Sorgfalt, übernehmen aber keine Gewähr für Vollständigkeit und Aktualität. Für Inhalte verlinkter externer Seiten sind ausschließlich deren Betreiber verantwortlich.</p></div></section>"""
     write("/impressum/", "Impressum", "Impressum und Anbieterkennzeichnung.", imp, prio=0.2)
+
+    grundsatz = ("Diese Website setzt ohne Ihre Einwilligung keine Cookies und lädt keine Dienste von Drittanbietern. Schriften werden lokal ausgeliefert. "
+                 "Die in Abschnitt 7 genannten Messdienste laden wir nur, wenn Sie im Fenster „Ihre Datenschutz-Einstellungen“ zustimmen. Ihre Entscheidung speichern wir ausschließlich in Ihrem Browser (localStorage) für höchstens 12 Monate; das ist dafür unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). "
+                 "Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über „Datenschutz-Einstellungen“ im Fußbereich widerrufen."
+                 if EINW else
+                 "Diese Website verwendet keine Cookies und keine Einbindungen von Drittanbietern. Schriften werden lokal ausgeliefert. Eine Einwilligung über ein Cookie-Banner ist daher nicht erforderlich.")
+    i_ = C["impressum"]
     ds = f"""<section class="hero"><div class="wrap prose"><h1>Datenschutzerklärung</h1>
-<h2>1. Verantwortlicher</h2><p>{i["inhaber"]}, {i["strasse"]}, {i["ort"]}, E-Mail: {i["email"]}</p>
-<h2>2. Grundsatz</h2><p>Diese Website verwendet keine Cookies und keine Einbindungen von Drittanbietern. Schriften werden lokal ausgeliefert. Eine Einwilligung über ein Cookie-Banner ist daher nicht erforderlich.</p>
-<h2>2a. Anonyme Reichweitenmessung</h2><p>Um zu verstehen, welche Seiten hilfreich sind, zählen wir Seitenaufrufe und Klicks auf Kontakt-, Telefon- und E-Mail-Links. Gespeichert werden nur die aufgerufene Seite, die Art des Ereignisses (z. B. „Aufruf“ oder „Klick auf Kontakt“) und der Zeitpunkt. Wir setzen keine Cookies, speichern nichts auf Ihrem Gerät, lesen keine Informationen aus Ihrem Gerät aus (z. B. Bildschirmgröße oder Herkunftsseite), speichern keine IP-Adressen und vergeben keine Kennungen – ein Rückschluss auf Ihre Person ist nicht möglich. Die Daten liegen bei Supabase Inc. in einem Rechenzentrum in der EU (Auftragsverarbeitungsvertrag besteht) und werden nach spätestens 25 Monaten gelöscht. Bei der Übertragung verarbeitet der Server technisch bedingt Ihre IP-Adresse, speichert sie aber nicht in unserer Datenbank. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung der Website (Art. 6 Abs. 1 lit. f DSGVO).</p>
+<h2>1. Verantwortlicher</h2><p>{ph(i_["inhaber"])}, {ph(i_["strasse"])}, {ph(i_["ort"])}, E-Mail: {i_["email"]}</p>
+<h2>2. Grundsatz</h2><p>{grundsatz}</p>
+<h2>2a. Anonyme Reichweitenmessung</h2><p>Um zu verstehen, welche Seiten hilfreich sind, zählen wir Seitenaufrufe und Klicks auf Kontakt-, Telefon- und E-Mail-Links. Gespeichert werden nur die aufgerufene Seite, die Art des Ereignisses (z. B. „Aufruf“ oder „Klick auf Kontakt“) und der Zeitpunkt. Kommen Sie über einen Link mit Kampagnen-Kennzeichnung (z. B. aus einer Anzeige), speichern wir zusätzlich nur die Quelle als Wort (z. B. „google-ads“) – nicht die Klick-Kennung. Wir setzen dafür keine Cookies, speichern nichts auf Ihrem Gerät, lesen keine Informationen aus Ihrem Gerät aus (z. B. Bildschirmgröße oder Herkunftsseite), speichern keine IP-Adressen und vergeben keine Kennungen – ein Rückschluss auf Ihre Person ist nicht möglich. Die Daten liegen bei Supabase Inc. in einem Rechenzentrum in der EU (Auftragsverarbeitungsvertrag besteht) und werden nach spätestens 25 Monaten gelöscht. Bei der Übertragung verarbeitet der Server technisch bedingt Ihre IP-Adresse, speichert sie aber nicht in unserer Datenbank. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung der Website (Art. 6 Abs. 1 lit. f DSGVO).</p>
 <h2>3. Hosting</h2><p>Die Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA gehostet. Beim Aufruf verarbeitet Vercel technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Seite, Browserinformationen) zur Auslieferung und zur Abwehr von Angriffen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Vercel ist unter dem EU-US Data Privacy Framework zertifiziert; zusätzlich besteht ein Auftragsverarbeitungsvertrag mit Standardvertragsklauseln.</p>
 <h2>4. Kontaktaufnahme und Kontaktformular</h2>{DS_FORM}
-<h2>5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>
+<h2>5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde. Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3 DSGVO).</p>
 <h2>6. Speicherung im Browser</h2><p>Wenn Sie zwischen hellem und dunklem Design wechseln, wird diese Einstellung ausschließlich in Ihrem Browser gespeichert (localStorage) und nicht an uns übertragen.</p>
+{"<h2>7. Dienste mit Einwilligung</h2>" + ds_dienste() if EINW else ""}
 <p>Stand: {date.today().strftime("%m/%Y")}</p></div></section>"""
     write("/datenschutz/", "Datenschutzerklärung", "Informationen zum Datenschutz auf dieser Website.", ds, prio=0.2)
+
+    # AGB – Grundlage: Vertragsbausteine aus betrieb/handbuch.py. Vor Veröffentlichung anwaltlich prüfen lassen.
+    agb = [
+        ("Geltungsbereich", "Diese Bedingungen gelten für alle Verträge zwischen " + NAME + " (Inhaber: " + ph(i["inhaber"]) + ") und unseren Kunden. Wir arbeiten ausschließlich für Unternehmer im Sinne von § 14 BGB, nicht für Verbraucher. Abweichende Bedingungen des Kunden gelten nur, wenn wir ihnen ausdrücklich in Textform zustimmen."),
+        ("Vertragsschluss und Leistungsumfang", "Der Vertrag kommt durch die Annahme unseres Angebots in Textform (z. B. per E-Mail) zustande. Der Umfang ergibt sich abschließend aus dem Angebot und der Leistungsbeschreibung. Zusätzliche Leistungen bieten wir vorab an und erbringen sie nur nach Freigabe."),
+        ("Mitwirkung des Kunden", "Der Kunde stellt Inhalte, Fotos und Zugänge innerhalb von 7 Tagen nach Auftrag bereit und benennt eine Person für Freigaben. Verzögerungen verschieben den Zeitplan entsprechend. Der Kunde versichert, dass er an gelieferten Inhalten (Texte, Fotos, Logos) die nötigen Rechte hat, und stellt uns von Ansprüchen Dritter frei, die auf solchen Inhalten beruhen."),
+        ("Abnahme", "Bei Websites und anderen einmaligen Leistungen sind zwei Korrekturrunden enthalten. Der Entwurf gilt als abgenommen, wenn der Kunde nicht innerhalb von 10 Tagen nach Vorlage begründete Mängel mitteilt; auf diese Folge weisen wir bei der Vorlage hin."),
+        ("Preise und Zahlung", "Es gelten die Preise aus dem Angebot. " + e(i["ust"]) + " Einmalige Leistungen werden zu 50 % bei Auftrag und zu 50 % nach Abnahme des Entwurfs berechnet. Monatliche Leistungen werden " + todo("ABRECHNUNGSWEISE ERGÄNZEN, z. B. MONATLICH IM VORAUS PER SEPA-LASTSCHRIFT") + " berechnet. Rechnungen sind innerhalb von " + todo("ZAHLUNGSZIEL ERGÄNZEN, z. B. 14 TAGEN") + " ohne Abzug fällig."),
+        ("Laufzeiten und Kündigung", "Pflege & Hosting: 12 Monate, Verlängerung um jeweils 12 Monate, wenn nicht spätestens 3 Monate vor Ablauf gekündigt wird. SEO: 6 Monate Mindestlaufzeit, danach monatlich kündbar. Recruiting-Paket: 3 Monate, danach monatlich kündbar. Google Ads: monatlich kündbar. Wachstumsprogramm: 12 Monate. Kündigungen bedürfen der Textform. Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt."),
+        ("Werbebudgets und Konten", "Werbebudgets für Google, Meta o. Ä. zahlt der Kunde direkt an die jeweilige Plattform. Werbe-, Google- und Domain-Konten laufen auf den Namen des Kunden."),
+        ("Keine Ergebnisgarantie", "Platzierungen, Anfragen oder Bewerbungen hängen von Dritten (Suchmaschinen, Plattformen, Markt, Wettbewerb) ab und werden nicht garantiert. Wir schulden die sorgfältige Erbringung der beschriebenen Leistungen."),
+        ("Nutzungsrechte", "Nach vollständiger Zahlung erhält der Kunde die zeitlich und räumlich unbeschränkten Nutzungsrechte an Website, Texten und Gestaltung, die wir für ihn erstellt haben. Bei Vertragsende übergeben wir alle Dateien. Fremde Bestandteile (z. B. Schriften, Bilddatenbanken, Programme) unterliegen den Lizenzen ihrer Anbieter."),
+        ("Rechtstexte", "Vorlagen für Impressum, Datenschutzerklärung oder Einwilligungs-Fenster sind eine Arbeitshilfe. Eine Rechtsberatung erfolgt nicht; die Verantwortung für die rechtliche Richtigkeit der eigenen Website trägt der Kunde."),
+        ("Datenschutz", "Soweit wir für den Kunden personenbezogene Daten verarbeiten (z. B. Formularanfragen, Hosting, Auswertungen), schließen die Parteien einen Auftragsverarbeitungsvertrag nach Art. 28 DSGVO."),
+        ("Referenzen", "Wir nennen den Kunden nur mit seiner ausdrücklichen Zustimmung als Referenz oder zeigen seine Website als Beispiel."),
+        ("Haftung", "Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von Leben, Körper oder Gesundheit sowie nach dem Produkthaftungsgesetz. Bei leicht fahrlässiger Verletzung wesentlicher Vertragspflichten ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt; im Übrigen ist die Haftung für leichte Fahrlässigkeit ausgeschlossen. Für Ausfälle von Diensten Dritter (z. B. Hosting-Anbieter, Suchmaschinen, Werbeplattformen) haften wir nur, soweit wir sie zu vertreten haben."),
+        ("Schlussbestimmungen", "Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand ist, soweit gesetzlich zulässig, der Sitz von " + NAME + " (" + ph(i["ort"]) + "). Sollte eine Bestimmung unwirksam sein, bleibt der Vertrag im Übrigen wirksam."),
+    ]
+    body = (f'<section class="hero"><div class="wrap prose"><h1>Allgemeine Geschäftsbedingungen</h1><p>{todo("ENTWURF – VOR VERÖFFENTLICHUNG ANWALTLICH PRÜFEN LASSEN")}</p>'
+            '<p class="lead">Für Verträge mit Unternehmern. Kurz gesagt: klare Leistungen, feste Laufzeiten, Ihre Website gehört Ihnen.</p>'
+            + "".join(f"<h2>§ {n} {t}</h2><p>{x}</p>" for n, (t, x) in enumerate(agb, 1)) +
+            f'<p>Stand: {date.today().strftime("%m/%Y")}</p></div></section>')
+    write("/agb/", "Allgemeine Geschäftsbedingungen", "Allgemeine Geschäftsbedingungen von " + NAME + " für Unternehmer.", body, prio=0.2)
     write("/404.html", "Seite nicht gefunden", "Diese Seite gibt es nicht.", '<section class="hero"><div class="wrap prose"><p class="kicker">404</p><h1>Diese Seite gibt es nicht (mehr).</h1><p class="lead">Vielleicht hilft einer dieser Wege weiter:</p><p><a class="btn" href="/">Zur Startseite</a> <a class="btn ghost" href="/beispiele/">Beispiele</a></p></div></section>')
+
+
+# Zustimmungspflichtige Dienste: nur Konfiguration und Messpunkte – geladen wird erst über einwilligung.js nach Zustimmung.
+DIENSTE_JS = r"""/* Erzeugt von build.py aus config.json → tracking. Nicht von Hand ändern. */
+(function () {
+  var T = __T__, w = window, an = {};
+  w.dataLayer = w.dataLayer || []; w.gtag = w.gtag || function () { w.dataLayer.push(arguments); };
+  var g = 0;
+  function google(id) {
+    if (!g) { g = 1; var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id); document.head.appendChild(s); gtag("js", new Date()); }
+    setTimeout(function () { gtag("config", id); }, 0);            // erst nach dem Consent-Update von einwilligung.js
+  }
+  function fertig(id) { setTimeout(function () { an[id] = 1; if (location.pathname === "/danke/") melden("formular", id); }, 0); }
+  // Messpunkte: formular (Danke-Seite), telefon, mail, cta
+  function melden(art, nur) {
+    function ok(id) { return an[id] && (!nur || nur === id); }
+    if (ok("anzeigen")) { var l = art === "formular" ? T.ads_label_anfrage : art === "telefon" ? T.ads_label_anruf : ""; if (l) gtag("event", "conversion", { send_to: T.google_ads + "/" + l }); }
+    if (ok("statistik")) { var n = { formular: "generate_lead", telefon: "anruf_klick", mail: "mail_klick", cta: "kontakt_klick" }[art]; if (n) gtag("event", n, { send_to: T.ga4 }); }
+    if (ok("meta") && w.fbq) { if (art === "formular") fbq("track", "Lead"); else if (art === "telefon" || art === "mail") fbq("track", "Contact"); }
+  }
+  w.lwKonversion = function (art) { melden(art); };
+  var D = [];
+  if (T.ga4) D.push({ id: "statistik", name: "Google Analytics", zweck: "Zeigt uns, welche Seiten hilfreich sind und woher Besucher kommen.", anbieter: "Google Ireland Ltd.",
+    gcm: ["analytics_storage"], laden: function () { google(T.ga4); fertig("statistik"); } });
+  if (T.google_ads) D.push({ id: "anzeigen", name: "Google Ads Conversion-Messung", zweck: "Misst, welche Anzeigen zu Anfragen führen.", anbieter: "Google Ireland Ltd.",
+    gcm: ["ad_storage", "ad_user_data", "ad_personalization"], laden: function () { google(T.google_ads); fertig("anzeigen"); } });
+  if (T.meta_pixel) D.push({ id: "meta", name: "Meta-Pixel", zweck: "Misst, welche Anzeigen auf Facebook und Instagram zu Anfragen führen.", anbieter: "Meta Platforms Ireland Ltd.",
+    laden: function () {
+      !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(w, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+      fbq("init", T.meta_pixel); fbq("track", "PageView"); fertig("meta");
+    } });
+  w.LW_DIENSTE = D;
+})();
+"""
+
+
+def csp():
+    """Content-Security-Policy; Google/Meta-Adressen nur, wenn die Dienste in config.json eingetragen sind."""
+    sb = (" " + C["supabase_url"]) if C.get("supabase_url") else ""
+    script, connect, img, frame = "", "", "", ""
+    if "ga4" in T or "google_ads" in T:
+        script += " https://www.googletagmanager.com"
+        connect += " https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net"
+        img += " https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://www.google.de https://googleads.g.doubleclick.net"
+        frame += " https://*.doubleclick.net https://www.googletagmanager.com"
+    if "meta_pixel" in T:
+        script += " https://connect.facebook.net"; connect += " https://www.facebook.com https://connect.facebook.net"; img += " https://www.facebook.com"
+    return (f"default-src 'self'; connect-src 'self'{sb}{connect}; img-src 'self' data: https://images.pexels.com{img}; style-src 'self' 'unsafe-inline'; "
+            f"script-src 'self'{script}; font-src 'self'; {("frame-src 'self'" + frame + '; ') if frame else ''}form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'")
 
 
 HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin",
            "X-Frame-Options": "SAMEORIGIN", "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
            "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
-           "Content-Security-Policy": f"default-src 'self'; connect-src 'self'{(' ' + C['supabase_url']) if C.get('supabase_url') else ''}; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"}
+           "Content-Security-Policy": csp()}
 
 
 def intern():
@@ -446,6 +551,9 @@ def extras():
             out, _ = generator.bauen(k.parent, vorschau=True)
             shutil.copytree(out, DIST / "v" / k.parent.name, dirs_exist_ok=True)
     (DIST / "favicon.svg").write_text(FAVICON)
+    if EINW:
+        shutil.copy(ROOT / "betrieb" / "bausteine" / "einwilligung.js", DIST / "einwilligung.js")
+        (DIST / "dienste.js").write_text(DIENSTE_JS.replace("__T__", json.dumps({k: v for k, v in T.items() if k in ("ga4", "google_ads", "ads_label_anfrage", "ads_label_anruf", "meta_pixel")})))
     robots = "User-agent: *\nDisallow: /\n" if C["preview"] else f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n"
     (DIST / "robots.txt").write_text(robots)
     today = date.today().isoformat()

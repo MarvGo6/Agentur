@@ -180,9 +180,9 @@
     },
 
     anfragen: async function () {
-      var a = await api('agentur_anfragen?select=created_at,name,betrieb,email,telefon,thema,nachricht,quelle,status&order=created_at.desc&limit=40');
+      var a = await api('agentur_anfragen?select=created_at,name,betrieb,email,telefon,thema,nachricht,quelle,kampagne,status&order=created_at.desc&limit=40');
       return a.length ? a.map(function (q) {
-        return '<article class="in-card"><p class="in-muted">' + new Date(q.created_at).toLocaleString('de-DE') + ' · ' + x(q.thema || '') + ' · ' + x(q.quelle || '') + '</p><h3>' + x(q.name) + (q.betrieb ? ' · ' + x(q.betrieb) : '') + '</h3>' +
+        return '<article class="in-card"><p class="in-muted">' + new Date(q.created_at).toLocaleString('de-DE') + ' · ' + x(q.thema || '') + ' · ' + x(q.quelle || '') + (q.kampagne ? ' · über ' + x(q.kampagne) : '') + '</p><h3>' + x(q.name) + (q.betrieb ? ' · ' + x(q.betrieb) : '') + '</h3>' +
           '<p>' + (q.email ? '<a href="mailto:' + x(q.email) + '">' + x(q.email) + '</a> ' : '') + (q.telefon ? '<a href="tel:' + x(q.telefon) + '">' + x(q.telefon) + '</a>' : '') + '</p><p>' + x(q.nachricht || '') + '</p></article>';
       }).join('') : '<p class="in-muted">Noch keine Anfragen.</p>';
     },

@@ -13,10 +13,23 @@
     "ort": "[PLZ Ort]",
     "email": "hallo@lotwerk.de",
     "telefon": "[Telefonnummer]",
-    "ust": "Kleinunternehmer gemäß § 19 UStG – es wird keine Umsatzsteuer ausgewiesen."
+    "ust": "Kleinunternehmer gemäß § 19 UStG – es wird keine Umsatzsteuer ausgewiesen.",
+    "rechtsform": "Einzelunternehmen",
+    "ustid": "",
+    "register": ""
   },
   "supabase_url": "https://mlvraqrtejfwamwhyici.supabase.co",
   "supabase_key": "sb_publishable_-mMDOedAuGmTssud4LXlJw_0EYSLX5S",
   "ansprechpartner": "",
-  "standort": ""
+  "standort": "",
+  "tracking": {
+    "_hinweis": "Leer = aus. Bestätigungscodes brauchen keine Einwilligung. GA4, Google Ads und Meta laden erst nach Einwilligung (Banner erscheint automatisch). Anleitung: betrieb/TRACKING.md",
+    "search_console": "",
+    "bing": "",
+    "ga4": "",
+    "google_ads": "",
+    "ads_label_anfrage": "",
+    "ads_label_anruf": "",
+    "meta_pixel": ""
+  }
 }

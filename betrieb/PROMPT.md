@@ -113,9 +113,11 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 - Fehlende Schlüssel: Liste im Automatisierungsplan, Kapitel 3.
 - Abfragen: `betrieb/abfragen.sql`. Leistungen und Abnahme: `betrieb/Leistungshandbuch.pdf`.
 - Offen: `psi_key` in `einstellungen` (Google PageSpeed API-Schlüssel).
+- Rechtstexte & Tracking (07.10.): Impressum/Datenschutz mit sichtbaren Platzhaltern aus `config.json`, AGB-Entwurf `/agb/` (anwaltlich prüfen). Tracking vorbereitet über `config.json` → `tracking` (Search Console, Bing, GA4, Google Ads mit Anfrage-/Anruf-Conversion, Meta-Pixel) – leer = aus; bei zustimmungspflichtigen Diensten automatisch Einwilligungs-Fenster, Datenschutz-Abschnitt, CSP. Kampagnen-Quelle ohne Cookies in `seitenaufrufe.herkunft` und `agentur_anfragen.kampagne`, `gclid` nur mit Einwilligung (Offline-Conversions). Anleitung `betrieb/TRACKING.md`.
 
 ## Änderungsprotokoll
 - 2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).
 - 2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.
 - 2026-10-07: Automatisierungsplan (30 Automatisierungen, 5 Phasen), Finanzmodell mit zwei Varianten, Recruiting ab Juni 2027.
+- 2026-10-07: Rechtstexte (AGB-Entwurf, Platzhalter) und Tracking-Vorbereitung (GA4, Google Ads, Meta, Search Console; Kampagnen-Zuordnung).
 - 2026-10-07: Cookie-Konformität (Zählung ohne Endgerätezugriff, Einwilligungs-Baustein, Analyse-Prüfungen), Dashboard als zentrale Steuerung erweitert.

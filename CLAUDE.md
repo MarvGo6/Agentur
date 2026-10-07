@@ -26,5 +26,6 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 - Google Business Profile API und Google-Ads-Token beantragen (B1, B3, B4, B6).
 - Supabase Auth: Site URL auf `https://lotwork.vercel.app/intern/` setzen.
 - Rechnungen/Lastschrift (Lexware Office, GoCardless) bewusst später.
-- Website-Platzhalter: Telefon, Standort, Name; Impressum; AGB anwaltlich prüfen.
+- Website-Platzhalter: Telefon, Standort, Name, Anschrift (`config.json` → `impressum`); AGB-Entwurf `/agb/` anwaltlich prüfen (Zahlungsziel/Abrechnung ergänzen).
+- Tracking: IDs in `config.json` → `tracking` eintragen, wenn Konten stehen (Anleitung `betrieb/TRACKING.md`).
 - Testdaten löschen (anfragen „TEST Claude“, inhalte_formulare „TEST …“, Speicher „inhalte“).

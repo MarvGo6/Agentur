@@ -146,7 +146,7 @@ create table if not exists seitenaufrufe (            -- anonym: keine IP, keine
   id bigint generated always as identity primary key,
   zeit timestamptz not null default now(),
   pfad text not null check (char_length(pfad) <= 200),
-  herkunft text check (char_length(herkunft) <= 100),  -- nur Domain des Verweises
+  herkunft text check (char_length(herkunft) <= 100),  -- Kampagnen-Quelle aus der Adresse (utm_source / google-ads / meta), kein Referrer
   geraet text check (geraet in ('handy','tablet','computer')),
   ereignis text not null default 'aufruf' check (ereignis in ('aufruf','cta','formular','telefon','mail','vorschau'))
 );
@@ -198,3 +198,8 @@ create table if not exists entwuerfe (id uuid primary key default gen_random_uui
 -- Steuerzentrale: Admins lesen und bearbeiten die Anfragen der Agentur-Website (Migration steuerzentrale_anfragen_lesen)
 grant select, update on agentur_anfragen to authenticated;
 create policy admin_alles on agentur_anfragen for all to authenticated using (ist_admin()) with check (ist_admin());
+
+-- ---------------------------------------------------------------- Kampagnen-Zuordnung (Migration anfragen_kampagne)
+alter table agentur_anfragen add column if not exists kampagne text check (char_length(kampagne) <= 200);  -- utm_source / utm_campaign, ohne Kennung
+alter table agentur_anfragen add column if not exists gclid text check (char_length(gclid) <= 200);        -- nur mit Einwilligung „Google Ads“ (Offline-Conversions)
+grant insert (kampagne, gclid) on agentur_anfragen to anon;

@@ -58,3 +58,13 @@ insert into websites (domain, status) values ('www.kunde-beispiel.de', 'live');
 
 -- 12) Zeitpläne ansehen (Datenbank-Jobs)
 select jobname, schedule, active from cron.job order by jobname;
+
+-- 13) Kampagnen: Besuche, Klicks und Anfragen je Quelle (letzte 30 Tage; Quelle aus utm_source / google-ads / meta)
+select coalesce(herkunft, 'direkt / unbekannt') as quelle,
+  count(*) filter (where ereignis = 'aufruf') as aufrufe,
+  count(*) filter (where ereignis in ('cta','telefon','mail')) as kontakt_klicks,
+  count(*) filter (where ereignis = 'formular') as anfragen
+from seitenaufrufe where zeit > now() - interval '30 days' group by 1 order by 2 desc;
+
+-- 14) Anfragen mit Google-Klick-Kennung (für den Offline-Conversion-Import in Google Ads, sobald ein Auftrag daraus wurde)
+select created_at, betrieb, kampagne, gclid, status from agentur_anfragen where gclid is not null order by created_at desc;
