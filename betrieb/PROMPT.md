@@ -119,5 +119,6 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 - 2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).
 - 2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.
 - 2026-10-07: Automatisierungsplan (30 Automatisierungen, 5 Phasen), Finanzmodell mit zwei Varianten, Recruiting ab Juni 2027.
+- 2026-10-07: Firmenübersicht (`betrieb/uebersicht.py` → Firmenuebersicht.pdf): Außenansicht, Plan bis Dez 27, Paket → Automatisierung, Widersprüche (Team ab Jul 27 vs. Automatisierung, Umsatzsteuer).
 - 2026-10-07: Rechtstexte (AGB-Entwurf, Platzhalter) und Tracking-Vorbereitung (GA4, Google Ads, Meta, Search Console; Kampagnen-Zuordnung).
 - 2026-10-07: Cookie-Konformität (Zählung ohne Endgerätezugriff, Einwilligungs-Baustein, Analyse-Prüfungen), Dashboard als zentrale Steuerung erweitert.

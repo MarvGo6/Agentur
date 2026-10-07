@@ -163,13 +163,14 @@ pre{{font:7.6pt/1.4 ui-monospace,Menlo,monospace;background:#f6f4ef;padding:8pt;
 <h3>Im Vertrieb nutzen</h3><p>Die automatische Website-Analyse meldet jetzt auch: Tracking ohne erkennbare Einwilligung, direkt eingebettete Karten/Videos, fehlende Links zu Impressum und Datenschutz, Google Fonts von Google-Servern. Das sind sachliche Punkte für die „Persönliche Analyse“ – als Risiko benennen, nicht als Rechtsberatung.</p></section>
 </body></html>"""
 
-(HERE / "Leistungshandbuch.html").write_text(HTML, encoding="utf-8")
-js = f"""const {{chromium}}=require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();
-await p.goto('file://{HERE}/Leistungshandbuch.html');await p.waitForTimeout(400);
-await p.pdf({{path:'{HERE}/Leistungshandbuch.pdf',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',
-footerTemplate:'<div style="font-size:7pt;color:#888;width:100%;text-align:center;font-family:sans-serif">{NAME} · Leistungshandbuch · Seite <span class=pageNumber></span> von <span class=totalPages></span></div>',
-margin:{{top:'16mm',bottom:'16mm',left:'0',right:'0'}}}});await b.close();}})();"""
-(HERE / "_pdf.js").write_text(js)
-subprocess.run(["node", str(HERE / "_pdf.js")], check=True, env={**os.environ, "NODE_PATH": subprocess.check_output(["npm", "root", "-g"]).decode().strip()})
-(HERE / "_pdf.js").unlink()
-print("Leistungshandbuch.pdf erstellt")
+if __name__ == "__main__":                       # beim Import (z. B. betrieb/uebersicht.py) nur Daten, keine Dateien
+    (HERE / "Leistungshandbuch.html").write_text(HTML, encoding="utf-8")
+    js = f"""const {{chromium}}=require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();
+    await p.goto('file://{HERE}/Leistungshandbuch.html');await p.waitForTimeout(400);
+    await p.pdf({{path:'{HERE}/Leistungshandbuch.pdf',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',
+    footerTemplate:'<div style="font-size:7pt;color:#888;width:100%;text-align:center;font-family:sans-serif">{NAME} · Leistungshandbuch · Seite <span class=pageNumber></span> von <span class=totalPages></span></div>',
+    margin:{{top:'16mm',bottom:'16mm',left:'0',right:'0'}}}});await b.close();}})();"""
+    (HERE / "_pdf.js").write_text(js)
+    subprocess.run(["node", str(HERE / "_pdf.js")], check=True, env={**os.environ, "NODE_PATH": subprocess.check_output(["npm", "root", "-g"]).decode().strip()})
+    (HERE / "_pdf.js").unlink()
+    print("Leistungshandbuch.pdf erstellt")

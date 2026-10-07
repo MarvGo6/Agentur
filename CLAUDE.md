@@ -18,7 +18,7 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
   - SQL mit `drop`/`delete` hängt im Supabase-Connector an einer Bestätigung → vermeiden oder den Nutzer bitten; Löschungen laufen über REST in den Funktionen.
   - Aus dem Container ist `*.supabase.co` gesperrt → Funktionen per `net.http_post` aus SQL testen.
 - Kunden-Websites: `sites/` (Generator, Abnahme-Prüfung, Livegang, KI-Skripte), Kunden in `kunden/<slug>/kunde.json`, Anleitung `sites/README.md`.
-- Planung: `betrieb/` (Betriebsplan, Leistungshandbuch, Automatisierungsplan – PDFs werden aus den .py-Dateien erzeugt), `betrieb/PROMPT.md` (Master-Prompt, Stand „Bereits umgesetzt“), Finanzmodell `finanzen/` (Python + Excel mit Formeln, Varianten von Hand / automatisiert ab Kunde 5).
+- Planung: `betrieb/` (**Firmenübersicht** `uebersicht.py` = Zusammenfassung von allem inkl. Widersprüche/Lücken; Betriebsplan, Leistungshandbuch, Automatisierungsplan – PDFs werden aus den .py-Dateien erzeugt), `betrieb/PROMPT.md` (Master-Prompt, Stand „Bereits umgesetzt“), Finanzmodell `finanzen/` (Python + Excel mit Formeln, Varianten von Hand / automatisiert ab Kunde 5).
 - PDFs/Screenshots: Node-Playwright (`NODE_PATH=$(npm root -g)`), kein Python-Playwright installiert.
 
 ## Offene Punkte (Stand 07.10.2026)
@@ -28,4 +28,5 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 - Rechnungen/Lastschrift (Lexware Office, GoCardless) bewusst später.
 - Website-Platzhalter: Telefon, Standort, Name, Anschrift (`config.json` → `impressum`); AGB-Entwurf `/agb/` anwaltlich prüfen (Zahlungsziel/Abrechnung ergänzen).
 - Tracking: IDs in `config.json` → `tracking` eintragen, wenn Konten stehen (Anleitung `betrieb/TRACKING.md`).
+- Entscheiden: Umsatzsteuer (Kleinunternehmer endet laut Plan Aug/Sep 27 – Steuerberater) und Weg ab Juli 2027 (allein mit System oder Team), siehe Firmenübersicht Kap. 13.
 - Testdaten löschen (anfragen „TEST Claude“, inhalte_formulare „TEST …“, Speicher „inhalte“).

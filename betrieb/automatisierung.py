@@ -163,13 +163,14 @@ HTML = f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><title>{NA
 <div class="box">Laufende Kosten aller Automatisierungen: im Modell {e0(G['auto_kosten'])} pro Monat ab Kunde 5 (vor allem Claude API). Bei 20 Kunden sind das rund {e0(G['auto_kosten'] / 20)} je Kunde und Monat.</div></section>
 </body></html>"""
 
-(HERE / "Automatisierungsplan.html").write_text(HTML, encoding="utf-8")
-js = f"""const {{chromium}}=require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();
-await p.goto('file://{HERE}/Automatisierungsplan.html');await p.waitForTimeout(400);
-await p.pdf({{path:'{HERE}/Automatisierungsplan.pdf',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',
-footerTemplate:'<div style="font-size:7pt;color:#888;width:100%;text-align:center;font-family:sans-serif">{NAME} · Automatisierungsplan · Seite <span class=pageNumber></span> von <span class=totalPages></span></div>',
-margin:{{top:'14mm',bottom:'14mm',left:'0',right:'0'}}}});await b.close();}})();"""
-(HERE / "_pdf.js").write_text(js)
-subprocess.run(["node", str(HERE / "_pdf.js")], check=True, env={**os.environ, "NODE_PATH": subprocess.check_output(["npm", "root", "-g"]).decode().strip()})
-(HERE / "_pdf.js").unlink()
-print("Automatisierungsplan.pdf erstellt")
+if __name__ == "__main__":                       # beim Import (z. B. betrieb/uebersicht.py) nur Daten, keine Dateien
+    (HERE / "Automatisierungsplan.html").write_text(HTML, encoding="utf-8")
+    js = f"""const {{chromium}}=require('playwright');(async()=>{{const b=await chromium.launch();const p=await b.newPage();
+    await p.goto('file://{HERE}/Automatisierungsplan.html');await p.waitForTimeout(400);
+    await p.pdf({{path:'{HERE}/Automatisierungsplan.pdf',format:'A4',printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',
+    footerTemplate:'<div style="font-size:7pt;color:#888;width:100%;text-align:center;font-family:sans-serif">{NAME} · Automatisierungsplan · Seite <span class=pageNumber></span> von <span class=totalPages></span></div>',
+    margin:{{top:'14mm',bottom:'14mm',left:'0',right:'0'}}}});await b.close();}})();"""
+    (HERE / "_pdf.js").write_text(js)
+    subprocess.run(["node", str(HERE / "_pdf.js")], check=True, env={**os.environ, "NODE_PATH": subprocess.check_output(["npm", "root", "-g"]).decode().strip()})
+    (HERE / "_pdf.js").unlink()
+    print("Automatisierungsplan.pdf erstellt")
