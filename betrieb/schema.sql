@@ -142,7 +142,7 @@ create table if not exists einstellungen (            -- nur serverseitig lesbar
   schluessel text primary key, wert text not null
 );
 
-create table if not exists seitenaufrufe (            -- anonym: keine IP, keine Cookies, keine Kennung
+create table if not exists seitenaufrufe (            -- anonym: keine IP, keine Cookies, keine Kennung; die Website sendet nur pfad + ereignis
   id bigint generated always as identity primary key,
   zeit timestamptz not null default now(),
   pfad text not null check (char_length(pfad) <= 200),

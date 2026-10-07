@@ -59,7 +59,14 @@ Eigenes Repo `lotwerk-dashboard`, Next.js (App Router) + Supabase Auth, auf Verc
 Seiten: **Cockpit** (MRR, Netto-Wachstum, Kündigungen, Kasse, offene Rechnungen, Auslastung in Std. von 170, Fortschritt zu 10.000 €),
 **Pipeline** (Kanban über `interessenten.status`), **Kunden** (Verträge, Umsatz, Stunden, Deckungsbeitrag/Std.),
 **Websites** (Status, Uptime, Lighthouse, Anfragen), **Aufgaben**, **Zeiten** (Start/Stopp-Knopf).
-Lexware-Office-Abgleich (täglich): Rechnungen und Zahlstatus → `rechnungen`. Plan-Werte aus `finanzen/modell.py` als Vergleichslinie.
+Außerdem **Auswertungen** (`berichte`, `seitenaufrufe`, `messwerte`), **Rechnungen**, **Zahlungen**, **Freigaben**, **Einstellungen**.
+Lexware-Office-Abgleich (täglich): Rechnungen und Zahlstatus → `rechnungen`. GoCardless-Webhooks: Mandate, Einzüge, Rückläufer → `rechnungen` + `aufgaben`.
+Plan-Werte aus `finanzen/modell.py` als Vergleichslinie.
+**Zentrale Steuerung (Knöpfe, alle über serverseitige Route Handlers, Schlüssel nur in Vercel Secrets):**
+Neue Website (kunde.json → Build → Vorschau, GitHub- + Vercel-API) · Live schalten / zurückrollen (Vercel-API) ·
+Domain verbinden (Vercel- + Cloudflare-API) · Betrieb analysieren (Funktion `analyse`) · Angebot/Rechnung als Entwurf (Lexware-API) ·
+Lastschrift anfragen/einziehen (GoCardless-API) · Monatsbericht senden (Funktion `bericht`) · Kündigung abwickeln (Laufzeitende, Export, Lastschrift stopp).
+Jede Aktion schreibt eine Zeile in `aufgaben` oder `ki_laeufe` (Protokoll). Nichts geht ohne Freigabe live.
 Mobil zuerst (der Gründer nutzt das iPhone), Dunkelmodus.
 **Fertig, wenn:** der Gründer morgens in 2 Minuten sieht, was Geld bringt, was brennt und was freigegeben werden muss.
 
@@ -88,15 +95,18 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 
 ---
 
-## Bereits umgesetzt (Stand 2026-10-06)
+## Bereits umgesetzt (Stand 2026-10-07)
 
 - Supabase „Lotwerk Agentur“: Betriebs-Schema aus `betrieb/schema.sql` eingespielt (Interessenten, Kunden, Verträge, Rechnungen, Kosten, Zeiten, Websites, Checks, Messwerte, Aufgaben, KI-Läufe, Berichte, Seitenaufrufe, Einstellungen).
 - Edge Functions in `supabase/functions/`: `monitor` (Erreichbarkeit täglich, PageSpeed montags), `analyse` (Website-Befund + Potenzial für Interessenten), `bericht` (Wochen-/Monatsbericht, Löschfrist Seitenaufrufe). Schutz über `x-cron-secret` aus Tabelle `einstellungen`.
 - Datenbank-Jobs (pg_cron) über `public.funktion_starten(name)`: 05:15 UTC täglich, alle 30 Min., Mo 06:00 UTC, am 1. 06:30 UTC.
-- Website zählt anonym Seitenaufrufe und Klicks (Tabelle `seitenaufrufe`, nur INSERT für anon).
+- Website zählt anonym Seitenaufrufe und Klicks (Tabelle `seitenaufrufe`, nur INSERT für anon). Kein Zugriff auf Gerätedaten (§ 25 TDDDG): nur Pfad + Ereignis, keine Cookies, kein Referrer, keine Bildschirmgröße → kein Banner nötig.
+- Einwilligungs-Baustein für Kunden-Websites: `betrieb/bausteine/einwilligung.js` (nur einsetzen, wenn zustimmungspflichtige Dienste genutzt werden; Consent Mode v2, Zwei-Klick für Karten/Videos, Widerruf-Link). Getestet.
+- `analyse` prüft zusätzlich: Tracking ohne Einwilligung, direkt eingebettete Karten/Videos, Impressum-/Datenschutz-Link.
 - Abfragen: `betrieb/abfragen.sql`. Leistungen und Abnahme: `betrieb/Leistungshandbuch.pdf`.
 - Offen: `psi_key` in `einstellungen` (Google PageSpeed API-Schlüssel).
 
 ## Änderungsprotokoll
 - 2026-10-06: Erste Fassung (Stufen 1–5, Regeln, Setup, Preise inkl. Programm-Einrichtung 1.490 €, KI-Suche als Kennzahl).
 - 2026-10-06: Datensammlung und Automatisierungen in Supabase umgesetzt, Leistungshandbuch ergänzt.
+- 2026-10-07: Cookie-Konformität (Zählung ohne Endgerätezugriff, Einwilligungs-Baustein, Analyse-Prüfungen), Dashboard als zentrale Steuerung erweitert.

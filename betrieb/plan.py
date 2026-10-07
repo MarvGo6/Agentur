@@ -294,17 +294,30 @@ pre{{padding:8pt;white-space:pre-wrap;line-height:1.35}}
 <p class="leg">Entwurf des Cockpits (Beispielwerte). Mobil zuerst, Dunkelmodus.</p>
 {tab(["Seite", "Was du siehst", "Wofür"], [
  ["Cockpit", "MRR, Ziel-Fortschritt, Kasse, Auslastung, offene Freigaben", "2-Minuten-Überblick am Morgen"],
- ["Pipeline", "Interessenten → Vorschau → Termin → Angebot → gewonnen, Quoten", "Vertrieb steuern"],
- ["Kunden", "Verträge, Umsatz, Stunden, Deckungsbeitrag je Stunde", "gute und schlechte Kunden erkennen"],
- ["Websites", "Status, Uptime, Lighthouse, Anfragen, Klicks, KI-Nennung", "Qualität und Ergebnisse"],
+ ["Pipeline", "Interessenten, Analyse-Befund, Vorschau, Termin, Angebot, Quoten", "Vertrieb steuern"],
+ ["Kunden", "Verträge, Laufzeiten, Umsatz, Stunden, Deckungsbeitrag je Stunde", "gute und schlechte Kunden erkennen"],
+ ["Websites", "Status, Uptime, Lighthouse, Anfragen, Klicks, KI-Nennung, Cookie-Check", "Qualität und Ergebnisse"],
+ ["Auswertungen", "Wochen-/Monatsberichte, Seitenaufrufe, Konversion je Seite", "was wirkt"],
+ ["Rechnungen", "offen, fällig, bezahlt, Mahnstufe", "Geld kommt rein"],
+ ["Zahlungen", "Lastschrift-Mandate, Einzüge, Rückläufer", "Ausfälle sofort sehen"],
  ["Freigaben", "KI-Vorschläge mit Vorschau-Link", "ein Klick: freigeben/ablehnen"],
- ["Aufgaben", "automatisch aus Fehlern und Fristen + eigene", "nichts vergessen"],
- ["Finanzen", "Umsatz, Kosten, Ergebnis je Monat, Plan vs. Ist", "auf Kurs?"],
- ["Zeiten", "Start/Stopp je Kunde und Tätigkeit", "echter Verdienst je Stunde"]])}
+ ["Aufgaben · Zeiten", "aus Fehlern und Fristen + eigene; Start/Stopp je Kunde", "nichts vergessen, echter Stundenlohn"],
+ ["Finanzen", "Umsatz, Kosten, Ergebnis je Monat, Plan vs. Ist", "auf Kurs?"]])}
+<h3>Zentrale Steuerung – was du von dort auslöst</h3>
+{tab(["Knopf im Dashboard", "Was im Hintergrund passiert", "Verbindung"], [
+ ["Neue Website", "kunde.json aus Formular → Build → Vorschau-Link zur Freigabe", "GitHub-API, Vercel-API"],
+ ["Live schalten / zurückrollen", "Deploy freigeben oder letzte Version wiederherstellen", "Vercel-API"],
+ ["Domain verbinden", "Domain im Projekt anlegen, DNS-Einträge setzen, SSL prüfen", "Vercel-API, Cloudflare-API"],
+ ["Betrieb analysieren", "Website-Befund und Potenzial in 1 Minute", "Supabase-Funktion analyse"],
+ ["Angebot / Rechnung", "Entwurf aus Vertrag erzeugen, nach Freigabe versenden", "Lexware-Office-API"],
+ ["Lastschrift", "Mandat anfragen, Monatsbetrag einziehen, Rückläufer melden", "GoCardless-API (Webhooks)"],
+ ["Bericht senden", "Monatsbericht als PDF an den Kunden", "Supabase-Funktion bericht, E-Mail"],
+ ["Kündigung", "Laufzeitende berechnen, Export, Domain-Übergabe, Lastschrift stoppen", "alle oben"]])}
+<p class="small">Alle Schlüssel (Vercel, GitHub, Lexware, GoCardless, Cloudflare) liegen nur serverseitig (Vercel/Supabase Secrets). Das Dashboard ändert nie direkt eine Kunden-Website, sondern löst Vorschau → Freigabe → Live aus.</p>
 </section>
 
 <section class="page">{kap(8, "Datenmodell")}
-<p>Eine Datenbank im Supabase-Projekt „Lotwerk Agentur“ (EU). Entwurf: <code>betrieb/schema.sql</code> (lokal mit PostgreSQL getestet, noch nicht eingespielt). Zugriff nur nach Login als Inhaber; Automatisierungen schreiben serverseitig.</p>
+<p>Eine Datenbank im Supabase-Projekt „Lotwerk Agentur“ (EU). Entwurf: <code>betrieb/schema.sql</code> (eingespielt, mit Zugriffsschutz auf jeder Tabelle). Zugriff nur nach Login als Inhaber; Automatisierungen schreiben serverseitig.</p>
 {tab(["Tabelle", "Inhalt", "gefüllt von"], [
  ["interessenten", "Betriebe, Analyse, Potenzial, Status, Vorschau-Link", "Ablauf A"], ["angebote", "Option, Beträge, Status", "du, Lexware"],
  ["kunden · vertraege", "Firma, Produkte, Monatsbetrag, Laufzeit", "Ablauf B"], ["rechnungen · kosten", "Rechnungen, Zahlstatus, Kosten je Kunde", "Ablauf E"],

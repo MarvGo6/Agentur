@@ -14,7 +14,7 @@
     if(d.get('website'))return;                                   // Spam-Falle
     var daten={name:(d.get('name')||'').trim(),betrieb:(d.get('betrieb')||'').trim()||null,email:(d.get('email')||'').trim(),
       telefon:(d.get('telefon')||'').trim()||null,thema:d.get('thema')||null,nachricht:(d.get('nachricht')||'').trim()||null,
-      quelle:((document.referrer?document.referrer.slice(0,140)+' → ':'')+location.pathname).slice(0,200),einwilligung:!!d.get('einwilligung')};
+      quelle:location.pathname.slice(0,200),einwilligung:!!d.get('einwilligung')};
     function mail(){var z=[];Object.keys(daten).forEach(function(k){if(daten[k]&&k!=='einwilligung'&&k!=='quelle')z.push(k.charAt(0).toUpperCase()+k.slice(1)+': '+daten[k])});
       location.href='mailto:'+f.dataset.to+'?subject='+encodeURIComponent('Anfrage über die Website – '+(daten.betrieb||daten.name))+'&body='+encodeURIComponent(z.join('\n'))}
     if(!f.dataset.sb){mail();setTimeout(function(){location.href='/danke/'},800);return}
@@ -36,13 +36,12 @@
   ['scroll','pointermove','touchstart','keydown'].forEach(function(t){addEventListener(t,start,{passive:true})});
 })();
 (function(){
-  // Anonyme Zählung: Seite, Herkunfts-Domain, Gerätetyp, Ereignis. Keine Cookies, keine Kennung, keine IP-Speicherung.
+  // Anonyme Zählung ohne Zugriff auf Informationen im Endgerät (§ 25 TDDDG): nur die aufgerufene Seite und das Ereignis.
+  // Keine Cookies, kein localStorage, keine Bildschirmgröße, kein Referrer, keine Kennung.
   var f=document.getElementById('anfrage'),sb=document.documentElement.getAttribute('data-sb'),key=document.documentElement.getAttribute('data-key');
-  if(!sb||!key||navigator.doNotTrack==='1'||location.hostname==='localhost'||/embed=1/.test(location.search))return;
-  var w=innerWidth,geraet=w<700?'handy':w<1100?'tablet':'computer',her=null;
-  try{var r=document.referrer&&new URL(document.referrer);if(r&&r.hostname!==location.hostname)her=r.hostname.slice(0,100)}catch(e){}
+  if(!sb||!key||location.hostname==='localhost'||/embed=1/.test(location.search))return;
   function z(ereignis){try{fetch(sb+'/rest/v1/seitenaufrufe',{method:'POST',keepalive:true,headers:{'apikey':key,'Content-Type':'application/json','Prefer':'return=minimal'},
-    body:JSON.stringify({pfad:location.pathname.slice(0,200),herkunft:her,geraet:geraet,ereignis:ereignis})}).catch(function(){})}catch(e){}}
+    body:JSON.stringify({pfad:location.pathname.slice(0,200),ereignis:ereignis})}).catch(function(){})}catch(e){}}
   z('aufruf');
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
     if(h.indexOf('/kontakt/')===0)z('cta');else if(h.indexOf('tel:')===0)z('telefon');else if(h.indexOf('mailto:')===0)z('mail');else if(h.indexOf('/vorschau/')===0)z('vorschau')});

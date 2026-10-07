@@ -23,7 +23,11 @@ function pruefen(html: string, finalUrl: string, ms: number) {
     online_termin: hat(lower, /termin\s*(buchen|online|vereinbaren)|booking|treatwell|shore\.com|studiobookr|doctolib|calendly/),
     bewertungen_sichtbar: hat(lower, /bewertung|rezension|google-review|sterne|★/),
     cookie_banner: hat(lower, /cookiebot|usercentrics|borlabs|consentmanager|klaro|cookie-?consent|onetrust|complianz/),
-    tracking: hat(lower, /googletagmanager|gtag\(|google-analytics|fbq\(|connect\.facebook\.net/),
+    cookie_banner_eigen: hat(lower, /cookie[^<]{0,80}(akzeptieren|zustimmen|einverstanden|ablehnen)|(akzeptieren|zustimmen)[^<]{0,80}cookie/),
+    tracking: hat(lower, /googletagmanager|gtag\(|google-analytics|fbq\(|connect\.facebook\.net|hotjar|clarity\.ms|matomo|linkedin\.com\/insight|tiktok\.com\/i18n\/pixel/),
+    einbettung_extern: hat(lower, /<iframe[^>]+src=["'][^"']*(google\.[a-z.]+\/maps|maps\.google|youtube\.com|youtube-nocookie\.com|player\.vimeo)/),
+    impressum_link: hat(lower, /href=["'][^"']*impressum|>\s*impressum\s*</),
+    datenschutz_link: hat(lower, /href=["'][^"']*(datenschutz|privacy)|>\s*datenschutz/),
     google_fonts_extern: hat(lower, /fonts\.googleapis\.com|fonts\.gstatic\.com/),
     baukasten: (h.match(/<meta[^>]+name=["']generator["'][^>]+content=["']([^"']{0,60})/i)?.[1] || (lower.includes("wix.com") ? "Wix" : lower.includes("jimdo") ? "Jimdo" : "")).trim(),
     copyright_jahr: jahre.length ? Math.max(...jahre) : null,
@@ -46,6 +50,10 @@ function bewerten(b: any, psi: any) {
   if (b.h1 !== 1) punkte.push([5, b.h1 === 0 ? "Keine Hauptüberschrift (H1)." : `${b.h1} Hauptüberschriften statt einer.`]);
   if (b.veraltet) punkte.push([10, `Letzte sichtbare Pflege ${b.copyright_jahr} – die Seite wirkt veraltet.`]);
   if (!b.bewertungen_sichtbar) punkte.push([5, "Bewertungen sind auf der Website nicht sichtbar."]);
+  const einwilligung = b.cookie_banner || b.cookie_banner_eigen;
+  if (b.tracking && !einwilligung) punkte.push([10, "Tracking (z. B. Google Analytics/Meta) ohne erkennbare Einwilligungsabfrage – rechtliches Risiko."]);
+  if (b.einbettung_extern && !einwilligung) punkte.push([5, "Karte oder Video wird direkt eingebettet und überträgt Daten ohne Einwilligung – besser per Klick laden."]);
+  if (!b.impressum_link || !b.datenschutz_link) punkte.push([10, `Kein erkennbarer Link zu${!b.impressum_link ? "m Impressum" : ""}${!b.impressum_link && !b.datenschutz_link ? " und zur" : !b.datenschutz_link ? "r" : ""}${!b.datenschutz_link ? " Datenschutzerklärung" : ""} auf der Startseite.`]);
   if (b.google_fonts_extern) punkte.push([5, "Schriften werden von Google-Servern geladen – Datenschutzrisiko (Abmahnungen bekannt)."]);
   if (b.bilder_ohne_alt > 3) punkte.push([3, `${b.bilder_ohne_alt} Bilder ohne Beschreibung (Alt-Text).`]);
   return { potenzial: Math.min(100, punkte.reduce((s, p) => s + p[0], 0)), befund: punkte.sort((a, z) => z[0] - a[0]).map(p => p[1]) };

@@ -39,10 +39,9 @@ select pfad,
 from seitenaufrufe where zeit > now() - interval '30 days'
 group by pfad order by aufrufe desc limit 20;
 
--- 7) Woher kommen Besucher? (Domain des Verweises) und mit welchem Gerät?
-select coalesce(herkunft, 'direkt / unbekannt') as herkunft, count(*) from seitenaufrufe
-where ereignis = 'aufruf' and zeit > now() - interval '30 days' group by 1 order by 2 desc;
-select geraet, count(*) from seitenaufrufe where ereignis = 'aufruf' and zeit > now() - interval '30 days' group by 1;
+-- 7) Aufrufe je Wochentag und Stunde (Herkunft und Gerät werden bewusst nicht erfasst – kein Zugriff aufs Endgerät, kein Cookie-Banner nötig)
+select to_char(zeit at time zone 'Europe/Berlin', 'Dy') as tag, extract(hour from zeit at time zone 'Europe/Berlin') as stunde, count(*)
+from seitenaufrufe where ereignis = 'aufruf' and zeit > now() - interval '30 days' group by 1, 2 order by 3 desc limit 15;
 
 -- 8) Anfragen nach Thema und Einstiegsseite
 select thema, count(*) from agentur_anfragen group by thema order by 2 desc;

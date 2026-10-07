@@ -53,7 +53,8 @@ ABNAHME = ["Lighthouse (Handy): Leistung, Barrierefreiheit, Best Practices, SEO 
            "Auf iPhone und Android geprüft: keine abgeschnittenen Texte, kein seitliches Scrollen, Buttons gut erreichbar",
            "Telefonnummer antippbar, Formular-Testanfrage kommt beim Kunden an",
            "Impressum und Datenschutz vorhanden und vom Kunden bestätigt",
-           "Keine externen Schriften, kein Tracking ohne Einwilligung",
+           "Cookie-Check: Browser-Entwicklertools → Anwendung → Cookies/Speicher leer beim ersten Aufruf; Netzwerk zeigt keine Anfragen an Google, Meta & Co. vor der Einwilligung",
+           "Keine externen Schriften; Karten und Videos nur per Zwei-Klick-Lösung; Einwilligungs-Baustein nur, wenn zustimmungspflichtige Dienste genutzt werden",
            "Strukturierte Daten (LocalBusiness) gültig, Seitentitel und Beschreibungen gesetzt",
            "Alle Bilder mit Alt-Text, eine H1 pro Seite",
            "Kein Platzhalter [PRÜFEN] mehr im Inhalt; alle Aussagen vom Kunden belegt",
@@ -143,7 +144,23 @@ pre{{font:7.6pt/1.4 ui-monospace,Menlo,monospace;background:#f6f4ef;padding:8pt;
 <h3>So nutzt du die Daten</h3>{liste(["<b>Interessenten analysieren:</b> Betrieb mit Website in die Tabelle <i>interessenten</i> eintragen – nach spätestens 30 Minuten stehen Potenzial (0–100) und Befund in Klartext da. Der Befund passt direkt auf die Folie „Ausgangslage“ der Präsentation „Persönliche Analyse“.", "<b>Website verbessern:</b> Konversion je Seite (Abfrage 6) zeigt, welche Seiten zur Ersteinschätzung führen – schwache Seiten überarbeiten.", "<b>Planen:</b> Wochenbericht montags aufs Handy; Monatsbericht für den Vergleich mit dem Finanzmodell.", "<b>Später:</b> Das Dashboard liest dieselben Tabellen – keine Doppelpflege."])}
 <p>Fertige Abfragen: <code>betrieb/abfragen.sql</code> (Supabase → SQL Editor → einfügen → Run).</p>
 <h3>Offen</h3>{liste(["<b>Google-PageSpeed-API-Schlüssel</b> (kostenlos, Google Cloud Console → „PageSpeed Insights API“ aktivieren → API-Schlüssel). Ohne Schlüssel liefert Google oft keine Messung. Eintragen: <code>insert into einstellungen values ('psi_key','DEIN-SCHLÜSSEL');</code>", "Search Console und Google-Profil-Daten je Kunde (benötigt Freigabe des Kunden, Stufe 4 im Betriebsplan)"])}
-<h3>Datenschutz</h3>{liste(["Seitenaufrufe anonym: keine Cookies, keine IP-Speicherung, keine Kennung; „Do Not Track“ wird beachtet; Löschung nach 25 Monaten (automatisch im Monatsbericht)", "Datenschutzerklärung der Website ist entsprechend ergänzt", "Website-Analysen nutzen nur öffentlich abrufbare Seiten der Betriebe"])}</section>
+<h3>Datenschutz</h3>{liste(["Seitenaufrufe anonym: keine Cookies, keine IP-Speicherung, keine Kennung; kein Zugriff auf Informationen im Endgerät (§ 25 TDDDG) – gezählt werden nur Seite und Ereignis; Löschung nach 25 Monaten (automatisch im Monatsbericht)", "Datenschutzerklärung der Website ist entsprechend ergänzt", "Website-Analysen nutzen nur öffentlich abrufbare Seiten der Betriebe"])}</section>
+
+<section class="page"><h2><small class="nr">11</small>Cookies und Einwilligung</h2>
+<div class="box warn">Zusammenfassung der Rechtslage zur Orientierung, keine Rechtsberatung. Für die eigenen AGB, Datenschutzerklärungen und Sonderfälle anwaltlich prüfen lassen.</div>
+<h3>Die Regeln in einem Satz je Gesetz</h3>{tab(["Regel", "Bedeutung für Websites"], [
+ ["§ 25 TDDDG", "Wer Informationen im Endgerät speichert oder ausliest (Cookies, localStorage, Fingerprinting, Bildschirmgröße), braucht eine Einwilligung – außer es ist für den vom Nutzer gewünschten Dienst unbedingt erforderlich."],
+ ["Art. 6 und 7 DSGVO", "Einwilligung muss freiwillig, informiert, eindeutig und jederzeit so leicht widerrufbar sein, wie sie erteilt wurde."],
+ ["Art. 44 ff. DSGVO", "Übermittlung in Drittländer (z. B. USA) nur mit Grundlage – Dienste mit EU-Sitz oder EU-US Data Privacy Framework bevorzugen und in der Datenschutzerklärung nennen."],
+ ["Rechtsprechung / Aufsicht", "„Ablehnen“ auf der ersten Ebene gleichwertig zu „Akzeptieren“; keine vorangekreuzten Kästchen; keine Dienste vor der Entscheidung laden; Google Fonts vom Google-Server ohne Einwilligung wurde abgemahnt (LG München I, 2022)."]])}
+<h3>Lotwerk-Standard für Kunden-Websites</h3>{check([
+ "<b>Grundsatz: ohne Banner auskommen.</b> Schriften lokal, Formulare über unsere Funktion, Statistik ohne Cookies (z. B. unsere anonyme Zählung oder eine cookielose Lösung mit EU-Hosting). Dann ist kein Banner nötig.",
+ "<b>Nur wenn der Kunde Google Ads-Conversion, Meta-Pixel o. Ä. will:</b> Einwilligungs-Baustein <code>betrieb/bausteine/einwilligung.js</code> einbinden. Er startet Google Consent Mode v2 mit „abgelehnt“, lädt nichts vor der Zustimmung und zeigt drei gleich gestaltete Knöpfe.",
+ "<b>Karten und Videos</b> als Zwei-Klick-Lösung (<code>&lt;div class=\"lw-extern\" …&gt;</code>) – Platzhalter mit Hinweis, Laden erst nach Klick. Alternative: statisches Kartenbild mit Link zu Google Maps.",
+ "<b>Widerruf</b>: Link „Datenschutz-Einstellungen“ im Fußbereich (<code>data-einwilligung</code>).",
+ "<b>Datenschutzerklärung</b> nennt jeden Dienst mit Anbieter, Zweck, Rechtsgrundlage, Speicherdauer und Drittlandbezug.",
+ "<b>Erneute Abfrage</b> nach 12 Monaten oder sobald ein Dienst dazukommt (macht der Baustein automatisch)."])}
+<h3>Im Vertrieb nutzen</h3><p>Die automatische Website-Analyse meldet jetzt auch: Tracking ohne erkennbare Einwilligung, direkt eingebettete Karten/Videos, fehlende Links zu Impressum und Datenschutz, Google Fonts von Google-Servern. Das sind sachliche Punkte für die „Persönliche Analyse“ – als Risiko benennen, nicht als Rechtsberatung.</p></section>
 </body></html>"""
 
 (HERE / "Leistungshandbuch.html").write_text(HTML, encoding="utf-8")
