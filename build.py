@@ -4,6 +4,7 @@ import json, shutil, html
 from pathlib import Path
 from datetime import date
 
+from content_leistungen import TIEFE
 from content import PREISE, eur, LEISTUNGEN, BRANCHEN, BEISPIELE, KAPITEL, RATGEBER, FAQ
 from drawings import LOGO, FAVICON
 import vorschau
@@ -47,7 +48,7 @@ def layout(path, title, desc, body, schema=None, crumbs=None, noindex=False, js=
         ld.append({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "name": n, "item": DOMAIN + u} for i, (u, n) in enumerate(crumbs)]})
     if schema:
-        ld.append(schema)
+        ld.extend(schema if isinstance(schema, list) else [schema])
     crumb_html = ""
     if crumbs and len(crumbs) > 1:
         crumb_html = '<div class="wrap"><nav class="crumbs" aria-label="Brotkrumen">' + " / ".join(
@@ -254,16 +255,37 @@ def leistungen():
           prio=0.9, crumbs=[("/", "Start"), ("/leistungen/", "Leistungen")])
     for l in LEISTUNGEN:
         p = f"/leistungen/{l['slug']}/"
+        t = TIEFE[l["slug"]]
         steps = "".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a, b in l["ablauf"])
         others = [o for o in sorted(LEISTUNGEN, key=lambda x: SVC_ORDER.index(x["slug"])) if o is not l]
         glance = "".join(f"<div><dt>{a}</dt><dd>{b}</dd></div>" for a, b in l["eckdaten"])
         href = f"/kontakt/?thema={l['k']}"
+        faq = l["faq"] + t["faq"]
+        anker = [("worum", t["intro_h2"]), ("leistung", "Was Sie bekommen")] + [(f"a{i}", h) for i, (h, _, _) in enumerate(t["abschnitte"])] + \
+                [("kosten", "Kosten"), ("fehler", "Typische Fehler"), ("messung", "Was wir messen"), ("fragen", "Häufige Fragen")]
+        toc = '<nav class="toc" aria-label="Auf dieser Seite"><p class="kicker">Auf dieser Seite</p><ol>' + "".join(f'<li><a href="#{a}">{e(h)}</a></li>' for a, h in anker) + "</ol></nav>"
+        fuer = "".join(f'<div class="fw"><h3>{e(a)}</h3><p>{e(b)}</p></div>' for a, b in t["fuer_wen"])
+        absch = "".join(
+            f'<section id="a{i}"><div class="wrap grid2 tief"><h2 class="h2s">{e(h)}</h2><div class="prose">{"".join(f"<p>{e(x)}</p>" for x in ps)}{ticks([e(x) for x in liste]) if liste else ""}</div></div></section>'
+            for i, (h, ps, liste) in enumerate(t["abschnitte"]))
+        k = t["kosten"]
+        kosten = (f'<section id="kosten"><div class="wrap grid2 tief"><h2 class="h2s">Was kostet {e(l["titel"])}?</h2><div class="prose"><p>{e(k["text"])}</p>'
+                  f'<div class="tablewrap"><table class="kosten"><tbody>{"".join(f"<tr><th scope=row>{e(a)}</th><td>{e(b)}</td></tr>" for a, b in k["zeilen"])}</tbody></table></div>'
+                  f'<p class="note">{e(k["hinweis"])}</p><p><a href="/preise/">Alle Preise im Überblick</a></p></div></div></section>')
+        fehler = "".join(f'<div class="fw"><h3>{e(a)}</h3><p>{e(b)}</p></div>' for a, b in t["fehler"])
+        mess = "".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in t["messung"])
+        dienst = {"@context": "https://schema.org", "@type": "Service", "name": l["titel"], "description": t["kurz"], "areaServed": "DE",
+                  "provider": {"@type": "ProfessionalService", "name": NAME, "url": DOMAIN + "/"}, "url": DOMAIN + p}
         body = f"""<section class="hero"><div class="wrap grid"><div><p class="kicker">{l["titel"]}</p><h1>{l["h1"]}</h1><p class="lead">{l["lead"]}</p><div class="actions"><a class="btn" href="{href}">{l["cta"]} <span class="ar">→</span></a><a class="link" href="/preise/">Alle Preise</a></div></div>
 <aside class="glance" aria-label="Auf einen Blick"><p class="kicker">Auf einen Blick</p><dl>{glance}</dl></aside></div></section>
-<section><div class="wrap grid2"><div><h2 class="h2s">Was Sie bekommen</h2>{ticks(l["punkte"])}</div><div><h2 class="h2s">So gehen wir vor</h2><ol class="steps">{steps}</ol></div></div></section>
-<section><div class="wrap">{faq_mini(l["faq"])}</div></section>
-<section><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Passt gut dazu</h2>{svc_liste(others)}</div></section>{cta(f"{l['titel']} für Ihren Betrieb?", "Wir sehen uns Ihre Ausgangslage an und sagen Ihnen, ob sich das für Sie lohnt – kostenlos und ehrlich.", l["cta"], href)}"""
-        write(p, l["seo"], l["kurz"], body, prio=0.8, schema=faq_schema(l["faq"]),
+<section id="worum"><div class="wrap grid2 tief"><div><h2 class="h2s">{e(t["intro_h2"])}</h2>{toc}</div><div class="prose">{"".join(f"<p>{e(x)}</p>" for x in t["intro"])}<h3>Für wen sich das lohnt</h3><div class="fwl">{fuer}</div><p class="note">Beispiele nach Branche: {", ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}.</p></div></div></section>
+<section id="leistung"><div class="wrap grid2"><div><h2 class="h2s">Was Sie bekommen</h2>{ticks(l["punkte"])}</div><div><h2 class="h2s">So gehen wir vor</h2><ol class="steps">{steps}</ol></div></div></section>
+{absch}{kosten}
+<section id="fehler"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Typische Fehler, die wir vermeiden</h2><div class="fwg">{fehler}</div></div></section>
+<section id="messung"><div class="wrap grid2 tief"><h2 class="h2s">Was wir jeden Monat messen</h2><div><dl class="glance mess">{mess}</dl><p class="note">Sie bekommen jeden Monat einen kurzen Bericht in Klartext.</p></div></div></section>
+<section id="fragen"><div class="wrap">{faq_mini(faq)}</div></section>
+<section><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Passt gut dazu</h2>{svc_liste(others)}</div></section>{cta(f"{l['titel']} für Ihren Betrieb?", "Wir sehen uns Ihre Ausgangslage an und sagen Ihnen, ob sich das für Sie lohnt. Kostenlos und ehrlich.", l["cta"], href)}"""
+        write(p, t["seo"], t["kurz"], body, prio=0.8, schema=[faq_schema(faq), dienst],
               crumbs=[("/", "Start"), ("/leistungen/", "Leistungen"), (p, l["titel"])])
 
 

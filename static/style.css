@@ -460,3 +460,14 @@ footer .todo,.cta-x .todo{color:#ffb38f;background:rgba(255,90,20,.15);border-co
 @media (max-width:900px){.tl5{grid-template-columns:1fr}}
 .proof{grid-template-columns:repeat(3,1fr);margin-top:clamp(56px,7vw,96px)}
 @media (max-width:900px){.proof{grid-template-columns:1fr}}
+/* Ausführliche Leistungsseiten */
+.tief{align-items:start}.tief>.h2s,.tief>div>.h2s{position:sticky;top:90px}
+.toc{margin-top:28px;border-top:1px solid var(--line);padding-top:16px;position:sticky;top:210px}.toc ol{list-style:none;padding:0;margin:0;counter-reset:t}
+.toc li{counter-increment:t;margin:0}.toc a{display:block;padding:7px 0;color:var(--ink-2);text-decoration:none;font-size:.95rem}.toc a::before{content:counter(t,decimal-leading-zero) "  ";color:var(--accent-ink);font-size:.8rem}.toc a:hover{color:var(--ink)}
+.fwl{display:grid;gap:0;border-top:1px solid var(--line);margin:8px 0 18px}.fw{padding:16px 0;border-bottom:1px solid var(--line)}.fw h3{font-size:1.05rem;margin:0 0 6px}.fw p{margin:0;color:var(--ink-2)}
+.fwg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;border-top:1px solid var(--line)}
+table.kosten th{text-align:left;font-weight:400;color:var(--ink-2);padding:12px 16px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.prose .note,.tief .note{font-size:.92rem;color:var(--ink-2)}
+.glance.mess{border-top:1px solid var(--ink);padding-top:6px}
+@media (max-width:900px){.tief>.h2s,.tief>div>.h2s,.toc{position:static}.toc{display:none}.fwg{grid-template-columns:1fr}}
