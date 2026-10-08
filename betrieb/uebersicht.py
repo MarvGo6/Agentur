@@ -114,7 +114,50 @@ SCHRITTE = [
     ("Jul – Dez 27", "Ausbau", ["Entscheidung: allein mit System weiter oder Team (siehe Kapitel 07)", f"Plan Dez 27: {e0(END['mrr'])} MRR, {kunden(END):.0f} laufende Verträge, {END['stunden']:.0f} h im Monat", "Umsatzsteuer-Wechsel vorbereiten (falls Kleinunternehmer)", "Reserve für die erste Einstellung ansparen (Businessplan: 30.000–40.000 €)"]),
 ]
 
-CSS = AU.CSS + """
+# ------------------------------------------------------------------ Selbstständig machen (Stand Okt 2026, Werte grob, mit Steuerberater prüfen)
+CHECK = [
+    ("Vor dem Start", [
+        "Entscheiden: nebenberuflich starten (Job behalten, Krankenkasse läuft über den Arbeitgeber) oder hauptberuflich. Nebenberuflich ist es grob, solange Zeit und Einkommen aus der Selbstständigkeit unter denen aus dem Job bleiben (Faustregel: unter 20 h pro Woche).",
+        "Arbeitgeber informieren, falls der Arbeitsvertrag Nebentätigkeiten genehmigungspflichtig macht [PRÜFEN Arbeitsvertrag].",
+        "Gründungszuschuss nur bei Arbeitslosengeld I (mindestens 150 Tage Restanspruch): Antrag VOR dem Start, Stellungnahme einer fachkundigen Stelle (IHK, Steuerberater). Kein Rechtsanspruch.",
+        "Kostenlose Gründungsberatung bei der IHK nutzen, Erstgespräch mit Steuerberater (auch zur Umsatzsteuer, Kapitel 13).",
+        "Geschäftskonto eröffnen, privat und geschäftlich trennen.",
+    ]),
+    ("Anmelden (erste Woche)", [
+        "Gewerbe für die Agentur ummelden bzw. erweitern (als ERGO-Vermittler besteht schon ein Gewerbe), ca. 20–60 €.",
+        "Fragebogen zur steuerlichen Erfassung beim Finanzamt (ELSTER): Kleinunternehmer ja/nein, erwarteter Gewinn.",
+        "IHK-Mitgliedschaft kommt automatisch; für Gründer mit kleinem Gewinn meist beitragsfrei.",
+        "Berufsgenossenschaft (VBG): Unternehmen innerhalb einer Woche anmelden; eigene Absicherung freiwillig.",
+        "Krankenkasse informieren: Das Einkommen aus Agentur und Vermittlung zählt zusammen für den Beitrag.",
+        "Künstlersozialkasse: Abgabe von ca. 5 % auf eingekaufte Texte, Fotos, Design von Selbstständigen einplanen und melden.",
+    ]),
+    ("Absichern", [
+        "Vermögensschaden- bzw. IT-Haftpflicht vor dem ersten Kunden (ca. 15–30 € im Monat).",
+        "Hauptberuflich: Krankenkasse wählen. Gesetzlich freiwillig mit Krankengeld (Mindestbeitrag 2026 ca. 280–290 € im Monat inkl. Pflege, Höchstbeitrag ca. 1.200–1.300 €) oder privat (nur nach Beratung).",
+        "Freiwillige Arbeitslosenversicherung: Antrag spätestens 3 Monate nach Start (ca. 50–100 € im Monat).",
+        "Berufsunfähigkeitsversicherung prüfen (je jünger, desto günstiger).",
+        "Altersvorsorge festlegen (keine Rentenpflicht für Selbstständige in diesem Beruf, Lücke selbst schließen).",
+    ]),
+    ("Laufend", [
+        "30–40 % vom Gewinn auf ein eigenes Konto für Steuern und Krankenkasse.",
+        "Belege sofort ablegen (Buchhaltung), Rechnungen mit allen Pflichtangaben.",
+        "Einkommensteuer-Vorauszahlungen einplanen: Nach dem ersten Bescheid kommen Nachzahlung und Vorauszahlung oft gleichzeitig.",
+        "Gewerbesteuer erst ab 24.500 € Gewinn im Jahr (Freibetrag).",
+        "Ab ca. 50.000–80.000 € Gewinn im Jahr mit dem Steuerberater über eine GmbH bzw. Holding sprechen (Kapitel 15).",
+    ]),
+]
+NETTO = [["Gewinn im Monat", "10.000 €"], ["Krankenkasse und Pflege (gesetzlich, Höchstbeitrag)", "ca. −1.250 €"],
+         ["Einkommensteuer, Soli (ledig, grob)", "ca. −2.700 bis −3.200 €"], ["Gewerbesteuer (wird größtenteils mit Einkommensteuer verrechnet)", "ca. −100 bis −300 €"],
+         ["Altersvorsorge, Versicherungen (selbst festlegen)", "ca. −500 bis −1.000 €"], ["<b>Bleibt zum Leben</b>", "<b>ca. 5.000–5.500 €</b>"]]
+
+GRUPPE = [
+    ("Büscher Unternehmensgruppe GmbH (Holding)", "Hält die Anteile an allen Firmen. Gewinne der Töchter fließen fast steuerfrei hinein (95 % steuerfrei, effektiv ca. 1,5 %) und können dort in neue Firmen oder Immobilien gesteckt werden. Verkauf einer Tochter ebenfalls zu 95 % steuerfrei."),
+    ("Lotwerk GmbH", "Die Agentur und später Wachstumsberatung, Tochter der Büscher Unternehmensgruppe. Eigene Haftung, eigener Kundenstamm, später verkaufbar."),
+    ("Immobilien GmbH (später)", "Nur Vermietung eigener Immobilien, ohne andere Tätigkeit: dann meist keine Gewerbesteuer (erweiterte Kürzung). Deshalb nie mit Agentur oder Bau mischen."),
+    ("Bau GmbH (später)", "Hohe Haftungsrisiken (Gewährleistung, Personal). Eigene GmbH schützt den Rest der Gruppe."),
+]
+
+CSS = AU.CSS + """ul.check{list-style:none;padding-left:0}ul.check li{margin:3pt 0}
 .pk{border-top:1px solid #d3cfc4;padding:6pt 0 4pt;break-inside:avoid}.pk h3{margin-top:2pt}.pk .cols{gap:12pt}.pk ul{font-size:8.4pt}
 .teil{font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#ad3300;margin:0 0 4pt}
 table.m td,table.m th{padding:3pt 4pt;font-size:7.9pt}table.m td:not(:first-child),table.m th:not(:first-child){text-align:right}
@@ -132,7 +175,7 @@ HTML = f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><title>{NA
 <div><p><b>Inhalt</b></p><p class="small">Teil A – Für Kunden: 01 Wer wir sind · 02 Leistungen und Preise · 03 Beispielpakete · 04 So arbeiten wir<br>
 Teil B – Intern: 05 Plan Nov 26 – Dez 27 · 06 Fahrplan und Meilensteine · 07 Zweite Jahreshälfte: allein oder Team · 08 Vertrieb und Kosten<br>
 Teil C – Aufbau: 09 Pakete → Inhalt → Ablauf → Automatisierung · 10 Alle Automatisierungen · 11 System<br>
-Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken</p>
+Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken<br>Teil E – Gründer: 14 Checkliste selbstständig machen · 15 Später: Unternehmensgruppe mit Holding</p>
 <div class="box">Planwerte, keine Zusagen. Monat 1 = November 2026 (erster Vertriebsmonat), der Plan läuft bis 31.12.2027. „Mit System“ heißt: Ab dem 5. Kunden gelten die Stunden aus dem Automatisierungsplan.</div></div></section>
 
 <section class="page"><p class="teil">Teil A · Für Kunden</p><h2><small class="nr">01</small>Wer wir sind</h2>
@@ -195,6 +238,40 @@ Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken</p>
 
 <h2><small class="nr">13</small>Widersprüche und Lücken</h2>
 {tab(["Punkt", "Befund", "Was zu tun ist"], [[f"<b>{a}</b>", b, c] for a, b, c in LUECKEN])}
+</section>
+
+<section class="page"><p class="teil">Teil E · Gründer</p><h2><small class="nr">14</small>Checkliste: selbstständig machen</h2>
+<p class="small">Stand Oktober 2026. Beträge sind grobe Richtwerte aus öffentlichen Quellen (Krankenkassen-Tabellen 2026, Arbeitsagentur, IHK), keine Beratung. Vor Entscheidungen mit Steuerberater bzw. Krankenkasse abstimmen.</p>
+{"".join(f"<h3>{t}</h3>" + "<ul class=check>" + "".join(f"<li>☐ {x}</li>" for x in xs) + "</ul>" for t, xs in CHECK)}
+<h3>Was von 10.000 € Gewinn bleibt (grob, hauptberuflich, ledig, ohne Kinder)</h3>
+{tab(["Posten", "pro Monat"], NETTO)}
+<div class="box">Wichtig: 10.000 € MRR im Plan sind <b>Umsatz</b>, nicht Gewinn. Davon gehen erst die Kosten ab (Kapitel 08), dann Steuern und Krankenkasse. Schätzung, mit Steuerberater nachrechnen [PRÜFEN].</div>
+
+<h2><small class="nr">15</small>Später: Unternehmensgruppe mit Holding</h2>
+<p>Ziel: oben die <b>Büscher Unternehmensgruppe GmbH</b> als Holding, darunter je Geschäft eine eigene GmbH. Gewinne bleiben fast steuerfrei in der Gruppe und können in das nächste Geschäft fließen. Jede Firma haftet nur für sich.</p>
+{tab(["Ebene", "Zweck"], [[f"<b>{a}</b>", b] for a, b in GRUPPE])}
+<h3>Reihenfolge</h3>
+<ul><li><b>Jetzt bis ca. 50.000–80.000 € Gewinn im Jahr:</b> Einzelunternehmen. Eine GmbH kostet Gründung (Notar, Handelsregister) und jedes Jahr Bilanz und Buchhaltung, je Firma grob 2.000–4.000 € [PRÜFEN Steuerberater].</li>
+<li><b>Danach:</b> zuerst die Holding gründen, dann gründet die Holding die Marketing GmbH und das Einzelunternehmen wird eingebracht. Andersherum (erst GmbH, später unter eine Holding) geht auch, hat aber eine Sperrfrist von 7 Jahren für einen steuergünstigen Verkauf.</li>
+<li><b>Gewinne, die du zum Leben brauchst,</b> zahlst du dir als Gehalt aus der Marketing GmbH. Nur was übrig bleibt, wandert in die Holding. Eine Holding lohnt sich also erst, wenn regelmäßig Geld übrig bleibt.</li>
+<li><b>Stammkapital:</b> GmbH 25.000 € (zur Gründung mindestens 12.500 € einzahlen), UG ab 1 € (muss dann Rücklagen bilden).</li></ul>
+<h3>ERGO bleibt außerhalb der Gruppe</h3>
+<p>Marvin ist bereits selbstständiger gebundener Versicherungsvermittler für ERGO (Einzelunternehmen). Der Vertrag erlaubt keine GmbH als Vermittler. Die Vermittlung bleibt deshalb persönlich neben der Gruppe:</p>
+<pre style="font-size:8.5pt;line-height:1.35">Marvin Büscher
+├── Einzelunternehmen: gebundener Versicherungsvermittler (ERGO)
+└── Büscher Unternehmensgruppe GmbH (Holding)
+    ├── Lotwerk GmbH (Marketing, Wachstumsberatung)
+    ├── Immobilien GmbH (später)
+    └── Bau GmbH (später)</pre>
+<ul><li><b>Bis zur GmbH:</b> Die Agentur läuft als zweite Tätigkeit im bestehenden Einzelunternehmen oder als eigener Betrieb. Gewerbe-Ummeldung bzw. -Erweiterung und Finanzamt informieren [PRÜFEN Steuerberater: ein oder zwei Betriebe, getrennte Buchhaltung].</li>
+<li><b>Kleinunternehmer:</b> Steuerfreie Versicherungsprovisionen zählen nicht zur Umsatzgrenze. Für die Grenze zählt nur der Agentur-Umsatz [PRÜFEN Steuerberater].</li>
+<li><b>Rentenversicherung:</b> Selbstständige mit im Wesentlichen nur einem Auftraggeber und ohne Angestellte können rentenversicherungspflichtig sein (§ 2 Nr. 9 SGB VI). Mit der Agentur kommen weitere Auftraggeber dazu. Klären lassen bei der Deutschen Rentenversicherung (Statusfeststellung) [PRÜFEN].</li>
+<li><b>ERGO-Vertrag:</b> Ob Nebentätigkeiten gemeldet oder genehmigt werden müssen, im Vertrag nachsehen [PRÜFEN].</li></ul>
+<h3>Vorsicht bei Agentur plus Versicherung</h3>
+<ul><li>Kundendaten der Agentur dürfen nicht ohne Einwilligung für Versicherungsangebote genutzt werden (Datenschutz).</li>
+<li>Der ERGO-Vertrag kann andere Tätigkeiten oder Werbung unter eigenem Namen einschränken [PRÜFEN Vertrag].</li>
+<li>Für die Vermittlung gelten weiter Vermittlerregister und Weiterbildungspflicht (15 Stunden im Jahr), unabhängig von der Agentur.</li>
+<li>Für die Marke Lotwerk gilt: Kunden sollen nicht das Gefühl haben, dass die Website ein Türöffner für Versicherungen ist.</li></ul>
 </section>
 </body></html>"""
 
