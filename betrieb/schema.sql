@@ -214,3 +214,14 @@ language sql security definer set search_path = public as $$
 $$;
 revoke all on function public.klick_zaehlen(uuid, text) from public, anon, authenticated;
 grant execute on function public.klick_zaehlen(uuid, text) to service_role;
+
+-- ---------------------------------------------------------------- Wichtige Links (Migration links) – Steuerzentrale → „Links“
+create table if not exists links (
+  id uuid primary key default gen_random_uuid(),
+  kategorie text not null, titel text not null, url text not null check (url ~ '^https://'),
+  notiz text, kosten text, archiviert boolean not null default false,   -- archivieren statt löschen
+  angelegt timestamptz not null default now()
+);
+alter table links enable row level security;
+create policy admin_alles on links for all to authenticated using (ist_admin()) with check (ist_admin());
+grant select, insert, update on links to authenticated;

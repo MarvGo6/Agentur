@@ -113,6 +113,7 @@ Freigaben für Live-Änderungen bleiben beim Inhaber. Onboarding-Checklisten als
 - Fehlende Schlüssel: Liste im Automatisierungsplan, Kapitel 3.
 - Abfragen: `betrieb/abfragen.sql`. Leistungen und Abnahme: `betrieb/Leistungshandbuch.pdf`.
 - Offen: `psi_key` in `einstellungen` (Google PageSpeed API-Schlüssel).
+- Links (08.10.): Steuerzentrale → „Links“ (Tabelle `links`): Rechtstexte für Kunden (Datenschutz-Generator.de mit Reseller-Lizenz je Domain, eRecht24 Agentur-Tarif, IT-Recht Kanzlei), eigene AGB/AV-Vorlagen, AV-Muster, Gesetze/Behörden, eigene Werkzeuge.
 - Terminbuchung (08.10., E6): `kunde.json` → `buchung` (link / eingebettet / rueckruf), Knopf überall, Zwei-Klick beim Einbetten, Abnahme blockiert ohne `buchung.testbuchung`, `websites.buchung_url` täglich geprüft, Klicks → `messwerte.buchung_klicks`, Fragen im Inhalte-Formular. Doku `sites/README.md`.
 - Rechtstexte & Tracking (07.10.): Impressum/Datenschutz mit sichtbaren Platzhaltern aus `config.json`, AGB-Entwurf `/agb/` (anwaltlich prüfen). Tracking vorbereitet über `config.json` → `tracking` (Search Console, Bing, GA4, Google Ads mit Anfrage-/Anruf-Conversion, Meta-Pixel) – leer = aus; bei zustimmungspflichtigen Diensten automatisch Einwilligungs-Fenster, Datenschutz-Abschnitt, CSP. Kampagnen-Quelle ohne Cookies in `seitenaufrufe.herkunft` und `agentur_anfragen.kampagne`, `gclid` nur mit Einwilligung (Offline-Conversions). Anleitung `betrieb/TRACKING.md`.
 

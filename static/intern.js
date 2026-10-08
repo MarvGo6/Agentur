@@ -59,7 +59,7 @@
 
   // ------------------------------------------------------------ Ansichten
   var TABS = [['cockpit', 'Cockpit'], ['aufgaben', 'Aufgaben'], ['freigaben', 'Freigaben'], ['pipeline', 'Pipeline'], ['kunden', 'Kunden'],
-    ['websites', 'Websites'], ['zeiten', 'Zeiten'], ['anfragen', 'Anfragen'], ['berichte', 'Berichte']];
+    ['websites', 'Websites'], ['zeiten', 'Zeiten'], ['anfragen', 'Anfragen'], ['berichte', 'Berichte'], ['links', 'Links']];
 
   async function zeige(t) {
     tab = t || tab;
@@ -75,6 +75,21 @@
   function zaehl(a, f) { var m = {}; a.forEach(function (o) { m[o[f]] = (m[o[f]] || 0) + 1; }); return m; }
 
   var ANSICHT = {
+    // Wichtige Links (Rechtstexte für Kunden, AV-Verträge, Gesetze, eigene Werkzeuge) – Tabelle "links", archivieren statt löschen
+    links: async function () {
+      var l = await api('links?select=id,kategorie,titel,url,notiz,kosten&archiviert=eq.false&order=kategorie,titel');
+      var kat = []; l.forEach(function (a) { if (kat.indexOf(a.kategorie) < 0) kat.push(a.kategorie); });
+      return '<form class="in-form in-inline" data-form="link"><input name="titel" placeholder="Titel" required><input name="url" type="url" placeholder="https://…" pattern="https://.*" required>' +
+        '<input name="kategorie" list="in-kat" placeholder="Kategorie" required><datalist id="in-kat">' + kat.map(function (k) { return '<option value="' + x(k) + '">'; }).join('') + '</datalist>' +
+        '<input name="notiz" placeholder="Notiz (optional)"><button class="btn">Speichern</button></form>' +
+        (kat.length ? kat.map(function (k) {
+          return '<h2>' + x(k) + '</h2><ul class="in-list">' + l.filter(function (a) { return a.kategorie === k; }).map(function (a) {
+            return '<li><a href="' + x(a.url) + '" target="_blank" rel="noopener noreferrer"><b>' + x(a.titel) + '</b></a>' + (a.kosten ? ' <span class="in-muted">· ' + x(a.kosten) + '</span>' : '') +
+              (a.notiz ? '<br><span class="in-muted">' + x(a.notiz) + '</span>' : '') + ' <button class="in-link" data-a="link-weg" data-id="' + a.id + '">archivieren</button></li>';
+          }).join('') + '</ul>';
+        }).join('') : '<p class="in-muted">Noch keine Links.</p>');
+    },
+
     cockpit: async function () {
       var w7 = new Date(Date.now() - 7 * 864e5).toISOString(), mon = monatsanfang();
       var r = await Promise.all([api('mrr_aktuell?select=mrr,kunden'), api('aufgaben?select=id&erledigt_am=is.null'), api('entwuerfe?select=id&status=eq.offen'),
@@ -224,6 +239,7 @@
       if (a === 'verwerfen') { await aendere('entwuerfe', id, { status: 'verworfen', entschieden_am: new Date().toISOString() }); return zeige(); }
       if (a === 'kopieren') { var t = document.getElementById('t-' + id); await navigator.clipboard.writeText(t.value); meldung('Kopiert'); return; }
       if (a === 'filter') { CACHE.filter = b.dataset.f; return zeige(); }
+      if (a === 'link-weg') { await aendere('links', id, { archiviert: true }); meldung('Archiviert'); return zeige(); }
       if (a === 'stopp') { await aendere('zeiten', id, { ende: new Date().toISOString() }); meldung('Gestoppt'); return zeige(); }
       if (a === 'inhalte') {
         var r = await neu('inhalte_formulare', { kunde_id: b.dataset.kunde, titel: b.dataset.firma });
@@ -251,6 +267,7 @@
       if (art === 'kunde') await neu('kunden', d);
       if (art === 'website') await neu('websites', d);
       if (art === 'zeit') await neu('zeiten', d);
+      if (art === 'link') await neu('links', d);
       if (art === 'vertrag') {
         var p = PRODUKTE[d.produkt];
         await neu('vertraege', { kunde_id: f.dataset.kunde, produkt: d.produkt, start: d.start, einmalig: p[1], monatlich: p[2], mindestlaufzeit_monate: p[3], verlaengerung_monate: p[4], kuendigungsfrist_monate: p[5] });
