@@ -124,11 +124,11 @@ CHECK = [
         "Geschäftskonto eröffnen, privat und geschäftlich trennen.",
     ]),
     ("Anmelden (erste Woche)", [
-        "Gewerbe anmelden beim Ordnungsamt (Agentur = Gewerbe, kein freier Beruf), ca. 20–60 €.",
+        "Gewerbe für die Agentur ummelden bzw. erweitern (als ERGO-Vermittler besteht schon ein Gewerbe), ca. 20–60 €.",
         "Fragebogen zur steuerlichen Erfassung beim Finanzamt (ELSTER): Kleinunternehmer ja/nein, erwarteter Gewinn.",
         "IHK-Mitgliedschaft kommt automatisch; für Gründer mit kleinem Gewinn meist beitragsfrei.",
         "Berufsgenossenschaft (VBG): Unternehmen innerhalb einer Woche anmelden; eigene Absicherung freiwillig.",
-        "Krankenkasse informieren (auch nebenberuflich Pflicht).",
+        "Krankenkasse informieren: Das Einkommen aus Agentur und Vermittlung zählt zusammen für den Beitrag.",
         "Künstlersozialkasse: Abgabe von ca. 5 % auf eingekaufte Texte, Fotos, Design von Selbstständigen einplanen und melden.",
     ]),
     ("Absichern", [
@@ -151,9 +151,8 @@ NETTO = [["Gewinn im Monat", "10.000 €"], ["Krankenkasse und Pflege (gesetzlic
          ["Altersvorsorge, Versicherungen (selbst festlegen)", "ca. −500 bis −1.000 €"], ["<b>Bleibt zum Leben</b>", "<b>ca. 5.000–5.500 €</b>"]]
 
 GRUPPE = [
-    ("Lotwerk Holding GmbH (oder UG)", "Hält die Anteile an allen Firmen. Gewinne der Töchter fließen fast steuerfrei hinein (95 % steuerfrei, effektiv ca. 1,5 %) und können dort in neue Firmen oder Immobilien gesteckt werden. Verkauf einer Tochter ebenfalls zu 95 % steuerfrei."),
-    ("Lotwerk Marketing GmbH", "Die Agentur und später Wachstumsberatung. Eigene Haftung, eigener Kundenstamm, später verkaufbar."),
-    ("Versicherungsvermittlung (ERGO)", "Als gebundener Vertreter für einen Versicherer (§ 34d GewO, Handelsvertreter). Kann über eine eigene GmbH laufen, wenn ERGO zustimmt [PRÜFEN Vertrag]. Getrennt halten: Provisionen sind umsatzsteuerfrei, die Agentur nicht."),
+    ("Büscher Unternehmensgruppe GmbH (Holding)", "Hält die Anteile an allen Firmen. Gewinne der Töchter fließen fast steuerfrei hinein (95 % steuerfrei, effektiv ca. 1,5 %) und können dort in neue Firmen oder Immobilien gesteckt werden. Verkauf einer Tochter ebenfalls zu 95 % steuerfrei."),
+    ("Lotwerk GmbH", "Die Agentur und später Wachstumsberatung, Tochter der Büscher Unternehmensgruppe. Eigene Haftung, eigener Kundenstamm, später verkaufbar."),
     ("Immobilien GmbH (später)", "Nur Vermietung eigener Immobilien, ohne andere Tätigkeit: dann meist keine Gewerbesteuer (erweiterte Kürzung). Deshalb nie mit Agentur oder Bau mischen."),
     ("Bau GmbH (später)", "Hohe Haftungsrisiken (Gewährleistung, Personal). Eigene GmbH schützt den Rest der Gruppe."),
 ]
@@ -249,17 +248,29 @@ Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken<br>Teil E – 
 <div class="box">Wichtig: 10.000 € MRR im Plan sind <b>Umsatz</b>, nicht Gewinn. Davon gehen erst die Kosten ab (Kapitel 08), dann Steuern und Krankenkasse. Schätzung, mit Steuerberater nachrechnen [PRÜFEN].</div>
 
 <h2><small class="nr">15</small>Später: Unternehmensgruppe mit Holding</h2>
-<p>Ziel: oben eine Holding, darunter je Geschäft eine eigene GmbH. Gewinne bleiben fast steuerfrei in der Gruppe und können in das nächste Geschäft fließen. Jede Firma haftet nur für sich.</p>
+<p>Ziel: oben die <b>Büscher Unternehmensgruppe GmbH</b> als Holding, darunter je Geschäft eine eigene GmbH. Gewinne bleiben fast steuerfrei in der Gruppe und können in das nächste Geschäft fließen. Jede Firma haftet nur für sich.</p>
 {tab(["Ebene", "Zweck"], [[f"<b>{a}</b>", b] for a, b in GRUPPE])}
 <h3>Reihenfolge</h3>
 <ul><li><b>Jetzt bis ca. 50.000–80.000 € Gewinn im Jahr:</b> Einzelunternehmen. Eine GmbH kostet Gründung (Notar, Handelsregister) und jedes Jahr Bilanz und Buchhaltung, je Firma grob 2.000–4.000 € [PRÜFEN Steuerberater].</li>
 <li><b>Danach:</b> zuerst die Holding gründen, dann gründet die Holding die Marketing GmbH und das Einzelunternehmen wird eingebracht. Andersherum (erst GmbH, später unter eine Holding) geht auch, hat aber eine Sperrfrist von 7 Jahren für einen steuergünstigen Verkauf.</li>
 <li><b>Gewinne, die du zum Leben brauchst,</b> zahlst du dir als Gehalt aus der Marketing GmbH. Nur was übrig bleibt, wandert in die Holding. Eine Holding lohnt sich also erst, wenn regelmäßig Geld übrig bleibt.</li>
 <li><b>Stammkapital:</b> GmbH 25.000 € (zur Gründung mindestens 12.500 € einzahlen), UG ab 1 € (muss dann Rücklagen bilden).</li></ul>
+<h3>ERGO bleibt außerhalb der Gruppe</h3>
+<p>Marvin ist bereits selbstständiger gebundener Versicherungsvermittler für ERGO (Einzelunternehmen). Der Vertrag erlaubt keine GmbH als Vermittler. Die Vermittlung bleibt deshalb persönlich neben der Gruppe:</p>
+<pre style="font-size:8.5pt;line-height:1.35">Marvin Büscher
+├── Einzelunternehmen: gebundener Versicherungsvermittler (ERGO)
+└── Büscher Unternehmensgruppe GmbH (Holding)
+    ├── Lotwerk GmbH (Marketing, Wachstumsberatung)
+    ├── Immobilien GmbH (später)
+    └── Bau GmbH (später)</pre>
+<ul><li><b>Bis zur GmbH:</b> Die Agentur läuft als zweite Tätigkeit im bestehenden Einzelunternehmen oder als eigener Betrieb. Gewerbe-Ummeldung bzw. -Erweiterung und Finanzamt informieren [PRÜFEN Steuerberater: ein oder zwei Betriebe, getrennte Buchhaltung].</li>
+<li><b>Kleinunternehmer:</b> Steuerfreie Versicherungsprovisionen zählen nicht zur Umsatzgrenze. Für die Grenze zählt nur der Agentur-Umsatz [PRÜFEN Steuerberater].</li>
+<li><b>Rentenversicherung:</b> Selbstständige mit im Wesentlichen nur einem Auftraggeber und ohne Angestellte können rentenversicherungspflichtig sein (§ 2 Nr. 9 SGB VI). Mit der Agentur kommen weitere Auftraggeber dazu. Klären lassen bei der Deutschen Rentenversicherung (Statusfeststellung) [PRÜFEN].</li>
+<li><b>ERGO-Vertrag:</b> Ob Nebentätigkeiten gemeldet oder genehmigt werden müssen, im Vertrag nachsehen [PRÜFEN].</li></ul>
 <h3>Vorsicht bei Agentur plus Versicherung</h3>
 <ul><li>Kundendaten der Agentur dürfen nicht ohne Einwilligung für Versicherungsangebote genutzt werden (Datenschutz).</li>
 <li>Der ERGO-Vertrag kann andere Tätigkeiten oder Werbung unter eigenem Namen einschränken [PRÜFEN Vertrag].</li>
-<li>Versicherungsvermittlung braucht Eintrag im Vermittlerregister (bei gebundenen Vertretern übernimmt das meist der Versicherer) und regelmäßige Weiterbildung (15 Stunden im Jahr).</li>
+<li>Für die Vermittlung gelten weiter Vermittlerregister und Weiterbildungspflicht (15 Stunden im Jahr), unabhängig von der Agentur.</li>
 <li>Für die Marke Lotwerk gilt: Kunden sollen nicht das Gefühl haben, dass die Website ein Türöffner für Versicherungen ist.</li></ul>
 </section>
 </body></html>"""
