@@ -16,7 +16,7 @@ TIEFE = {
  "fuer_wen": [
   ("Notdienste und dringende Anliegen", "Rohrbruch, Sturmschaden, krankes Tier: Wer jetzt sucht, ruft das erste passende Ergebnis an. Ohne Anzeige sind Sie dort oft nicht zu sehen."),
   ("Leistungen mit hohem Auftragswert", "Dachsanierung, Photovoltaik, Steuerberatung für Unternehmen: Ein einziger Auftrag kann die Anzeigenkosten eines ganzen Jahres decken."),
-  ("Neue Angebote und neue Orte", "SEO braucht Monate. Anzeigen bringen ab dem ersten Tag Sichtbarkeit, während die Website in der normalen Suche aufholt."),
+  ("Neue Angebote und neue Orte", "SEO braucht Monate. Anzeigen bringen ab dem ersten Tag Sichtbarkeit, während Ihre Sichtbarkeit in der normalen Suche wächst."),
  ],
  "abschnitte": [
   ("Suchbegriffe: nur wo ein Auftrag dahintersteht", [
@@ -59,9 +59,10 @@ TIEFE = {
 "seo": {
  "seo": "Lokale SEO: bei Google Maps und ChatGPT gefunden werden",
  "kurz": "Lokale SEO für Betriebe: Google-Unternehmensprofil, Seiten pro Leistung und Ort, Bewertungen und Technik. Ab 490 € im Monat, mit monatlichem Reporting.",
- "intro_h2": "Was lokale SEO ist und warum sie anders funktioniert",
+ "intro_h2": "Google und KI vergleichen alle Ihre Auftritte",
  "intro": [
-  "Bei lokalen Suchen wie „Friseur in der Nähe“ oder „Steuerberater Münster“ zeigt Google zuerst eine Karte mit drei Betrieben, darunter die normalen Ergebnisse. Lokale SEO sorgt dafür, dass Sie an beiden Stellen auftauchen. Sie ist der Teil der Suchmaschinenoptimierung, der sich um Ort, Nähe und Vertrauen dreht.",
+  "Wer „Friseur in der Nähe“ bei Google sucht oder ChatGPT nach einem guten Steuerberater fragt, bekommt nur wenige Betriebe genannt. Welche das sind, entscheiden Suchmaschine und KI nicht anhand Ihrer Website allein. Sie vergleichen alles, was online über Sie und Ihre Mitbewerber zu finden ist: Website, Google-Profil, Bewertungen, Einträge in Verzeichnissen und Karten-Apps, Erwähnungen auf anderen Seiten.",
+  "Bei lokalen Suchen zeigt Google zuerst eine Karte mit drei Betrieben, darunter die normalen Ergebnisse. Lokale SEO sorgt dafür, dass Sie an beiden Stellen auftauchen. Sie ist der Teil der Suchmaschinenoptimierung, der sich um Ort, Nähe und Vertrauen dreht.",
   "Google bewertet dabei vor allem drei Dinge: Relevanz (passt Ihr Angebot zur Suche?), Entfernung (wie nah sind Sie?) und Bekanntheit (Bewertungen, Erwähnungen, Links). Die Entfernung können wir nicht ändern. Relevanz und Bekanntheit schon.",
   "Dazu kommt ein neuer Weg: Immer mehr Menschen fragen ChatGPT, Gemini oder Googles KI-Übersicht nach Empfehlungen. Diese Systeme greifen auf dieselben Grundlagen zurück: verständliche Seiten, strukturierte Daten, einheitliche Einträge und Bewertungen.",
  ],
@@ -91,7 +92,7 @@ TIEFE = {
  ],
  "kosten": {
   "text": "Lokale SEO ist laufende Arbeit: Profil pflegen, Inhalte ausbauen, Bewertungen begleiten. Deshalb arbeiten wir mit einem festen Monatspreis.",
-  "zeilen": [("SEO Lokal: Profil, Technik, Einträge, 1 neue oder überarbeitete Seite pro Monat", eur(P["seo_lokal"]) + " im Monat"), ("SEO Plus: 2–3 Seiten pro Monat, Bewertungsablauf", eur(P["seo_plus"]) + " im Monat"),
+  "zeilen": [("SEO Lokal: Profil, Technik, Einträge, 1 neue Seite oder Erweiterung pro Monat", eur(P["seo_lokal"]) + " im Monat"), ("SEO Plus: 2–3 Seiten pro Monat, Bewertungsablauf", eur(P["seo_plus"]) + " im Monat"),
              ("Mindestlaufzeit", "6 Monate, danach monatlich kündbar"), ("Im Wachstumsprogramm", "SEO Plus enthalten")],
   "hinweis": "Erste Veränderungen sehen Sie meist nach acht bis zwölf Wochen, belastbare Ergebnisse nach etwa sechs Monaten. Wer schneller Anfragen braucht, kombiniert SEO am Anfang mit Google Ads.",
  },
@@ -194,7 +195,7 @@ TIEFE = {
              ("Recruiting Komplett (mehrere Stellen, auch Google, wöchentlich nachgesteuert)", eur(P["rec_setup"]) + " einmalig + " + eur(P["rec"]) + " im Monat"),
              ("Werbebudget", "individuell je Branche und Stelle, legen wir vorher gemeinsam fest, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "1 Monat, danach monatlich kündbar"),
              ("Stelle besetzt (Komplett)", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)")],
-  "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen. Zum Werbebudget: Es hängt von Branche, Stelle und Region ab. Wir rechnen es vor dem Start mit Ihnen aus und halten es im Angebot fest.",
+  "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag. Auch wenn viele Bewerbungen kommen, wird es nicht teurer. Zum Werbebudget: Es hängt von Branche, Stelle und Region ab. Wir rechnen es vor dem Start mit Ihnen aus und halten es im Angebot fest.",
  },
  "fehler": [
   ("Kein Gehaltsrahmen", "Ohne Angabe bewerben sich viele gar nicht erst. Ein Rahmen reicht."),
@@ -207,7 +208,6 @@ TIEFE = {
  "faq": [
   ("Funktioniert das auch für Azubis?", "Ja, mit eigener Ansprache und eigener Seite. Für Schüler zählen andere Dinge: Ausbildungsinhalte, Übernahme, Team, Fahrzeug."),
   ("Brauche ich eigene Social-Media-Kanäle?", "Nein. Die Anzeigen laufen über ein Werbekonto. Eine Facebook-Seite für Ihren Betrieb legen wir bei Bedarf mit Ihnen an."),
-  ("Was passiert, wenn die Stelle schnell besetzt ist?", REC_WECHSEL_TEXT),
   ("Was passiert mit den Bewerberdaten?", "Sie gehen direkt an Sie und werden bei uns nur so lange gespeichert, wie es für die Weiterleitung nötig ist. Die Datenschutzhinweise auf der Karriereseite erstellen wir mit."),
  ],
 },
@@ -230,10 +230,10 @@ TIEFE = {
    "Neue Website (Paket Wachstum), Google-Profil vollständig, Messung von Anrufen und Anfragen, erste Suchkampagnen auf die wichtigsten Leistungen. Ab Tag eins sehen Sie im Bericht, woher Anfragen kommen.",
   ], None),
   ("Monat 2 bis 6", [
-   "Wir bauen Seiten für Leistungen und Orte aus, richten den Bewertungsablauf ein und schärfen die Anzeigen nach. Budget fließt dorthin, wo Anfragen am günstigsten entstehen.",
+   "Wir bauen Seiten für Leistungen und Orte aus, richten den Bewertungsablauf ein und optimieren die Anzeigen anhand der Zahlen. Budget fließt dorthin, wo Anfragen am günstigsten entstehen.",
   ], None),
   ("Monat 7 bis 12", [
-   "Mit wachsender organischer Sichtbarkeit können Anzeigen oft sparsamer eingesetzt werden. Wir bauen aus, was wirkt, und lassen weg, was nichts bringt. Jedes Quartal legen wir gemeinsam die nächsten Schritte fest.",
+   "Mit wachsender organischer Sichtbarkeit können Anzeigen oft sparsamer eingesetzt werden. Budget und Arbeit fließen dorthin, wo die meisten Anfragen entstehen. Jedes Quartal legen wir gemeinsam die nächsten Schritte fest.",
   ], None),
  ],
  "kosten": {

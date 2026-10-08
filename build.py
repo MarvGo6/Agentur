@@ -302,6 +302,35 @@ def leistung_bild(slug, links=True):
     return ""
 
 
+# SEO-Seite: Grafiken „Google und KI vergleichen alle Auftritte“ und „Warum dranbleiben“ (Veranschaulichung, keine Messwerte)
+_QUELLEN = [("Website", "Leistungen, Preise, Orte, Antworten"), ("Google-Profil", "Kategorie, Fotos, Öffnungszeiten, Beiträge"), ("Bewertungen", "Anzahl, Aktualität, Antworten"),
+            ("Verzeichnisse und Karten-Apps", "Apple Karten, Bing, Branchenbücher"), ("Erwähnungen", "Presse, Vereine, Partner, Social Media")]
+_PFAD_SIE = "M10,160 C80,150 140,118 200,98 S320,62 400,48 S500,30 560,22"
+_PFAD_WB = "M10,164 C80,158 150,138 220,120 S340,92 420,80 S510,68 560,62"
+_PFAD_OHNE = "M10,160 C80,150 140,118 200,98 S260,92 320,100 S440,118 560,126"
+SEO_EXTRA = (
+    '<section class="vgl"><div class="wrap"><p class="kicker">So entscheiden Google und KI</p><h2 class="h2s" style="max-width:20em">Verglichen wird alles, was online über Sie steht. Nicht nur die Website.</h2>'
+    '<div class="vgl-grid"><ul class="vgl-q">' + "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in _QUELLEN) + '</ul>'
+    '<div class="vgl-pfeil" aria-hidden="true"><svg viewBox="0 0 60 200" preserveAspectRatio="none"><path d="M0,20 C30,20 30,100 58,100 M0,60 C30,60 30,100 58,100 M0,100 L58,100 M0,140 C30,140 30,100 58,100 M0,180 C30,180 30,100 58,100" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>'
+    '<div class="vgl-z"><div class="vgl-box"><b>Google und Maps</b><span>zeigen 3 Betriebe in der Karte und 10 Treffer auf Seite 1</span></div>'
+    '<div class="vgl-box"><b>KI-Assistenten</b><span>ChatGPT, Gemini und Googles KI-Übersicht nennen meist nur 2 bis 3 Betriebe</span></div>'
+    '<p class="vgl-fazit">Gezeigt wird, wer überall <b>vollständig, aktuell und stimmig</b> ist. Widersprüche, zum Beispiel alte Öffnungszeiten in einem Verzeichnis, kosten Vertrauen.</p></div></div></div></section>'
+    '<section class="dran"><div class="wrap grid2" style="align-items:center"><div><p class="kicker">Warum dranbleiben?</p><h2 class="h2s">Der Wettbewerb schläft nicht.</h2>'
+    '<p>Sichtbarkeit ist kein Zustand, den man einmal herstellt. Sie ist ein Vergleich, und der wird jeden Tag neu gezogen.</p>'
+    '<ul class="ticks"><li>Ihre Mitbewerber sammeln weiter Bewertungen und verbessern ihre Seiten.</li><li>Google ändert seine Bewertung mehrmals im Jahr.</li><li>KI-Antworten werden laufend neu zusammengestellt.</li><li>Neue Betriebe eröffnen, Angaben wie Öffnungszeiten und Preise veralten.</li></ul>'
+    '<p>Deshalb optimieren wir jeden Monat fortlaufend: neue Inhalte, Bewertungen, Profilpflege. Im monatlichen Reporting sehen Sie, wo Sie im Vergleich stehen.</p></div>'
+    '<figure class="dran-g" aria-label="Veranschaulichung: Mit fortlaufender Optimierung vorne bleiben"><svg viewBox="0 0 570 190" role="img">'
+    '<line x1="10" y1="175" x2="560" y2="175" class="ax"/>'
+    f'<path d="{_PFAD_OHNE}" class="ohne"/><path d="{_PFAD_WB}" class="wb"/><path d="{_PFAD_SIE}" class="sie"/>'
+    '<line x1="200" y1="98" x2="200" y2="175" class="mk"/><text x="204" y="170" class="lbl">Einrichtung fertig</text>'
+    '<text x="556" y="14" text-anchor="end" class="lbl sie-t">Mit fortlaufender Optimierung</text><text x="556" y="56" text-anchor="end" class="lbl">Mitbewerber</text><text x="556" y="142" text-anchor="end" class="lbl">Einmal eingerichtet, dann Stillstand</text>'
+    '<text x="10" y="188" class="lbl">Zeit</text></svg><figcaption>Veranschaulichung, keine Messwerte: Eine gute Einrichtung ist der Start. Vorne bleibt, wer danach weiter optimiert, denn die Mitbewerber legen ebenfalls nach.</figcaption></figure></div></section>'
+)
+
+
+KOSTEN_TITEL = {"webentwicklung": "Was kostet eine Website?", "seo": "Was kostet lokale SEO?", "google-ads": "Was kostet Google Ads?", "recruiting": "Was kostet das Recruiting-Paket?", "wachstum": "Was kostet das Wachstumsprogramm?"}
+
+
 def leistungen():
     lst = sorted(LEISTUNGEN, key=lambda l: SVC_ORDER.index(l["slug"]))
     write("/leistungen/", "Leistungen: Websites, SEO, Google Ads, Recruiting", "Websites ab 1.790 €, lokale SEO ab 490 €/Monat, Google Ads ab 290 €/Monat und Recruiting für lokale Betriebe. Alles zum Festpreis.",
@@ -328,7 +357,7 @@ def leistungen():
                  + "".join(kachel(i, h, ps, liste) for i, (h, ps, liste) in enumerate(t["abschnitte"])) + '</div></div></section>'
                  + f'<section class="bsp"><div class="wrap grid2"><div><p class="kicker">Beispiele</p><h2 class="h2s">So sehen unsere Websites auf dem Handy aus.</h2><p>Drei von sieben Beispiel-Websites für erfundene Betriebe. Tippen Sie auf ein Bild, um die Seite selbst auszuprobieren.</p><a class="more" href="/beispiele/">Alle Beispiele ansehen</a></div><div class="bsp-r">{handys}</div></div></section>')
         k = t["kosten"]
-        kosten = (f'<section id="kosten"><div class="wrap grid2 tief"><h2 class="h2s">Was kostet {e(l["titel"])}?</h2><div class="prose"><p>{e(k["text"])}</p>'
+        kosten = (f'<section id="kosten"><div class="wrap grid2 tief"><h2 class="h2s">{KOSTEN_TITEL.get(l["slug"], "Was kostet das?")}</h2><div class="prose"><p>{e(k["text"])}</p>'
                   f'<div class="tablewrap"><table class="kosten"><tbody>{"".join(f"<tr><th scope=row>{e(a)}</th><td>{e(b)}</td></tr>" for a, b in k["zeilen"])}</tbody></table></div>'
                   f'<p class="note">{e(k["hinweis"])}</p><p><a href="/preise/">Alle Preise im Überblick</a></p></div></div></section>')
         fehler = "".join(f'<div class="fw"><h3>{e(a)}</h3><p>{e(b)}</p></div>' for a, b in t["fehler"])
@@ -338,7 +367,7 @@ def leistungen():
         body = f"""<section class="hero lhero"><div class="wrap"><div class="grid"><div><p class="kicker">{l["titel"]}</p><h1>{l["h1"]}</h1><p class="lead">{l["lead"]}</p><div class="actions"><a class="btn" href="{href}">{l["cta"]} <span class="ar">→</span></a><a class="link" href="/preise/">Alle Preise</a></div></div>
 <div class="lb">{leistung_bild(l["slug"])}</div></div><dl class="eck" aria-label="Auf einen Blick">{glance}</dl></div></section>
 <section id="worum"><div class="wrap grid2 tief"><div><h2 class="h2s">{e(t["intro_h2"])}</h2></div><div class="prose"><p>{e(t["intro"][0])}</p>{"<details><summary>Weiterlesen</summary>" + "".join(f"<p>{e(x)}</p>" for x in t["intro"][1:]) + "</details>" if len(t["intro"]) > 1 else ""}<h3>Für wen sich das lohnt</h3><div class="fwl">{fuer}</div><p class="note">Beispiele nach Branche: {", ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}.</p></div></div></section>
-<section id="leistung"><div class="wrap"><h2 class="h2s" style="margin-bottom:24px">Was Sie bekommen</h2><ul class="haken">{"".join(f"<li>{x}</li>" for x in l["punkte"])}</ul>
+{SEO_EXTRA if l["slug"] == "seo" else ""}<section id="leistung"><div class="wrap"><h2 class="h2s" style="margin-bottom:24px">Was Sie bekommen</h2><ul class="haken">{"".join(f"<li>{x}</li>" for x in l["punkte"])}</ul>
 <h2 class="h2s" style="margin:clamp(48px,6vw,80px) 0 28px">So gehen wir vor</h2><ol class="tl tl{len(l["ablauf"])}">{"".join(f"<li><span class=d>Schritt {i}</span><h3>{a}</h3><p>{b}</p></li>" for i, (a, b) in enumerate(l["ablauf"], 1))}</ol></div></section>
 {absch}{kosten}
 <section id="fehler"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Typische Fehler, die wir vermeiden</h2><div class="fwg">{fehler}</div></div></section>
@@ -416,8 +445,8 @@ def ablauf():
     steps = [("Erstgespräch (20 Min.)", "Per Telefon oder Video. Wir fragen nach Ihren Zielen, Ihren Kunden und dem, was bisher nicht funktioniert hat."),
              ("Kurzanalyse", "Wir sehen uns Ihre Website und Ihr Google-Profil an. Sie bekommen die wichtigsten Punkte schriftlich."),
              ("Angebot mit Festpreis", "Binnen zwei Werktagen. Mit Ziel, Umfang, Zeitplan und Preis."),
-             ("Start-Workshop (60 Min.)", "Wir gehen den Kundenweg gemeinsam durch und sammeln alles, was wir für Texte brauchen."),
-             ("Umsetzung", "Sie sehen nach einer Woche den ersten Entwurf im Browser. Feedback per E-Mail oder kurzem Call."),
+             ("Start-Workshop (30 Min.)", "Wir gehen den Kundenweg gemeinsam durch und sammeln alles, was wir für Texte brauchen."),
+             ("Umsetzung", "Sie sehen nach rund zehn Tagen den ersten Entwurf im Browser. Feedback per E-Mail oder kurzem Call."),
              ("Freischaltung", "Website online, Messung aktiv, Profil und Kampagnen laufen."),
              ("Monatlich", "Bericht mit den Zahlen, die zählen: Anfragen, Anrufe, Kosten pro Anfrage. Einmal im Quartal planen wir die nächsten Schritte.")]
     body = f"""<section class="hero"><div class="wrap grid2"><div><p class="kicker">Ablauf</p><h1>So arbeiten wir <em>zusammen.</em></h1><p class="lead">Klare Schritte, wenig Aufwand für Sie. Im ersten Monat brauchen wir rund eine Stunde Ihrer Zeit. Danach haben Sie keine Arbeit damit, außer Sie möchten etwas ändern.</p></div><div><ol class="steps">{"".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a,b in steps)}</ol></div></div></section>
