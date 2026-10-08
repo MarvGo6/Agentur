@@ -9,8 +9,8 @@
     web_start: ['Website Start', 1790, 0, 0, 0, 0], web_wachstum: ['Website Wachstum', 3490, 0, 0, 0, 0],
     pflege_start: ['Pflege Start', 0, 59, 12, 12, 3], pflege_wachstum: ['Pflege Wachstum', 0, 99, 12, 12, 3],
     seo_lokal: ['SEO Lokal', 0, 490, 6, 0, 1], seo_plus: ['SEO Plus', 0, 890, 6, 0, 1], ads: ['Google Ads', 490, 290, 0, 0, 0],
-    programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting Komplett', 1490, 790, 3, 0, 1],
-    recruiting_basis: ['Recruiting Basis', 990, 490, 3, 0, 1, 'recruiting']  // 7. Wert: Produkt in der Datenbank
+    programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting Komplett', 1490, 790, 1, 0, 1],
+    recruiting_basis: ['Recruiting Basis', 990, 490, 1, 0, 1, 'recruiting']  // 7. Wert: Produkt in der Datenbank
   };
   var STATUS = ['neu', 'vorschau', 'kontaktiert', 'termin', 'angebot', 'gewonnen', 'verloren', 'pausiert'];
   var TAET = ['vertrieb', 'umsetzung', 'pflege', 'seo', 'ads', 'recruiting', 'verwaltung'];

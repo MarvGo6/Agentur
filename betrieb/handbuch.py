@@ -6,7 +6,7 @@ from datetime import date
 ROOT = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
-from content import PREISE as P, eur, REC_GARANTIE
+from content import PREISE as P, eur
 
 NAME = json.loads((ROOT / "config.json").read_text())["name"]
 
@@ -38,14 +38,13 @@ LEISTUNGEN = [
   "nicht": ["Werbebudget (zahlt der Kunde direkt an Google)", "Display-, YouTube- oder Shopping-Kampagnen ohne gesondertes Angebot"],
   "ablauf": [("Tag 1–3", "Suchbegriffe, Budgetrechnung, Freigabe"), ("Tag 5", "Kampagne live"), ("Woche 2–4", "Lernphase, wöchentliche Anpassung"), ("Ab Monat 2", "Zweiwöchentliche Optimierung, Monatsbericht")],
   "hinweis": "Vor dem ersten Kunden: Google-Ads-Zertifizierung (Google Skillshop, kostenlos). Erste 1–2 Kunden als Pilot mit kleinem Budget."},
- {"titel": "Recruiting Basis", "preis": f"{eur(P['rec_basis_setup'])} Einrichtung + {P['rec_basis']} €/Monat · 3 Monate Mindestlaufzeit · 1 Stelle · Werbebudget individuell (Richtwert ab 600 €/Monat [PRÜFEN]) direkt an Meta", "dauer": "Start in 2 Wochen", "aufwand": "6 h Einrichtung, 3 h/Monat",
+ {"titel": "Recruiting Basis", "preis": f"{eur(P['rec_basis_setup'])} Einrichtung + {P['rec_basis']} €/Monat · 1 Monat Mindestlaufzeit · 1 Stelle · Werbebudget individuell (Richtwert ab 600 €/Monat [PRÜFEN]) direkt an Meta", "dauer": "Start in 2 Wochen", "aufwand": "6 h Einrichtung, 3 h/Monat",
   "enthalten": ["1 Karriereseite mit Gehaltsrahmen und echten Fotos", "Kurzbewerbung in 60 Sekunden (ohne Lebenslauf)", "Strukturierte Daten für Google Jobs", "Anzeigen auf Instagram/Facebook im Umkreis", "Jede Bewerbung sofort per E-Mail an den Kunden", "Anpassung und Kurzbericht einmal im Monat", "Wechsel auf Komplett jederzeit, Einrichtung wird angerechnet"],
-  "nicht": ["Bewerbungs-Garantie", "Stellenwechsel zu 30 %: neue Stelle = neue Basis-Einrichtung", "Google-Anzeigen", "Wöchentliche Optimierung"],
+  "nicht": ["Stellenwechsel zu 30 %: neue Stelle = neue Basis-Einrichtung", "Google-Anzeigen", "Wöchentliche Optimierung"],
   "ablauf": [("Woche 1", "Arbeitgeber-Check (Kurzfassung), Fotos, Gehaltsrahmen"), ("Woche 2", "Karriereseite + Anzeigen live"), ("Monatlich", "Anzeigen und Text einmal anpassen, Kurzbericht")],
   "hinweis": "Einstieg für kleine Betriebe oder einfache Stellen. Nach 4–6 Wochen Ergebnis ansehen und Komplett anbieten, wenn mehrere Stellen offen sind."},
- {"titel": "Recruiting Komplett", "preis": f"{eur(P['rec_setup'])} Einrichtung + {P['rec']} €/Monat · 3 Monate Mindestlaufzeit · Werbebudget individuell je Branche/Stelle (Richtwert ab 1.000 €/Monat) direkt an Meta/Google, im Angebot festhalten", "dauer": "Start in 2 Wochen", "aufwand": "10 h Einrichtung, 6–7 h/Monat",
-  "enthalten": ["Karriereseite je Stelle mit Gehaltsrahmen, Team, echten Fotos", "Kurzbewerbung in 60 Sekunden (ohne Lebenslauf)", "Strukturierte Daten für Google Jobs", "Anzeigen im Umkreis (Meta; Stellenanzeigen-Vorgaben beachten)", "Jede Bewerbung sofort per E-Mail an den Kunden", "Monatsbericht: Bewerbungen, Kosten je Bewerbung", "Stelle besetzt: Wechsel auf die nächste offene Stelle, neue Werbemittel für 30 % der Einrichtung (" + str(round(P['rec_setup'] * 0.3)) + " €)",
-              f"Bewerbungs-Garantie: weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in den ersten {REC_GARANTIE['wochen']} Wochen → nächster Monat Betreuung kostenlos (vereinbartes Budget voll eingesetzt, Rückruf binnen 48 h)"],
+ {"titel": "Recruiting Komplett", "preis": f"{eur(P['rec_setup'])} Einrichtung + {P['rec']} €/Monat · 1 Monat Mindestlaufzeit · Werbebudget individuell je Branche/Stelle (Richtwert ab 1.000 €/Monat) direkt an Meta/Google, im Angebot festhalten", "dauer": "Start in 2 Wochen", "aufwand": "10 h Einrichtung, 6–7 h/Monat",
+  "enthalten": ["Karriereseite je Stelle mit Gehaltsrahmen, Team, echten Fotos", "Kurzbewerbung in 60 Sekunden (ohne Lebenslauf)", "Strukturierte Daten für Google Jobs", "Anzeigen im Umkreis (Meta; Stellenanzeigen-Vorgaben beachten)", "Jede Bewerbung sofort per E-Mail an den Kunden", "Monatsbericht: Bewerbungen, Kosten je Bewerbung", "Stelle besetzt: Wechsel auf die nächste offene Stelle, neue Werbemittel für 30 % der Einrichtung (" + str(round(P['rec_setup'] * 0.3)) + " €)"],
   "nicht": ["Einstellungsgarantie – wir liefern Bewerbungen, die Auswahl trifft der Kunde", "Bewerbergespräche, Vorauswahl"],
   "ablauf": [("Woche 1", "Arbeitgeber-Check, Fotos, Gehaltsrahmen freigeben"), ("Woche 2", "Karriereseite + Kampagne live"), ("Woche 3–6", "Anzeigen nach Bewerbungsqualität anpassen")],
   "hinweis": "Pflicht des Kunden: Bewerber innerhalb von 48 Stunden zurückrufen – sonst verpufft die Kampagne."},
@@ -81,7 +80,7 @@ BAUSTEINE = [
  ("Leistungsumfang", "Der Umfang ergibt sich abschließend aus dem Angebot und dieser Leistungsbeschreibung. Zusätzliche Leistungen werden vorab angeboten und nur nach Freigabe erbracht."),
  ("Mitwirkung", "Der Kunde stellt Inhalte, Fotos und Zugänge innerhalb von 7 Tagen nach Auftrag bereit und benennt eine Person für Freigaben. Verzögerungen verschieben den Zeitplan entsprechend."),
  ("Abnahme & Zahlung", "Einmalige Leistungen: 50 % bei Auftrag, 50 % nach Abnahme des Entwurfs. Der Entwurf gilt als abgenommen, wenn der Kunde nicht innerhalb von 10 Tagen begründete Mängel mitteilt. Zwei Korrekturrunden sind enthalten."),
- ("Laufzeiten", "Pflege & Hosting: 12 Monate, Verlängerung um jeweils 12 Monate, Kündigung 3 Monate vor Ablauf. SEO: 6 Monate Mindestlaufzeit, danach monatlich kündbar. Recruiting: 3 Monate, danach monatlich. Google Ads: monatlich kündbar. Wachstumsprogramm: 12 Monate."),
+ ("Laufzeiten", "Pflege & Hosting: 12 Monate, Verlängerung um jeweils 12 Monate, Kündigung 3 Monate vor Ablauf. SEO: 6 Monate Mindestlaufzeit, danach monatlich kündbar. Recruiting: 1 Monat, danach monatlich. Google Ads: monatlich kündbar. Wachstumsprogramm: 12 Monate."),
  ("Werbebudgets", "Werbebudgets für Google, Meta o. Ä. zahlt der Kunde direkt an die Plattform. Die Konten laufen auf den Namen des Kunden."),
  ("Keine Ergebnisgarantie", "Platzierungen, Anfragen oder Bewerbungen hängen von Dritten (Suchmaschinen, Markt, Wettbewerb) ab und werden nicht garantiert. Geschuldet ist die sorgfältige Erbringung der beschriebenen Leistungen. Ausnahme: Bewerbungs-Garantie beim Recruiting-Paket (Gutschrift eines Monats, siehe dort)."),
  ("Eigentum", "Nach vollständiger Zahlung erhält der Kunde die Nutzungsrechte an Website, Texten und Gestaltung. Domain und Konten laufen auf den Kunden. Bei Vertragsende werden alle Dateien übergeben."),

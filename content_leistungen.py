@@ -1,7 +1,7 @@
 """Ausführliche Inhalte der Leistungsseiten (/leistungen/<slug>/).
 Aufbau je Seite: Suchintention zuerst beantworten, dann Für-wen, Vorgehen im Detail, Kosten, typische Fehler, Messung, Fragen.
 Regeln: keine erfundenen Zahlen oder Ergebnisse; Preise kommen aus content.PREISE; kurze Sätze, keine Werbefloskeln."""
-from content import PREISE as P, eur, REC_GARANTIE, REC_GARANTIE_TEXT, REC_WECHSEL_TEXT, REC_WECHSEL_PREIS
+from content import PREISE as P, eur, REC_WECHSEL_TEXT, REC_WECHSEL_PREIS
 
 TIEFE = {
 # ---------------------------------------------------------------------------------------------- Google Ads
@@ -191,9 +191,9 @@ TIEFE = {
  "kosten": {
   "text": "Zwei Stufen zum Festpreis. Das Werbebudget zahlen Sie direkt an Meta bzw. Google. Von Basis auf Komplett wechseln geht jederzeit, die Einrichtung wird angerechnet.",
   "zeilen": [("Recruiting Basis (1 Stelle, Instagram/Facebook, Anpassung monatlich)", eur(P["rec_basis_setup"]) + " einmalig + " + eur(P["rec_basis"]) + " im Monat"),
-             ("Recruiting Komplett (mehrere Stellen, auch Google, wöchentlich nachgesteuert, mit Garantie)", eur(P["rec_setup"]) + " einmalig + " + eur(P["rec"]) + " im Monat"),
-             ("Werbebudget", "individuell je Branche und Stelle, legen wir vorher gemeinsam fest, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
-             ("Stelle besetzt (Komplett)", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie (Komplett)", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (mit dem vereinbarten Werbebudget)")],
+             ("Recruiting Komplett (mehrere Stellen, auch Google, wöchentlich nachgesteuert)", eur(P["rec_setup"]) + " einmalig + " + eur(P["rec"]) + " im Monat"),
+             ("Werbebudget", "individuell je Branche und Stelle, legen wir vorher gemeinsam fest, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "1 Monat, danach monatlich kündbar"),
+             ("Stelle besetzt (Komplett)", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)")],
   "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen. Zum Werbebudget: Es hängt von Branche, Stelle und Region ab. Wir rechnen es vor dem Start mit Ihnen aus und halten es im Angebot fest.",
  },
  "fehler": [
@@ -207,7 +207,6 @@ TIEFE = {
  "faq": [
   ("Funktioniert das auch für Azubis?", "Ja, mit eigener Ansprache und eigener Seite. Für Schüler zählen andere Dinge: Ausbildungsinhalte, Übernahme, Team, Fahrzeug."),
   ("Brauche ich eigene Social-Media-Kanäle?", "Nein. Die Anzeigen laufen über ein Werbekonto. Eine Facebook-Seite für Ihren Betrieb legen wir bei Bedarf mit Ihnen an."),
-  ("Wie funktioniert die Bewerbungs-Garantie?", REC_GARANTIE_TEXT),
   ("Was passiert, wenn die Stelle schnell besetzt ist?", REC_WECHSEL_TEXT),
   ("Was passiert mit den Bewerberdaten?", "Sie gehen direkt an Sie und werden bei uns nur so lange gespeichert, wie es für die Weiterleitung nötig ist. Die Datenschutzhinweise auf der Karriereseite erstellen wir mit."),
  ],
