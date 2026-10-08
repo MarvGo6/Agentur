@@ -191,9 +191,9 @@ TIEFE = {
  "kosten": {
   "text": "Einrichtung und Betreuung zum Festpreis, das Werbebudget zahlen Sie direkt an Meta bzw. Google.",
   "zeilen": [("Einrichtung (Karriereseite, Kurzbewerbung, Kampagnen)", eur(P["rec_setup"]) + " einmalig"), ("Betreuung", eur(P["rec"]) + " im Monat"),
-             ("Werbebudget", "ab 1.000 € im Monat je Stelle, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
-             ("Stelle besetzt", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (ab {REC_GARANTIE['budget']} Werbebudget im Monat)")],
-  "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen. Zum Werbebudget: Branchenberichte von Recruiting-Anbietern nennen 30 bis 120 € je Bewerbung über Facebook und Instagram, in Großstädten eher mehr. Mit 1.000 € im Monat sind das grob 8 bis 30 Bewerbungen.",
+             ("Werbebudget", "individuell je Branche und Stelle, legen wir vorher gemeinsam fest, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
+             ("Stelle besetzt", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (mit dem vereinbarten Werbebudget)")],
+  "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen. Zum Werbebudget: Es hängt von Branche, Stelle und Region ab. Wir rechnen es vor dem Start mit Ihnen aus und halten es im Angebot fest.",
  },
  "fehler": [
   ("Kein Gehaltsrahmen", "Ohne Angabe bewerben sich viele gar nicht erst. Ein Rahmen reicht."),
