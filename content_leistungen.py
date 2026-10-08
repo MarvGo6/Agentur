@@ -106,7 +106,7 @@ TIEFE = {
  "faq": [
   ("Was ist der Unterschied zwischen SEO und Google Ads?", "Bei Google Ads zahlen Sie für jeden Klick, die Anzeigen stoppen, sobald das Budget endet. SEO baut Sichtbarkeit in den unbezahlten Ergebnissen auf. Das dauert länger, bleibt aber bestehen."),
   ("Kann ich erreichen, dass ChatGPT mich empfiehlt?", "Garantieren kann das niemand. Aber KI-Assistenten nutzen öffentliche Quellen: Ihre Website, Ihr Profil, Bewertungen, Verzeichnisse. Je klarer und einheitlicher diese sind, desto eher werden Sie genannt. Wir messen das monatlich."),
-  ("Was brauchen Sie von mir?", "Zugang zum Google-Profil (oder wir legen es mit Ihnen an), Fotos aus Ihrem Betrieb und etwa 30 Minuten im Monat für Fragen und Freigaben."),
+  ("Was brauchen Sie von mir?", "Zugang zum Google-Profil (oder wir legen es mit Ihnen an), Fotos aus Ihrem Betrieb und rund eine Stunde im ersten Monat. Danach melden wir uns nur, wenn wir eine kurze Freigabe brauchen, zum Beispiel für eine Antwort auf eine Bewertung."),
  ],
 },
 # ---------------------------------------------------------------------------------------------- Websites

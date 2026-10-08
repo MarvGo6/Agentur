@@ -287,7 +287,7 @@ FAQ = [
  ("Wie schnell kann es losgehen?", "Meist innerhalb von zwei Wochen nach dem Erstgespräch. Eine Website Start ist in zwei bis drei Wochen online."),
  ("Gibt es lange Vertragslaufzeiten?", "Websites kaufen Sie einmalig. Pflege & Hosting läuft zwölf Monate und verlängert sich jeweils um zwölf Monate, wenn Sie nicht spätestens drei Monate vor Ablauf kündigen. SEO hat sechs Monate Mindestlaufzeit, das Wachstumsprogramm zwölf Monate. Google Ads ist monatlich kündbar."),
  ("Wem gehört die Website?", "Ihnen. Domain, Inhalte und Dateien gehören Ihnen, auch wenn Sie die Zusammenarbeit beenden."),
- ("Was muss ich selbst beitragen?", "Ein Erstgespräch, Fotos nach unserer Motivliste und Freigaben. Den Rest übernehmen wir. Rechnen Sie mit zwei bis drei Stunden im ersten Monat."),
+ ("Was muss ich selbst beitragen?", "Ein Erstgespräch, Fotos nach unserer Motivliste und Freigaben. Den Rest übernehmen wir. Rechnen Sie mit rund einer Stunde im ersten Monat. Danach haben Sie keine Arbeit damit, außer Sie möchten etwas ändern."),
  ("Schreiben Sie auch die Texte?", "Ja. Sie erzählen, wir schreiben. Fachliche Inhalte geben Sie frei."),
  ("Setzen Sie Cookies und Tracking ein?", "So wenig wie möglich. Wir messen Anfragen datenschutzfreundlich und verzichten wo möglich auf Cookie-Banner."),
  ("Garantieren Sie Ergebnisse?", "Wir garantieren saubere Arbeit, klare Ziele und nachvollziehbare Berichte. Rankings und Anfragen kann niemand seriös garantieren."),

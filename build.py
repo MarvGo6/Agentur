@@ -227,7 +227,7 @@ def startseite():
           ("Tag 3", "Angebot", "Ziel, Umfang und Zeitplan auf einer Seite.", "Festpreis statt Stundenzettel"),
           ("Tag 10", "Entwurf", "Die Startseite live im Browser. Sie testen auf Ihrem Handy und geben Feedback.", "Zweite Rate erst nach Ihrer Freigabe"),
           ("Tag 21", "Start", "Website online, Google-Profil überarbeitet, Messung aktiv.", "Website, Domain und Zugänge gehören Ihnen"),
-          ("Jeden Monat", "Pflege & Bericht", f"Updates, Sicherheit und kleine Änderungen laufen im Hintergrund. Ein Ansprechpartner: {PERSON}.", "Bericht in Anrufen und Anfragen")]
+          ("Jeden Monat", "Pflege & Bericht", f"Updates, Sicherheit und Technik laufen im Hintergrund, ohne Arbeit für Sie. Änderungswünsche schicken Sie kurz per E-Mail. Ein Ansprechpartner: {PERSON}.", "Bericht in Anrufen und Anfragen")]
     tlh = "".join(f'<li><span class="d">{d}</span><h3>{t}</h3><p>{x}</p><p class="usp">{u}</p></li>' for d, t, x, u in tl)
     body = f"""
 <section class="h-hero"><div class="wrap">
@@ -242,7 +242,7 @@ def startseite():
 <p>Sieben vollständig gebaute Websites für erfundene Beispielbetriebe. Jede folgt dem Kundenweg ihrer Branche. Klicken Sie sich durch, gern auch auf dem Handy.</p></div>
 <div class="work">{arbeiten()}</div></div></section>
 <section><div class="wrap"><div class="sec-head"><span class="idx"><b>(03)</b> Leistungen</span><h2>Alles zwischen Suche <em>und Anfrage.</em></h2><p>Einzeln buchbar oder als Programm mit gemeinsamem Ziel.</p></div>{svc_liste(lst, preis=False)}</div></section>
-<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> So arbeiten wir</span><h2>In drei Wochen online, <em>mit festem Zeitplan.</em></h2><p>Ihr Aufwand: etwa zwei bis drei Stunden im ersten Monat, danach rund 30 Minuten im Monat.</p></div>
+<section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> So arbeiten wir</span><h2>In drei Wochen online, <em>mit festem Zeitplan.</em></h2><p>Ihr Aufwand: rund eine Stunde im ersten Monat, dazu ein paar Fotos mit dem Handy. Danach haben Sie keine Arbeit damit, außer Sie möchten etwas ändern.</p></div>
 <ol class="tl tl5">{tlh}</ol>
 <div class="proof"><div class="proof-box"><p class="kicker">Prüfen Sie uns selbst</p><p>Diese Website ist so gebaut, wie wir Ihre bauen. Messen Sie die Ladezeit mit dem kostenlosen Werkzeug von Google.</p><a class="more" href="https://pagespeed.web.dev/analysis?url={DOMAIN}/" rel="noopener" target="_blank">Mit Google PageSpeed testen ↗</a></div>
 <div class="proof-box ph"><p class="kicker">Kundenstimmen</p><p>{todo("ECHTE GOOGLE-BEWERTUNGEN EINBINDEN")}</p><p class="small">Zwei bis drei Bewertungen mit Vorname, Ort und Sternen, verlinkt auf das Google-Profil.</p></div>
@@ -362,7 +362,7 @@ def ablauf():
              ("Umsetzung", "Sie sehen nach einer Woche den ersten Entwurf im Browser. Feedback per E-Mail oder kurzem Call."),
              ("Freischaltung", "Website online, Messung aktiv, Profil und Kampagnen laufen."),
              ("Monatlich", "Bericht mit den Zahlen, die zählen: Anfragen, Anrufe, Kosten pro Anfrage. Einmal im Quartal planen wir die nächsten Schritte.")]
-    body = f"""<section class="hero"><div class="wrap grid2"><div><p class="kicker">Ablauf</p><h1>So arbeiten wir <em>zusammen.</em></h1><p class="lead">Klare Schritte, wenig Aufwand für Sie. Rechnen Sie im ersten Monat mit zwei bis drei Stunden Ihrer Zeit, danach mit etwa 30 Minuten im Monat.</p></div><div><ol class="steps">{"".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a,b in steps)}</ol></div></div></section>
+    body = f"""<section class="hero"><div class="wrap grid2"><div><p class="kicker">Ablauf</p><h1>So arbeiten wir <em>zusammen.</em></h1><p class="lead">Klare Schritte, wenig Aufwand für Sie. Im ersten Monat brauchen wir rund eine Stunde Ihrer Zeit. Danach haben Sie keine Arbeit damit, außer Sie möchten etwas ändern.</p></div><div><ol class="steps">{"".join(f"<li><h3>{a}</h3><p>{b}</p></li>" for a,b in steps)}</ol></div></div></section>
 <section><div class="wrap"><dl class="principles"><div><dt>Ohne Anfahrt</dt><dd>Alles läuft per Telefon, Video und E-Mail. Aus {ORT} für ganz Deutschland.</dd></div><div><dt>Alle Zugänge bei Ihnen</dt><dd>Google-Profil, Anzeigenkonto, Domain: Sie haben jederzeit Zugriff. Nichts läuft über Umwege.</dd></div><div><dt>Klare Laufzeiten</dt><dd>Pflege 12 Monate, SEO 6 Monate, Google Ads monatlich kündbar. Alles steht vorher im Angebot.</dd></div></dl></div></section>{cta()}"""
     write("/ablauf/", "Ablauf der Zusammenarbeit", "Vom Erstgespräch bis zum Monatsbericht: so arbeiten wir mit Ihnen zusammen.", body, prio=0.7, crumbs=[("/", "Start"), ("/ablauf/", "Ablauf")])
 
