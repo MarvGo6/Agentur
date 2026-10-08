@@ -11,6 +11,7 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 
 ## Aufbau
 - Agentur-Website: `build.py` → `dist/` (statisch), Inhalte in `content.py`, Stil `static/style.css`, Skripte `static/*.js`. Vercel-Projekt „lotwork“ (Team liferpg) → https://lotwork.vercel.app
+  - Vercel-Connector hat keinen Zugriff auf Team liferpg (bewusst nicht neu verbunden). Build-Status stattdessen über GitHub prüfen: `gh api repos/MarvGo6/Agentur/commits/<sha>/status` (Kontext „Vercel“). Die Live-Seite ist aus dem Container nicht erreichbar.
 - Steuerzentrale: `/intern/` (`static/intern.js`, Supabase Auth, nur Admins). Bereich „Links“ = Tabelle `links` (wichtige Links, archivieren statt löschen). Kundenformular: `/inhalte/` (`static/inhalte.js`).
 - Supabase-Projekt **„Lotwerk Agentur“ `mlvraqrtejfwamwhyici`** (eu-west-1). NICHT anfassen: `mscipkkvljajnwjfabjv` (Vertriebs-OS, anderes Geschäft).
   - Schema: `betrieb/schema.sql`; Edge Functions: `supabase/functions/*` (gemeinsamer Code `_shared/db.ts`, beim Deploy als `db.ts` mitschicken; `verify_jwt: false`, Schutz über Header `x-cron-secret`).
