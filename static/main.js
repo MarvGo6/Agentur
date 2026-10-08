@@ -56,3 +56,14 @@ function lwGclid(){try{var e=JSON.parse(localStorage.getItem('lw-einwilligung')|
     if(h.indexOf('/kontakt/')===0)z('cta');else if(h.indexOf('tel:')===0)z('telefon');else if(h.indexOf('mailto:')===0)z('mail');else if(h.indexOf('/vorschau/')===0)z('vorschau')});
   if(f)f.addEventListener('submit',function(){if(f.checkValidity())z('formular')});
 })();
+
+// Kundenweg (Handy): Tippen auf ein Symbol zeigt die passende Karte, Wischen markiert das passende Symbol
+(function(){var w=document.querySelector('.cj-weg'),l=document.querySelector('.cj-line');if(!w||!l)return;
+  var b=w.querySelectorAll('button'),k=l.children;
+  function mark(i){for(var j=0;j<b.length;j++){b[j].classList.toggle('akt',j===i);b[j].setAttribute('aria-pressed',j===i)}}
+  for(var j=0;j<b.length;j++)b[j].addEventListener('click',function(){var i=+this.getAttribute('data-cj'),c=k[i];if(!c)return;
+    l.scrollTo({left:c.offsetLeft-16,behavior:'smooth'});mark(i);k[i].classList.add('blink');setTimeout(function(){c.classList.remove('blink')},700)});
+  var t;l.addEventListener('scroll',function(){clearTimeout(t);t=setTimeout(function(){var x=l.scrollLeft,best=0,d=1e9;
+    for(var j=0;j<k.length;j++){var e=Math.abs(k[j].offsetLeft-16-x);if(e<d){d=e;best=j}}mark(best)},80)},{passive:true});
+  mark(0);
+})();

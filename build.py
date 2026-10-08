@@ -191,12 +191,12 @@ CJ_KURZ = {"1": "Bedarf", "2": "Suche", "3": "Vergleich", "4": "Website", "5": "
 
 
 def customer_journey():
-    weg = "".join(f'<li class="{"hl" if hl else ""}"><span class="cw-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{CJ_ICON[n]}</svg></span><b>{CJ_KURZ[n]}</b>{"<em>" + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</em>" if hl else ""}</li>' for n, t, tut, key, hl in CJ_STUFEN)
+    weg = "".join(f'<li class="{"hl" if hl else ""}"><button type="button" data-cj="{int(n) - 1}" aria-label="Schritt {n}: {CJ_KURZ[n]} anzeigen"><span class="cw-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{CJ_ICON[n]}</svg></span><b>{CJ_KURZ[n]}</b>{"<em>" + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</em>" if hl else ""}</button></li>' for n, t, tut, key, hl in CJ_STUFEN)
     stufen = "".join(f'<li class="cj-step{" hl" if hl else ""}"><span class="cj-n">{int(n):02d}{"<span class=cj-tag>· " + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</span>" if hl else ""}</span><h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>' for n, t, tut, key, hl in CJ_STUFEN)
     return f'''<section class="cj" id="customer-journey"><div class="wrap">
 <div class="sec-head"><span class="idx"><b>(01)</b> Kundenweg</span><h2>Bevor jemand anruft, hat er sich <em>längst entschieden.</em></h2>
 <p>Gesucht, verglichen, Ihre Website angesehen: meist in wenigen Minuten, meist auf dem Handy. Zwei Stellen entscheiden: ob man Sie bei Google und in KI-Antworten findet, und ob Ihre Website dann überzeugt.</p></div>
-<ol class="cj-weg" aria-hidden="true">{weg}</ol>
+<ol class="cj-weg" aria-label="Kundenweg in fünf Schritten">{weg}</ol>
 <ol class="cj-line">{stufen}</ol>
 <div class="split-row" style="margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line)"><div><p class="kicker">Sichtbarkeit</p><h3>Seite 2 ist <em class="serif">unsichtbar.</em></h3>
 <p>Bei lokalen Suchen zeigt Google zuerst eine Karte mit drei Betrieben. Wer dort und in den ersten Treffern steht, bekommt den Großteil der Anfragen. Deshalb arbeiten wir an Google-Profil, Bewertungen und einer Seite für jede Leistung und jeden Ort.</p><a class="more" href="/leistungen/seo/">Wie wir Sie nach oben bringen</a></div>

@@ -603,3 +603,14 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .cj-step h3{min-height:0;font-size:1.2rem}
 }
 @media (max-width:900px){.cj-weg{align-items:start}.cj-weg li{align-content:start}.cj-line{align-items:flex-start}}
+
+@media (max-width:900px){
+.cj-weg button{all:unset;display:grid;justify-items:center;gap:6px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px}
+.cj-weg button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.cj-weg button .cw-i{transition:transform .2s,box-shadow .2s}
+.cj-weg button.akt .cw-i{transform:scale(1.12);box-shadow:0 0 0 4px var(--accent-soft),0 0 0 5px var(--accent)}
+.cj-weg button.akt b{color:var(--accent-ink)}
+.cj-line{position:relative}
+.cj-step.blink{box-shadow:0 0 0 2px var(--accent)}
+.cj-step{transition:box-shadow .3s}
+}
