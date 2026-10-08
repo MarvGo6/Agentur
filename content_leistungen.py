@@ -1,7 +1,7 @@
 """Ausführliche Inhalte der Leistungsseiten (/leistungen/<slug>/).
 Aufbau je Seite: Suchintention zuerst beantworten, dann Für-wen, Vorgehen im Detail, Kosten, typische Fehler, Messung, Fragen.
 Regeln: keine erfundenen Zahlen oder Ergebnisse; Preise kommen aus content.PREISE; kurze Sätze, keine Werbefloskeln."""
-from content import PREISE as P, eur
+from content import PREISE as P, eur, REC_GARANTIE_TEXT, REC_WECHSEL_TEXT
 
 TIEFE = {
 # ---------------------------------------------------------------------------------------------- Google Ads
@@ -191,7 +191,8 @@ TIEFE = {
  "kosten": {
   "text": "Einrichtung und Betreuung zum Festpreis, das Werbebudget zahlen Sie direkt an Meta bzw. Google.",
   "zeilen": [("Einrichtung (Karriereseite, Kurzbewerbung, Kampagnen)", eur(P["rec_setup"]) + " einmalig"), ("Betreuung", eur(P["rec"]) + " im Monat"),
-             ("Werbebudget", "meist 300–800 € im Monat je Stelle, legen Sie fest"), ("Laufzeit", "3 Monate, danach monatlich kündbar")],
+             ("Werbebudget", "meist 300–800 € im Monat je Stelle, legen Sie fest"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
+             ("Stelle besetzt", "kostenloser Wechsel auf die nächste offene Stelle"), ("Bewerbungs-Garantie", "zu wenige Bewerbungen in den ersten Wochen: nächster Monat kostenlos")],
   "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen.",
  },
  "fehler": [
@@ -205,6 +206,8 @@ TIEFE = {
  "faq": [
   ("Funktioniert das auch für Azubis?", "Ja, mit eigener Ansprache und eigener Seite. Für Schüler zählen andere Dinge: Ausbildungsinhalte, Übernahme, Team, Fahrzeug."),
   ("Brauche ich eigene Social-Media-Kanäle?", "Nein. Die Anzeigen laufen über ein Werbekonto. Eine Facebook-Seite für Ihren Betrieb legen wir bei Bedarf mit Ihnen an."),
+  ("Wie funktioniert die Bewerbungs-Garantie?", REC_GARANTIE_TEXT),
+  ("Was passiert, wenn die Stelle schnell besetzt ist?", REC_WECHSEL_TEXT),
   ("Was passiert mit den Bewerberdaten?", "Sie gehen direkt an Sie und werden bei uns nur so lange gespeichert, wie es für die Weiterleitung nötig ist. Die Datenschutzhinweise auf der Karriereseite erstellen wir mit."),
  ],
 },
