@@ -553,3 +553,4 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .wisch{display:none}@media (max-width:900px){.wisch{display:block;font:500 .82rem var(--sans);color:var(--ink-2);margin:10px 0 0}}
 .work-item:nth-child(n+2) .work-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
 .work-item:nth-child(n+2) .work-meta h3{font-size:1.25rem}.work-item:nth-child(n+2) .wm-b{flex-basis:100%;font-size:.9rem}.work-item:nth-child(n+2) .wm-l{font-size:.88rem}
+.proof:has(>.proof-box:only-child){grid-template-columns:minmax(0,520px)}

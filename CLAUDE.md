@@ -23,6 +23,7 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 - PDFs/Screenshots: Node-Playwright (`NODE_PATH=$(npm root -g)`), kein Python-Playwright installiert.
 
 ## Offene Punkte (Stand 07.10.2026)
+- **VOR DER LIVESCHALTUNG ERINNERN:** Kundenstimmen (echte Google-Bewertungen) und erste Fallstudie auf der Startseite einbinden. Die Kästen sind seit 08.10.2026 ausgeblendet (`build.py` → `startseite()` → `belege`).
 - Schlüssel fehlen: Claude (`anthropic_key` + GitHub-Secret `ANTHROPIC_API_KEY`), `SUPABASE_SERVICE_KEY` (GitHub-Secret), `places_key`, `psi_key`, `resend_key` + `mail_absender`.
 - Google Business Profile API und Google-Ads-Token beantragen (B1, B3, B4, B6).
 - Supabase Auth: Site URL auf `https://lotwork.vercel.app/intern/` setzen.
