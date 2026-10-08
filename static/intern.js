@@ -6,10 +6,10 @@
   if (!app || !SB) return;
   var S = {}, tab = 'cockpit', CACHE = {}, ZURUECK = location.origin + '/intern/';
   var PRODUKTE = {  // Vorgaben je Produkt: einmalig, monatlich, Mindestlaufzeit, Verlängerung, Kündigungsfrist (Monate)
-    web_start: ['Website Start', 1490, 0, 0, 0, 0], web_wachstum: ['Website Wachstum', 2990, 0, 0, 0, 0],
+    web_start: ['Website Start', 1790, 0, 0, 0, 0], web_wachstum: ['Website Wachstum', 3490, 0, 0, 0, 0],
     pflege_start: ['Pflege Start', 0, 49, 12, 12, 3], pflege_wachstum: ['Pflege Wachstum', 0, 89, 12, 12, 3],
     seo_lokal: ['SEO Lokal', 0, 390, 6, 0, 1], seo_plus: ['SEO Plus', 0, 690, 6, 0, 1], ads: ['Google Ads', 390, 290, 0, 0, 0],
-    programm: ['Wachstumsprogramm', 1490, 1190, 12, 0, 3], recruiting: ['Recruiting', 1490, 790, 3, 0, 1]
+    programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting', 1490, 790, 3, 0, 1]
   };
   var STATUS = ['neu', 'vorschau', 'kontaktiert', 'termin', 'angebot', 'gewonnen', 'verloren', 'pausiert'];
   var TAET = ['vertrieb', 'umsetzung', 'pflege', 'seo', 'ads', 'recruiting', 'verwaltung'];

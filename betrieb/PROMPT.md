@@ -29,9 +29,9 @@ Berichte, Abrechnung und Kennzahlen laufen automatisiert oder werden von KI vorb
 (Quelle: `betrieb/automatisierung.py`). IDs dort (V1–V6, E1–E5, Ü1–Ü3, B1–B9, F1–F5, S1–S2) in Commits und PRs nennen.
 Das Finanzmodell rechnet „von Hand“ und „automatisiert ab Kunde 5“; Recruiting wird erst ab Juni 2027 verkauft.
 
-**Preise (Quelle der Wahrheit: `content.py` → `PREISE`):** Website Start 1.490 €, Website Wachstum 2.990 €,
+**Preise (Quelle der Wahrheit: `content.py` → `PREISE`):** Website Start 1.790 €, Website Wachstum 3.490 €,
 Pflege 59/99 €/Monat, SEO Lokal 490 €, SEO Plus 890 €/Monat, Google Ads 490 € + 290 €/Monat,
-Recruiting 1.490 € + 790 €/Monat, Wachstumsprogramm 1.490 € Einrichtung + 1.190 €/Monat (12 Monate).
+Recruiting 1.490 € + 790 €/Monat, Wachstumsprogramm 1.490 € Einrichtung + 1.390 €/Monat (12 Monate).
 
 **Unverhandelbare Regeln:**
 1. KI veröffentlicht nie direkt auf eine Kunden-Website. Jede Änderung = Pull Request mit Vorschau-Link + Freigabe durch den Gründer.

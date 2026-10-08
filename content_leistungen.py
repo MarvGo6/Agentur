@@ -111,8 +111,8 @@ TIEFE = {
 },
 # ---------------------------------------------------------------------------------------------- Websites
 "webentwicklung": {
- "seo": "Website erstellen lassen: für Betriebe, ab 1.490 € Festpreis",
- "kurz": "Website erstellen lassen für Handwerk, Praxen und Kanzleien: schnell, mobil, datenschutzfreundlich, in 2–4 Wochen online. Festpreis ab 1.490 €, Website und Domain gehören Ihnen.",
+ "seo": "Website erstellen lassen: für Betriebe, ab 1.790 € Festpreis",
+ "kurz": "Website erstellen lassen für Handwerk, Praxen und Kanzleien: schnell, mobil, datenschutzfreundlich, in 2–4 Wochen online. Festpreis ab 1.790 €, Website und Domain gehören Ihnen.",
  "intro_h2": "Was eine Website für einen lokalen Betrieb leisten muss",
  "intro": [
   "Die meisten Besucher kommen über das Handy, haben ein konkretes Anliegen und wenig Geduld. Eine gute Betriebs-Website beantwortet deshalb in wenigen Sekunden: Was bieten Sie an, wo, für wen, und wie erreiche ich Sie? Alles andere kommt danach.",
@@ -214,7 +214,7 @@ TIEFE = {
 # ---------------------------------------------------------------------------------------------- Wachstumsprogramm
 "wachstum": {
  "seo": "Online-Marketing für lokale Betriebe: Website, SEO und Ads",
- "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads zusammen geplant, mit festem Ziel und Monatsbericht, Gespräch auf Wunsch. 1.490 € Einrichtung, 1.190 € im Monat.",
+ "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads zusammen geplant, mit festem Ziel und Monatsbericht, Gespräch auf Wunsch. 1.490 € Einrichtung, 1.390 € im Monat.",
  "intro_h2": "Warum die Bausteine zusammen besser wirken",
  "intro": [
   "Anzeigen bringen schnell Besucher. SEO bringt auf Dauer Besucher, ohne pro Klick zu zahlen. Die Website entscheidet, wie viele davon anfragen. Wer nur einen dieser Bausteine angeht, verschenkt oft die Wirkung der anderen: Gute Anzeigen auf eine schwache Seite kosten viel, eine gute Seite ohne Sichtbarkeit bringt wenig.",

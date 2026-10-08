@@ -1,11 +1,11 @@
 """Alle Inhalte der Website. Preise stehen nur hier und werden überall daraus gerechnet."""
 
 PREISE = {
-    "web_start": 1490, "pflege_start": 59,
-    "web_wachstum": 2990, "pflege_wachstum": 99,
+    "web_start": 1790, "pflege_start": 59,
+    "web_wachstum": 3490, "pflege_wachstum": 99,
     "seo_lokal": 490, "seo_plus": 890,
     "ads_setup": 490, "ads": 290,
-    "prog_setup": 1490, "programm": 1190,
+    "prog_setup": 1490, "programm": 1390,
     "rec_setup": 1490, "rec": 790,
 }
 
@@ -41,30 +41,30 @@ LEISTUNGEN = [
   "preis": "SEO Lokal 490 € im Monat, SEO Plus 890 € im Monat. Mindestlaufzeit sechs Monate, danach monatlich kündbar.",
   "faq": [("Warum sechs Monate Mindestlaufzeit?", "Suchmaschinen brauchen Zeit, Änderungen zu bewerten. Die ersten Effekte sieht man oft nach acht bis zwölf Wochen, stabile Ergebnisse nach etwa einem halben Jahr."), ("Garantieren Sie Platz eins?", "Nein, das kann seriös niemand. Wir legen vorher messbare Ziele fest und berichten jeden Monat offen, wie weit wir sind."), ("Brauche ich dafür eine neue Website?", "Nicht unbedingt. Ist die bestehende Seite technisch in Ordnung, arbeiten wir damit.")]},
  {"slug": "webentwicklung", "key": "web", "titel": "Websites & Webentwicklung", "kurz": "Schnelle Websites, die auf den ersten Blick zeigen, was Sie tun, und Anfragen auslösen.",
-  "h1": "Websites für lokale Betriebe zum Festpreis", "seo": "Website erstellen lassen für lokale Betriebe: ab 1.490 € Festpreis", "ab": "ab 1.490 €", "cta": "Angebot für Ihre Website anfragen", "k": "website",
-  "eckdaten": [("Preis", "1.490 € oder 2.990 € einmalig"), ("Pflege & Hosting", "59 € bzw. 99 € / Monat, 12 Monate Laufzeit"), ("Dauer", "2–4 Wochen bis online"), ("Eigentum", "Website und Domain gehören Ihnen")],
+  "h1": "Websites für lokale Betriebe zum Festpreis", "seo": "Website erstellen lassen für lokale Betriebe: ab 1.790 € Festpreis", "ab": "ab 1.790 €", "cta": "Angebot für Ihre Website anfragen", "k": "website",
+  "eckdaten": [("Preis", "1.790 € oder 3.490 € einmalig"), ("Pflege & Hosting", "59 € bzw. 99 € / Monat, 12 Monate Laufzeit"), ("Dauer", "2–4 Wochen bis online"), ("Eigentum", "Website und Domain gehören Ihnen")],
   "lead": "Eine gute Website beantwortet in zehn Sekunden drei Fragen: Was machen Sie? Für wen? Wie erreiche ich Sie? Darauf bauen wir jede Seite auf. Schnell auf dem Handy, mit Texten, die wir gemeinsam mit Ihnen schreiben.",
   "punkte": ["Fertig in zwei bis vier Wochen", "Schnelle Ladezeit, Ziel: unter einer Sekunde auf dem Handy", "Sie liefern Stichworte, wir schreiben die Texte", "Datenschutzfreundliche Grundstruktur, möglichst ohne Cookie-Banner", "Pflege, Updates und Hosting zum festen Monatspreis", "Auf Wunsch Termin-, Bewerbungs- oder Anfrageformulare"],
   "ablauf": [("Gespräch", "30 Minuten: Ziele, Zielgruppe, Wunschanfragen."), ("Entwurf", "Nach einer Woche sehen Sie die Startseite im Browser."), ("Ausbau", "Alle Seiten, Texte, Bilder, Formulare."), ("Start & Pflege", "Freischaltung, Einrichtung bei Google, danach laufende Pflege.")],
-  "preis": "Website Start ab 1.490 €, Website Wachstum ab 2.990 € einmalig. Pflege & Hosting 59 € bzw. 99 € im Monat, 12 Monate Laufzeit.",
+  "preis": "Website Start ab 1.790 €, Website Wachstum ab 3.490 € einmalig. Pflege & Hosting 59 € bzw. 99 € im Monat, 12 Monate Laufzeit.",
   "faq": [("Gehört mir die Website?", "Ja. Inhalte, Texte und Domain gehören Ihnen. Wenn Sie gehen, bekommen Sie alle Dateien."), ("Kann ich selbst Texte ändern?", "Ja. Kleine Änderungen machen wir im Rahmen der Pflege, auf Wunsch richten wir eine einfache Bearbeitung ein."), ("Was ist mit Fotos?", "Am besten echte Fotos von Ihnen und Ihrem Team. Wir sagen Ihnen genau, welche Motive wir brauchen.")]},
  {"slug": "recruiting", "key": "recruiting", "titel": "Recruiting-Paket", "kurz": "Fachkräfte finden über die eigene Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis.",
   "h1": "Recruiting für Handwerk, Pflege und Praxen", "seo": "Recruiting für Handwerk, Pflege und Praxen: Bewerbungen ohne Stellenportale", "ab": "790 € / Monat", "cta": "Recruiting-Paket besprechen", "k": "recruiting",
-  "eckdaten": [("Preis", "1.490 € Einrichtung + 790 € / Monat"), ("Werbebudget", "ab 1.000 € / Monat je Stelle"), ("Laufzeit", "3 Monate, danach monatlich"), ("Bewerbung", "in 60 Sekunden, ohne Lebenslauf")],
+  "eckdaten": [("Preis", "1.490 € Einrichtung + 790 € / Monat"), ("Werbebudget", "zusätzlich ab 1.000 € / Monat je Stelle, direkt an Meta bzw. Google"), ("Laufzeit", "3 Monate, danach monatlich"), ("Bewerbung", "in 60 Sekunden, ohne Lebenslauf")],
   "lead": "Viele Pflegekräfte, Gesellen und Fachangestellte suchen gar nicht aktiv. Sie scrollen abends durch ihr Handy. Dort erreichen wir sie: mit einer Karriereseite, die zeigt, wie es bei Ihnen wirklich ist, einer Bewerbung ohne Lebenslauf und Anzeigen im Umkreis.",
   "punkte": ["Karriereseite mit Gehaltsrahmen, Team und Einblicken in den Alltag", "Bewerbung in 60 Sekunden, ohne Lebenslauf und Anschreiben", "Stellen erscheinen in Google Jobs (strukturierte Daten)", "Anzeigen auf Instagram, Facebook und Google im Umkreis von 20–30 km", "Jede Bewerbung sofort per E-Mail oder WhatsApp an Sie", "Monatlicher Bericht: Bewerbungen, Kosten je Bewerbung, Einstellungen",
              f"Stelle besetzt? Wechsel auf die nächste Stelle für {REC_WECHSEL_PREIS} € (30 % der Einrichtung)", "Bewerbungs-Garantie: zu wenige Bewerbungen, nächster Monat kostenlos"],
   "ablauf": [("Arbeitgeber-Check", "Was macht Ihren Betrieb attraktiv? Gehalt, Dienstplan, Team, Fahrzeug: Wir sammeln die Argumente."), ("Karriereseite", "Eine Seite pro Stelle, mit Fotos aus Ihrem Betrieb und Kurzbewerbung."), ("Kampagnen", "Anzeigen im Umkreis, abgestimmt auf die Zielgruppe und mit eigenem Budget."), ("Nachfassen", "Wer schnell zurückruft, gewinnt. Jede Bewerbung kommt sofort per E-Mail oder WhatsApp bei Ihnen an.")],
-  "preis": "Einrichtung 1.490 € einmalig, Betreuung 790 € im Monat zzgl. Werbebudget. Monatlich kündbar nach drei Monaten. Mit Bewerbungs-Garantie und günstigem Stellenwechsel (30 % der Einrichtung).",
+  "preis": "Einrichtung 1.490 € einmalig, Betreuung 790 € im Monat. Das Werbebudget (ab 1.000 € je Stelle) kommt dazu und geht direkt an Meta bzw. Google. Monatlich kündbar nach drei Monaten. Mit Bewerbungs-Garantie und günstigem Stellenwechsel (30 % der Einrichtung).",
   "faq": [("Für welche Berufe funktioniert das?", "Besonders gut für Pflege, Handwerk, Praxen und Kanzleien, also überall, wo Fachkräfte knapp sind und regional gesucht werden."), ("Wie viel Werbebudget brauche ich?", "Wir planen ab 1.000 € im Monat je Stelle, die Sie direkt an Meta bzw. Google zahlen. Branchenberichte von Recruiting-Anbietern nennen 30 bis 120 € Werbekosten je Bewerbung, in der Pflege und in Großstädten eher mehr. Mit weniger Budget kommen oft zu wenige Bewerbungen, um wählen zu können. Ab 1.000 € gilt außerdem unsere Bewerbungs-Garantie."), ("Was ist, wenn niemand Passendes kommt?", "Wir sehen nach zwei bis vier Wochen, wie viele und welche Bewerbungen kommen, und passen Ansprache, Umkreis und Stellenprofil an. Dazu gilt unsere Bewerbungs-Garantie: " + REC_GARANTIE_TEXT),
           ("Und wenn die Stelle schnell besetzt ist?", REC_WECHSEL_TEXT + " So nutzen Sie die gebuchten Monate weiter, statt für eine besetzte Stelle zu zahlen.")]},
  {"slug": "wachstum", "key": "wachstum", "titel": "Wachstumsprogramm", "kurz": "Website, SEO und Anzeigen zusammen geplant, mit einem Ziel und einem Bericht jeden Monat.",
-  "h1": "Wachstumsprogramm: Website, SEO und Google Ads in einem", "seo": "Wachstumsprogramm: Website, SEO und Google Ads für lokale Betriebe", "ab": "1.190 € / Monat", "cta": "Wachstumsprogramm besprechen", "k": "wachstum",
-  "eckdaten": [("Preis", "1.490 € Einrichtung + 1.190 € / Monat"), ("Laufzeit", "12 Monate"), ("Enthalten", "Website, SEO Plus, Google Ads"), ("Ziel", "vorher schriftlich vereinbart")],
+  "h1": "Wachstumsprogramm: Website, SEO und Google Ads in einem", "seo": "Wachstumsprogramm: Website, SEO und Google Ads für lokale Betriebe", "ab": "1.390 € / Monat", "cta": "Wachstumsprogramm besprechen", "k": "wachstum",
+  "eckdaten": [("Preis", "1.490 € Einrichtung + 1.390 € / Monat"), ("Laufzeit", "12 Monate"), ("Enthalten", "Website, SEO Plus, Google Ads"), ("Ziel", "vorher schriftlich vereinbart")],
   "lead": "Statt einzelne Bausteine zu kaufen, arbeiten wir zwölf Monate auf ein messbares Ziel hin: mehr Anfragen, mehr Bewerbungen oder mehr Termine. Website, SEO und Anzeigen greifen ineinander, und Sie haben einen Ansprechpartner.",
   "punkte": ["Website Wachstum in der Einrichtung enthalten", "SEO Plus und Google-Ads-Betreuung inklusive", "Ein messbares Ziel, vorher schriftlich vereinbart", "Monatliches Gespräch mit den Zahlen des Monats (optional)", "Quartalsplanung: was wir als Nächstes angehen", "Günstiger als die Bausteine einzeln"],
   "ablauf": [("Zielbild", "Wir legen fest, was nach zwölf Monaten anders sein soll, in Zahlen."), ("Monat 1", "Website, Profil, Messung, erste Kampagnen."), ("Monat 2–6", "Inhalte, Bewertungen, Anzeigen nachschärfen."), ("Monat 7–12", "Ausbauen, was wirkt. Streichen, was nicht wirkt.")],
-  "preis": "1.490 € Einrichtung (inkl. neuer Website) und 1.190 € im Monat bei zwölf Monaten Laufzeit, Werbebudget separat.",
+  "preis": "1.490 € Einrichtung (inkl. neuer Website) und 1.390 € im Monat bei zwölf Monaten Laufzeit, Werbebudget separat.",
   "faq": [("Warum zwölf Monate?", "Weil die Website-Erstellung im Preis steckt und SEO Zeit braucht. Die Laufzeit macht den Preis möglich."), ("Was, wenn das Ziel nicht erreicht wird?", "Wir sehen das früh in den Monatszahlen und steuern um. Liegen wir nach sechs Monaten deutlich hinter Plan, können Sie das Programm in reine Pflege umwandeln."), ("Für wen lohnt sich das?", "Für Betriebe, bei denen ein neuer Kunde oder eine neue Fachkraft mehrere tausend Euro wert ist.")]},
 ]
 
@@ -146,7 +146,7 @@ BEISPIELE = [
    ("Danach", "Die Anlage läuft, die Nachbarn fragen nach.", "Bewertungsanfrage nach Abnahme, Projekt kommt mit Erlaubnis auf die Referenzkarte."),
   ],
   "umsetzung": ["Monat 1: Neue Website, Google-Profil, Messung von Anrufen und Formularen", "Monat 1: Google Ads für Notdienst und PV mit 700 € Budget", "Monat 2–4: Ortsseiten, Referenzkarte, Ratgeber Förderung", "Ab Monat 3: Recruiting-Seite und Anzeigen für Gesellen"],
-  "paket": [("Einrichtung inkl. Website", P["prog_setup"]), ("Wachstumsprogramm, 12 × 1.190 €", 12 * P["programm"])],
+  "paket": [("Einrichtung inkl. Website", P["prog_setup"]), ("Wachstumsprogramm, 12 × 1.390 €", 12 * P["programm"])],
   "paket_hinweis": "Enthalten: Website Wachstum, Pflege, SEO Plus, Google-Ads-Betreuung. Einzeln wären das im ersten Jahr " + eur(P["web_wachstum"] + 12 * P["pflege_wachstum"] + 12 * P["seo_plus"] + P["ads_setup"] + 12 * P["ads"]) + ". Werbebudget (hier 700 €/Monat) geht direkt an Google.",
   "erwartung": "Anzeigen bringen ab der zweiten Woche Anfragen. Organische Anfragen über die Ortsseiten wachsen meist ab dem vierten Monat. Eine einzige Sanierung mit PV liegt schnell bei 30.000 € und mehr.",
   "aufgabe": "Fotos von Baustellen schicken, Anfragen innerhalb von 24 Stunden zurückrufen, Kunden um Bewertungen bitten."},
@@ -254,7 +254,7 @@ RATGEBER = [
 <h2>Woran Sie eine gute Website erkennen</h2>
 <ul><li>Sie lädt auf dem Handy in unter zwei Sekunden.</li><li>Man versteht in zehn Sekunden, was Sie anbieten und wo.</li><li>Telefonnummer und Kontakt sind auf jeder Seite sofort erreichbar.</li><li>Jede wichtige Leistung hat eine eigene Seite.</li></ul>
 <h2>Unsere Preise zum Vergleich</h2>
-<p>Website Start ab 1.490 €, Website Wachstum ab 2.990 €, jeweils mit Pflege und Hosting für 59 € bzw. 99 € im Monat. <a href="/preise/">Alle Preise ansehen</a>.</p>"""},
+<p>Website Start ab 1.790 €, Website Wachstum ab 3.490 €, jeweils mit Pflege und Hosting für 59 € bzw. 99 € im Monat. <a href="/preise/">Alle Preise ansehen</a>.</p>"""},
  {"slug": "lokale-seo-checkliste", "titel": "Lokale SEO: 12 Punkte, die Sie heute prüfen können", "kurz": "Eine Checkliste für Betriebe, die bei „… in der Nähe“ gefunden werden wollen. Ohne Fachchinesisch.", "min": 7,
   "body": """
 <p>Bei lokalen Suchen entscheidet Google nach drei Dingen: Relevanz, Entfernung und Bekanntheit. Die Entfernung können Sie nicht ändern, die anderen beiden schon.</p>

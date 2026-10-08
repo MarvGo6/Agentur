@@ -254,7 +254,7 @@ def startseite():
 
 def leistungen():
     lst = sorted(LEISTUNGEN, key=lambda l: SVC_ORDER.index(l["slug"]))
-    write("/leistungen/", "Leistungen: Websites, SEO, Google Ads, Recruiting", "Websites ab 1.490 €, lokale SEO ab 490 €/Monat, Google Ads ab 290 €/Monat und Recruiting für lokale Betriebe. Alles zum Festpreis.",
+    write("/leistungen/", "Leistungen: Websites, SEO, Google Ads, Recruiting", "Websites ab 1.790 €, lokale SEO ab 490 €/Monat, Google Ads ab 290 €/Monat und Recruiting für lokale Betriebe. Alles zum Festpreis.",
           f'<section class="hero"><div class="wrap"><p class="kicker">Leistungen</p><h1>Fünf Leistungen für <em>mehr Anfragen.</em></h1><p class="lead">Mehr passende Anfragen und die Fachkräfte, um sie abzuarbeiten. Jede Leistung funktioniert allein. Zusammen wirken sie stärker.</p></div></section><section style="padding-top:0;border:0"><div class="wrap">{svc_liste(lst)}</div></section>{cta()}',
           prio=0.9, crumbs=[("/", "Start"), ("/leistungen/", "Leistungen")])
     for l in LEISTUNGEN:
@@ -351,7 +351,7 @@ def preise():
 <section style="padding-top:0"><div class="wrap"><div class="feature-row"><div><p class="kicker">Recruiting</p><h2 class="h2s">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit Einblicken in den Arbeitsalltag, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis. Für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)">{eur(P["rec"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)">Einrichtung {eur(P["rec_setup"])} einmalig · Werbebudget separat · nach 3 Monaten monatlich kündbar · Bewerbungs-Garantie · Stelle besetzt? Wechsel für 30 % der Einrichtung</p><a class="btn" href="/kontakt/?thema=recruiting">Recruiting-Paket besprechen <span class="ar">→</span></a></div></div></div></section>
 <section><div class="wrap"><h2 class="h2s">Laufende Leistungen</h2><div class="tablewrap"><table><thead><tr><th>Leistung</th><th>Umfang</th><th class="r">Preis</th></tr></thead><tbody>{rows}</tbody></table></div></div></section>
 <section><div class="wrap"><div class="grid2 faq-mini"><div><h2 class="h2s">Fragen zu den Preisen</h2><p>Durchgerechnete Pakete finden Sie in den <a href="/beispiele/">Beispielen</a>.</p></div><div>{faq_html(faq)}</div></div></div></section>{cta("Welches Paket passt zu Ihnen?", "Wir empfehlen nur, was sich für Ihren Betrieb rechnet. Die Ersteinschätzung ist kostenlos.")}"""
-    write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.490 €, SEO ab 490 €/Monat, Google Ads ab 290 €/Monat, Recruiting-Paket 790 €/Monat, Wachstumsprogramm 1.190 €/Monat plus Einrichtung. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])
+    write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.790 €, SEO ab 490 €/Monat, Google Ads ab 290 €/Monat, Recruiting-Paket 790 €/Monat, Wachstumsprogramm 1.390 €/Monat plus Einrichtung. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])
 
 
 def ablauf():
