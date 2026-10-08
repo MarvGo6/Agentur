@@ -252,6 +252,38 @@ def startseite():
     write("/", f"{NAME} – Websites & Google-Sichtbarkeit für lokale Betriebe", "Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflegedienste und Praxen in ganz Deutschland. Festpreis, erster Entwurf nach 7 Tagen.", body, prio=1.0, crumbs=[("/", "Start")])
 
 
+def bild_handy(slug):
+    '''Leichter Handyrahmen nur mit Screenshot (ohne Live-Ansicht).'''
+    name = next(b["name"] for b in BEISPIELE if b["slug"] == slug)
+    return (f'<div class="phone"><div class="ip"><div class="scr"><div class="sb" aria-hidden="true"><span>9:41</span><i class="di"></i><span class="si"><b></b><b></b><b></b><b></b><em></em></span></div>'
+            f'<img src="/vorschau-bilder/{slug}-m.webp" alt="Beispiel-Website {e(name)} auf dem Handy" width="390" height="780" loading="lazy" decoding="async"><i class="hi" aria-hidden="true"></i></div></div></div>')
+
+
+def leistung_bild(slug):
+    '''Anschauliches Bild je Leistung im Kopfbereich (Mockups aus HTML/CSS, keine erfundenen Kundendaten).'''
+    if slug == "webentwicklung":
+        return f'<div class="lb-show"><a href="/vorschau/dachdecker-solar/" class="lb-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="lb-phone">{bild_handy("friseur")}</a></div>'
+    if slug == "seo":
+        return ('<div class="serp lb-mock" aria-hidden="true"><div class="serp-q">friseur in der nähe</div><div class="serp-map"><i style="left:22%;top:40%"></i><i class="me" style="left:52%;top:55%"></i><i style="left:74%;top:30%"></i></div>'
+                '<div class="serp-r me"><b>Ihr Betrieb</b><span class="st">★★★★★ 4,9</span><span>Geöffnet · Anrufen · Website · Route</span></div><div class="serp-r"><b>Mitbewerber A</b><span class="st">★★★★☆ 4,3</span></div><div class="serp-r"><b>Mitbewerber B</b><span class="st">★★★★☆ 4,1</span></div><p class="lb-cap">Das Ziel: oben in der Karte</p></div>')
+    if slug == "google-ads":
+        return ('<div class="serp lb-mock" aria-hidden="true"><div class="serp-q">dachdecker notdienst</div>'
+                '<div class="ad"><span class="ad-l">Gesponsert</span><b>Dachdecker-Notdienst – schnell vor Ort</b><span class="ad-u">ihr-betrieb.de/notdienst</span><span>Meisterbetrieb · Festpreis-Angebot · erreichbar</span><span class="ad-btn">Jetzt anrufen</span></div>'
+                '<div class="serp-r"><b>Normales Suchergebnis</b><span>erst darunter</span></div><p class="lb-cap">Ihre Anzeige ganz oben, nur bei passenden Suchen</p></div>')
+    if slug == "recruiting":
+        return ('<div class="lb-app" aria-hidden="true"><div class="phone"><div class="ip"><div class="scr"><div class="sb"><span>9:41</span><i class="di"></i><span class="si"><b></b><b></b><b></b><b></b><em></em></span></div>'
+                '<div class="app"><p class="app-k">Bewerbung · 60 Sekunden</p><p class="app-h">Pflegefachkraft (m/w/d) in Teilzeit</p>'
+                '<p class="app-l">Ihre Qualifikation</p><div class="app-c"><span class="on">Pflegefachkraft ✓</span><span>Pflegehilfe</span><span>Azubi</span></div>'
+                '<p class="app-l">Stunden pro Woche</p><div class="app-c"><span>20</span><span class="on">30 ✓</span><span>40</span></div>'
+                '<p class="app-l">Name und Telefon</p><div class="app-f">Ihr Name</div><div class="app-f">Telefonnummer</div><div class="app-b">Bewerbung absenden</div><p class="app-n">Kein Lebenslauf nötig</p></div>'
+                '<i class="hi"></i></div></div></div></div>')
+    if slug == "wachstum":
+        balken = "".join(f'<i style="height:{h}%"><b>{m}</b></i>' for m, h in [("Jan", 30), ("Feb", 38), ("Mär", 45), ("Apr", 52), ("Mai", 64), ("Jun", 72)])
+        return (f'<div class="lb-report" aria-hidden="true"><p class="kicker">Monatsbericht (Beispiel)</p><p class="rp-h">Anfragen pro Monat</p><div class="rp-bars">{balken}</div>'
+                '<div class="rp-k"><div><b>Anrufe</b><span>über Website und Profil</span></div><div><b>Formulare</b><span>mit Quelle</span></div><div><b>Kosten je Anfrage</b><span>aus Google Ads</span></div></div><p class="lb-cap">Werte nur zur Veranschaulichung</p></div>')
+    return ""
+
+
 def leistungen():
     lst = sorted(LEISTUNGEN, key=lambda l: SVC_ORDER.index(l["slug"]))
     write("/leistungen/", "Leistungen: Websites, SEO, Google Ads, Recruiting", "Websites ab 1.790 €, lokale SEO ab 490 €/Monat, Google Ads ab 290 €/Monat und Recruiting für lokale Betriebe. Alles zum Festpreis.",
@@ -269,9 +301,14 @@ def leistungen():
                 [("kosten", "Kosten"), ("fehler", "Typische Fehler"), ("messung", "Was wir messen"), ("fragen", "Häufige Fragen")]
         toc = '<nav class="toc" aria-label="Auf dieser Seite"><p class="kicker">Auf dieser Seite</p><ol>' + "".join(f'<li><a href="#{a}">{e(h)}</a></li>' for a, h in anker) + "</ol></nav>"
         fuer = "".join(f'<div class="fw"><h3>{e(a)}</h3><p>{e(b)}</p></div>' for a, b in t["fuer_wen"])
-        absch = "".join(
-            f'<section id="a{i}"><div class="wrap grid2 tief"><h2 class="h2s">{e(h)}</h2><div class="prose">{"".join(f"<p>{e(x)}</p>" for x in ps)}{ticks([e(x) for x in liste]) if liste else ""}</div></div></section>'
-            for i, (h, ps, liste) in enumerate(t["abschnitte"]))
+        def kachel(i, h, ps, liste):
+            mehr = "".join(f"<p>{e(x)}</p>" for x in ps[1:]) + (ticks([e(x) for x in liste]) if liste else "")
+            return (f'<article class="ka" id="a{i}"><span class="ka-n">{i + 1:02d}</span><h3>{e(h)}</h3><p>{e(ps[0])}</p>'
+                    + (f'<details><summary>Weiterlesen</summary>{mehr}</details>' if mehr else "") + '</article>')
+        handys = "".join(f'<a href="/vorschau/{b_}/">{bild_handy(b_)}</a>' for b_ in ("pflegedienst", "barber", "steuerberater"))
+        absch = ('<section id="details"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">So funktioniert es im Detail</h2><div class="kacheln' + (" k2" if len(t["abschnitte"]) % 2 == 0 and len(t["abschnitte"]) <= 4 else "") + '">'
+                 + "".join(kachel(i, h, ps, liste) for i, (h, ps, liste) in enumerate(t["abschnitte"])) + '</div></div></section>'
+                 + f'<section class="bsp"><div class="wrap grid2"><div><p class="kicker">Beispiele</p><h2 class="h2s">So sehen unsere Websites auf dem Handy aus.</h2><p>Drei von sieben Beispiel-Websites für erfundene Betriebe. Tippen Sie auf ein Bild, um die Seite selbst auszuprobieren.</p><a class="more" href="/beispiele/">Alle Beispiele ansehen</a></div><div class="bsp-r">{handys}</div></div></section>')
         k = t["kosten"]
         kosten = (f'<section id="kosten"><div class="wrap grid2 tief"><h2 class="h2s">Was kostet {e(l["titel"])}?</h2><div class="prose"><p>{e(k["text"])}</p>'
                   f'<div class="tablewrap"><table class="kosten"><tbody>{"".join(f"<tr><th scope=row>{e(a)}</th><td>{e(b)}</td></tr>" for a, b in k["zeilen"])}</tbody></table></div>'
@@ -280,9 +317,9 @@ def leistungen():
         mess = "".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in t["messung"])
         dienst = {"@context": "https://schema.org", "@type": "Service", "name": l["titel"], "description": t["kurz"], "areaServed": "DE",
                   "provider": {"@type": "ProfessionalService", "name": NAME, "url": DOMAIN + "/"}, "url": DOMAIN + p}
-        body = f"""<section class="hero"><div class="wrap grid"><div><p class="kicker">{l["titel"]}</p><h1>{l["h1"]}</h1><p class="lead">{l["lead"]}</p><div class="actions"><a class="btn" href="{href}">{l["cta"]} <span class="ar">→</span></a><a class="link" href="/preise/">Alle Preise</a></div></div>
-<aside class="glance" aria-label="Auf einen Blick"><p class="kicker">Auf einen Blick</p><dl>{glance}</dl></aside></div></section>
-<section id="worum"><div class="wrap grid2 tief"><div><h2 class="h2s">{e(t["intro_h2"])}</h2>{toc}</div><div class="prose">{"".join(f"<p>{e(x)}</p>" for x in t["intro"])}<h3>Für wen sich das lohnt</h3><div class="fwl">{fuer}</div><p class="note">Beispiele nach Branche: {", ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}.</p></div></div></section>
+        body = f"""<section class="hero lhero"><div class="wrap"><div class="grid"><div><p class="kicker">{l["titel"]}</p><h1>{l["h1"]}</h1><p class="lead">{l["lead"]}</p><div class="actions"><a class="btn" href="{href}">{l["cta"]} <span class="ar">→</span></a><a class="link" href="/preise/">Alle Preise</a></div></div>
+<div class="lb">{leistung_bild(l["slug"])}</div></div><dl class="eck" aria-label="Auf einen Blick">{glance}</dl></div></section>
+<section id="worum"><div class="wrap grid2 tief"><div><h2 class="h2s">{e(t["intro_h2"])}</h2></div><div class="prose"><p>{e(t["intro"][0])}</p>{"<details><summary>Weiterlesen</summary>" + "".join(f"<p>{e(x)}</p>" for x in t["intro"][1:]) + "</details>" if len(t["intro"]) > 1 else ""}<h3>Für wen sich das lohnt</h3><div class="fwl">{fuer}</div><p class="note">Beispiele nach Branche: {", ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}.</p></div></div></section>
 <section id="leistung"><div class="wrap grid2"><div><h2 class="h2s">Was Sie bekommen</h2>{ticks(l["punkte"])}</div><div><h2 class="h2s">So gehen wir vor</h2><ol class="steps">{steps}</ol></div></div></section>
 {absch}{kosten}
 <section id="fehler"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Typische Fehler, die wir vermeiden</h2><div class="fwg">{fehler}</div></div></section>
