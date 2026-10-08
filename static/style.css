@@ -621,3 +621,28 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .h-trust b{color:var(--ink);font-weight:600}
 @media (max-width:900px){.h-trust{flex-direction:column;gap:8px;font-size:.88rem}}
 .rg-art>*{min-width:0}.kosten td.r{white-space:normal}
+/* Kundenweg: Zeitstrahl mit Symbolen auch am PC, genau über den 5 Spalten */
+@media (min-width:901px){
+.cj-weg{display:grid;grid-template-columns:repeat(5,1fr);list-style:none;padding:0;margin:0 0 30px;position:relative}
+.cj-weg::before{content:"";position:absolute;left:0;right:10%;top:27px;height:2px;background:var(--line-2)}
+.cj-weg li{position:relative}
+.cj-weg button{all:unset;display:grid;justify-items:start;gap:8px;cursor:pointer;border-radius:8px}
+.cj-weg button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.cw-i{width:56px;height:56px;border-radius:50%;background:var(--card);border:1.5px solid var(--line-2);display:grid;place-items:center;color:var(--ink);position:relative;transition:transform .2s,box-shadow .2s}
+.cw-i svg{width:25px;height:25px}
+.cj-weg b{font:600 .9rem/1.2 var(--sans)}
+.cj-weg em{font:500 .74rem/1.2 var(--sans);font-style:normal;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:3px 9px}
+.cj-weg li.hl .cw-i{background:var(--accent);border-color:var(--accent);color:#fff}
+.cj-weg button:hover .cw-i,.cj-weg button.akt .cw-i{transform:scale(1.08);box-shadow:0 0 0 4px var(--accent-soft),0 0 0 5px var(--accent)}
+.cj-weg button.akt b{color:var(--accent-ink)}
+.cj-step{transition:background .3s}.cj-step.blink{background:var(--accent-soft)}
+}
+/* Karten: Such-Grafiken verkleinert, damit Karte UND „Ihr Betrieb“ bzw. die ganze Anzeige sichtbar sind */
+.rgk-b .serp{zoom:.7;max-width:540px}
+.rgk-b .serp .serp-tabs{display:none}
+.rgk-b{align-content:start}
+.rgk-b{align-items:start}
+.rgk-b .lb-app{width:150px;margin-top:-6px}
+.rgk-b .lb-report{zoom:.75}
+@media (min-width:901px){.cj-weg li+li{padding-left:22px}.cj-weg::before{left:28px}}
+@media (min-width:901px){.cj-weg::before{right:calc(20% - 50px)}}
