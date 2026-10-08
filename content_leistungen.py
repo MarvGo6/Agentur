@@ -58,7 +58,7 @@ TIEFE = {
 # ---------------------------------------------------------------------------------------------- SEO
 "seo": {
  "seo": "Lokale SEO: bei Google Maps und ChatGPT gefunden werden",
- "kurz": "Lokale SEO für Betriebe: Google-Unternehmensprofil, Seiten pro Leistung und Ort, Bewertungen und Technik. Ab 490 € im Monat, Bericht in Anrufen und Anfragen.",
+ "kurz": "Lokale SEO für Betriebe: Google-Unternehmensprofil, Seiten pro Leistung und Ort, Bewertungen und Technik. Ab 490 € im Monat, mit monatlichem Reporting.",
  "intro_h2": "Was lokale SEO ist und warum sie anders funktioniert",
  "intro": [
   "Bei lokalen Suchen wie „Friseur in der Nähe“ oder „Steuerberater Münster“ zeigt Google zuerst eine Karte mit drei Betrieben, darunter die normalen Ergebnisse. Lokale SEO sorgt dafür, dass Sie an beiden Stellen auftauchen. Sie ist der Teil der Suchmaschinenoptimierung, der sich um Ort, Nähe und Vertrauen dreht.",
@@ -101,7 +101,7 @@ TIEFE = {
   ("Bewertungen ohne Antwort", "Gerade auf kritische Bewertungen achten Interessenten. Eine sachliche Antwort wirkt oft stärker als fünf Sterne."),
   ("Alte Einträge mit falscher Nummer", "Umzug oder neue Telefonnummer, aber Branchenbücher zeigen noch die alten Daten. Das kostet Anrufe und Vertrauen."),
  ],
- "messung": [("Anrufe und Routen aus dem Profil", "direkt aus dem Google-Unternehmensprofil"), ("Klicks aus der Suche", "Google Search Console, je Seite und Suchbegriff"),
+ "messung": [("Aufrufe Ihres Google-Profils", "wie oft das Profil in Suche und Maps gezeigt wurde"), ("Klicks aus der Suche", "Google Search Console, je Seite und Suchbegriff"),
              ("Positionen für Ihre Kernbegriffe", "5 bis 10 Begriffe, monatlich aus mehreren Orten gemessen"), ("Nennung in KI-Antworten", "Werden Sie bei „bester … in …“ genannt?")],
  "faq": [
   ("Was ist der Unterschied zwischen SEO und Google Ads?", "Bei Google Ads zahlen Sie für jeden Klick, die Anzeigen stoppen, sobald das Budget endet. SEO baut Sichtbarkeit in den unbezahlten Ergebnissen auf. Das dauert länger, bleibt aber bestehen."),
