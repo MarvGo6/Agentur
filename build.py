@@ -180,11 +180,23 @@ CJ_STUFEN = [
 ]
 
 
+CJ_ICON = {  # einfache Linien-Symbole je Stufe
+    "1": '<path d="M12 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/>',
+    "2": '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+    "3": '<path d="M12 3l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.4 6.7 19.3l1.1-5.9L3.4 9.3l6-.8z"/>',
+    "4": '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/>',
+    "5": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+}
+CJ_KURZ = {"1": "Bedarf", "2": "Suche", "3": "Vergleich", "4": "Website", "5": "Anfrage"}
+
+
 def customer_journey():
+    weg = "".join(f'<li class="{"hl" if hl else ""}"><span class="cw-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{CJ_ICON[n]}</svg></span><b>{CJ_KURZ[n]}</b>{"<em>" + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</em>" if hl else ""}</li>' for n, t, tut, key, hl in CJ_STUFEN)
     stufen = "".join(f'<li class="cj-step{" hl" if hl else ""}"><span class="cj-n">{int(n):02d}{"<span class=cj-tag>· " + ("Sichtbarkeit" if hl == "google" else "Überzeugung") + "</span>" if hl else ""}</span><h3>{t}</h3><p>{tut}</p><p class="cj-key">{key}</p></li>' for n, t, tut, key, hl in CJ_STUFEN)
     return f'''<section class="cj" id="customer-journey"><div class="wrap">
 <div class="sec-head"><span class="idx"><b>(01)</b> Kundenweg</span><h2>Bevor jemand anruft, hat er sich <em>längst entschieden.</em></h2>
 <p>Gesucht, verglichen, Ihre Website angesehen: meist in wenigen Minuten, meist auf dem Handy. Zwei Stellen entscheiden: ob man Sie bei Google und in KI-Antworten findet, und ob Ihre Website dann überzeugt.</p></div>
+<ol class="cj-weg" aria-hidden="true">{weg}</ol>
 <ol class="cj-line">{stufen}</ol>
 <div class="split-row" style="margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line)"><div><p class="kicker">Sichtbarkeit</p><h3>Seite 2 ist <em class="serif">unsichtbar.</em></h3>
 <p>Bei lokalen Suchen zeigt Google zuerst eine Karte mit drei Betrieben. Wer dort und in den ersten Treffern steht, bekommt den Großteil der Anfragen. Deshalb arbeiten wir an Google-Profil, Bewertungen und einer Seite für jede Leistung und jeden Ort.</p><a class="more" href="/leistungen/seo/">Wie wir Sie nach oben bringen</a></div>

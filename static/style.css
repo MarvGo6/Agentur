@@ -585,3 +585,21 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .ad-l{font-weight:700;color:var(--g-txt)}.ad b{color:var(--g-link);font-weight:400;font-size:1.02rem}.ad-u{color:var(--g-txt2)}.ad span{color:var(--g-txt2)}
 .ad .ad-btn{background:#1a73e8;color:#fff;border-radius:18px}
 .lb-cap{color:var(--ink-2);font-family:var(--sans)}
+
+/* Kundenweg: grafische Übersicht (Handy) */
+.cj-weg{display:none}
+@media (max-width:900px){
+.cj-weg{display:grid;grid-template-columns:repeat(5,1fr);list-style:none;padding:0;margin:0 0 26px;position:relative}
+.cj-weg::before{content:"";position:absolute;left:10%;right:10%;top:22px;height:2px;background:var(--line-2)}
+.cj-weg li{display:grid;justify-items:center;text-align:center;gap:6px;position:relative}
+.cw-i{width:44px;height:44px;border-radius:50%;background:var(--card);border:1.5px solid var(--line-2);display:grid;place-items:center;color:var(--ink)}
+.cw-i svg{width:21px;height:21px}
+.cj-weg b{font:600 .74rem/1.2 var(--sans)}
+.cj-weg em{font:500 .62rem/1.2 var(--sans);font-style:normal;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:2px 6px}
+.cj-weg li.hl .cw-i{background:var(--accent);border-color:var(--accent);color:#fff}
+.cj-step,.cj-step+.cj-step{overflow:hidden}
+.cj-step.hl::before{top:0}
+.cj-n{margin-bottom:10px}.cj-tag{display:block;margin:4px 0 0}
+.cj-step h3{min-height:0;font-size:1.2rem}
+}
+@media (max-width:900px){.cj-weg{align-items:start}.cj-weg li{align-content:start}.cj-line{align-items:flex-start}}
