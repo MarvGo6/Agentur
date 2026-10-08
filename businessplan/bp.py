@@ -133,7 +133,7 @@ def ausbau_sens():
 
 
 s0 = B[ZB - 1]
-rec = next(v for v in V if v["produkt"] == "Recruiting-Paket")
+rec = next(v for v in V if v["produkt"] == "Recruiting Komplett")
 ws = next(v for v in V if v["produkt"] == "Website Start")
 deals_b = M.SZENARIEN["Basis"][1]
 
@@ -195,7 +195,7 @@ th{{background:#efe8db}}.r{{text-align:right;white-space:nowrap}}
 {verdienst_tab()}
 <p class="small">* Einrichtung, laufende Betreuung über 12 Monate und 10 Vertriebsstunden je Abschluss (Recherche, Anschreiben, Gespräch, Angebot). Pflege wird mit der Website verkauft und hat keinen eigenen Vertriebsaufwand.</p>
 <h3>Was daraus folgt</h3>
-<ul><li><strong>Recruiting-Paket</strong> (Verkauf ab Juni 2027) bringt mit {e0(rec['eur_h'])} je Stunde und {e0(rec['umsatz_j1'])} im ersten Jahr am meisten – und trifft den größten Engpass der Zielgruppen.</li>
+<ul><li><strong>Recruiting Komplett</strong> (Verkauf ab Juni 2027) bringt mit {e0(rec['eur_h'])} je Stunde und {e0(rec['umsatz_j1'])} im ersten Jahr am meisten – und trifft den größten Engpass der Zielgruppen.</li>
 <li><strong>Einzelne Websites</strong> lohnen sich allein am wenigsten ({e0(ws['eur_h'])} je Stunde bei Website Start). Sie sind Einstieg, nicht Ziel – das Ziel ist immer ein laufender Vertrag.</li>
 <li><strong>Abos bauen sich auf:</strong> Ein Programm-Kunde bringt jeden Monat {eur(P['programm'])} – ohne erneuten Vertrieb. Der MRR wächst, solange Abschlüsse die Kündigungen übersteigen.</li></ul>
 <h3>Vom Gewinn zum Netto</h3>

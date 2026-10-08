@@ -189,10 +189,11 @@ TIEFE = {
   ], None),
  ],
  "kosten": {
-  "text": "Einrichtung und Betreuung zum Festpreis, das Werbebudget zahlen Sie direkt an Meta bzw. Google.",
-  "zeilen": [("Einrichtung (Karriereseite, Kurzbewerbung, Kampagnen)", eur(P["rec_setup"]) + " einmalig"), ("Betreuung", eur(P["rec"]) + " im Monat"),
+  "text": "Zwei Stufen zum Festpreis. Das Werbebudget zahlen Sie direkt an Meta bzw. Google. Von Basis auf Komplett wechseln geht jederzeit, die Einrichtung wird angerechnet.",
+  "zeilen": [("Recruiting Basis (1 Stelle, Instagram/Facebook, Anpassung monatlich)", eur(P["rec_basis_setup"]) + " einmalig + " + eur(P["rec_basis"]) + " im Monat"),
+             ("Recruiting Komplett (mehrere Stellen, auch Google, wöchentlich nachgesteuert, mit Garantie)", eur(P["rec_setup"]) + " einmalig + " + eur(P["rec"]) + " im Monat"),
              ("Werbebudget", "individuell je Branche und Stelle, legen wir vorher gemeinsam fest, zahlen Sie direkt an Meta bzw. Google"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
-             ("Stelle besetzt", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (mit dem vereinbarten Werbebudget)")],
+             ("Stelle besetzt (Komplett)", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie (Komplett)", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (mit dem vereinbarten Werbebudget)")],
   "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen. Zum Werbebudget: Es hängt von Branche, Stelle und Region ab. Wir rechnen es vor dem Start mit Ihnen aus und halten es im Angebot fest.",
  },
  "fehler": [

@@ -7,9 +7,10 @@
   var S = {}, tab = 'cockpit', CACHE = {}, ZURUECK = location.origin + '/intern/';
   var PRODUKTE = {  // Vorgaben je Produkt: einmalig, monatlich, Mindestlaufzeit, Verlängerung, Kündigungsfrist (Monate)
     web_start: ['Website Start', 1790, 0, 0, 0, 0], web_wachstum: ['Website Wachstum', 3490, 0, 0, 0, 0],
-    pflege_start: ['Pflege Start', 0, 49, 12, 12, 3], pflege_wachstum: ['Pflege Wachstum', 0, 89, 12, 12, 3],
-    seo_lokal: ['SEO Lokal', 0, 390, 6, 0, 1], seo_plus: ['SEO Plus', 0, 690, 6, 0, 1], ads: ['Google Ads', 390, 290, 0, 0, 0],
-    programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting', 1490, 790, 3, 0, 1]
+    pflege_start: ['Pflege Start', 0, 59, 12, 12, 3], pflege_wachstum: ['Pflege Wachstum', 0, 99, 12, 12, 3],
+    seo_lokal: ['SEO Lokal', 0, 490, 6, 0, 1], seo_plus: ['SEO Plus', 0, 890, 6, 0, 1], ads: ['Google Ads', 490, 290, 0, 0, 0],
+    programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting Komplett', 1490, 790, 3, 0, 1],
+    recruiting_basis: ['Recruiting Basis', 990, 490, 3, 0, 1, 'recruiting']  // 7. Wert: Produkt in der Datenbank
   };
   var STATUS = ['neu', 'vorschau', 'kontaktiert', 'termin', 'angebot', 'gewonnen', 'verloren', 'pausiert'];
   var TAET = ['vertrieb', 'umsetzung', 'pflege', 'seo', 'ads', 'recruiting', 'verwaltung'];
@@ -270,7 +271,7 @@
       if (art === 'link') await neu('links', d);
       if (art === 'vertrag') {
         var p = PRODUKTE[d.produkt];
-        await neu('vertraege', { kunde_id: f.dataset.kunde, produkt: d.produkt, start: d.start, einmalig: p[1], monatlich: p[2], mindestlaufzeit_monate: p[3], verlaengerung_monate: p[4], kuendigungsfrist_monate: p[5] });
+        await neu('vertraege', { kunde_id: f.dataset.kunde, produkt: p[6] || d.produkt, start: d.start, einmalig: p[1], monatlich: p[2], mindestlaufzeit_monate: p[3], verlaengerung_monate: p[4], kuendigungsfrist_monate: p[5] });
       }
       meldung('Gespeichert'); zeige();
     } catch (e) { meldung('Fehler: ' + e.message); }

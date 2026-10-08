@@ -110,7 +110,8 @@ PREISLISTE = [
     ("SEO Lokal", 0, 490, 4, 5, "6 Monate Mindestlaufzeit"),
     ("SEO Plus", 0, 890, 6, 8, "6 Monate Mindestlaufzeit"),
     ("Google-Ads-Betreuung", 490, 290, 4, 2.5, "zzgl. Werbebudget, monatlich kündbar"),
-    ("Recruiting-Paket", 1490, 790, 10, 7, "zzgl. Werbebudget, 3 Monate Mindestlaufzeit"),
+    ("Recruiting Basis", 990, 490, 6, 3, "1 Stelle, zzgl. Werbebudget, 3 Monate Mindestlaufzeit"),
+    ("Recruiting Komplett", 1490, 790, 10, 7, "zzgl. Werbebudget, 3 Monate Mindestlaufzeit, mit Garantie"),
     ("Wachstumsprogramm", 1490, 1390, 28, 13, "12 Monate, Website + SEO Plus + Ads inklusive"),
 ]
 

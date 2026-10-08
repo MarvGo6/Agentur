@@ -58,7 +58,8 @@ STRUKTUR = {  # Titel im Leistungshandbuch → (Stunden-Schlüssel im Modell, Au
     "Pflege & Hosting": (("h_mon_pflege",), ["Ü1", "Ü2", "Ü3", "F3"]),
     "SEO Lokal / SEO Plus": (("h_setup_seo", "h_mon_seo"), ["B8", "B1", "B2", "B3", "B4", "B5", "B7"]),
     "Google Ads": ((), ["B1", "B2", "B6"]),
-    "Recruiting-Paket": (("h_setup_rec", "h_mon_rec"), ["E1", "B9", "Ü2", "B2"]),
+    "Recruiting Basis": ((), ["E1", "B9", "Ü2", "B2"]),
+    "Recruiting Komplett": (("h_setup_rec", "h_mon_rec"), ["E1", "B9", "Ü2", "B2"]),
     "Wachstumsprogramm": (("h_setup_prog", "h_mon_prog"), ["E1", "E2", "E3", "E4", "E5", "B1", "B2", "B3", "B4", "B5", "B6", "B7"]),
 }
 STD_TXT = {"h_setup_web": "Einrichtung", "h_mon_pflege": "je Monat", "h_setup_seo": "Einrichtung", "h_mon_seo": "je Monat",
@@ -141,7 +142,7 @@ Teil D – Bestand: 12 Was da ist · 13 Widersprüche und Lücken</p>
 
 <h2><small class="nr">02</small>Leistungen und Preise</h2>
 {tab(["Leistung", "Preis", "Laufzeit"], leist_web)}
-<p class="small">Einzelpreise: Website Start {eur(P['web_start'])}, Website Wachstum {eur(P['web_wachstum'])} · Pflege & Hosting {P['pflege_start']} € bzw. {P['pflege_wachstum']} € im Monat · SEO Lokal {P['seo_lokal']} €, SEO Plus {P['seo_plus']} € im Monat · Google Ads {P['ads_setup']} € + {P['ads']} € im Monat · Recruiting {eur(P['rec_setup'])} + {P['rec']} € im Monat (Verkauf ab Juni 2027) · Wachstumsprogramm {eur(P['prog_setup'])} + {eur(P['programm'])} im Monat. Werbebudgets zahlt der Kunde direkt an Google oder Meta. {C['impressum']['ust']} <b>[PRÜFEN, siehe Kapitel 13]</b></p>
+<p class="small">Einzelpreise: Website Start {eur(P['web_start'])}, Website Wachstum {eur(P['web_wachstum'])} · Pflege & Hosting {P['pflege_start']} € bzw. {P['pflege_wachstum']} € im Monat · SEO Lokal {P['seo_lokal']} €, SEO Plus {P['seo_plus']} € im Monat · Google Ads {P['ads_setup']} € + {P['ads']} € im Monat · Recruiting Basis {eur(P['rec_basis_setup'])} + {P['rec_basis']} € im Monat, Komplett {eur(P['rec_setup'])} + {P['rec']} € im Monat (Verkauf ab Juni 2027) · Wachstumsprogramm {eur(P['prog_setup'])} + {eur(P['programm'])} im Monat. Werbebudgets zahlt der Kunde direkt an Google oder Meta. {C['impressum']['ust']} <b>[PRÜFEN, siehe Kapitel 13]</b></p>
 
 <h2><small class="nr">03</small>Beispielpakete (auf der Website mit Vorschau)</h2>
 {tab(["Branche", "Paket", "1. Jahr"], pakete)}
