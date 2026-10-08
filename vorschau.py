@@ -282,7 +282,7 @@ def page(d, agentur, back, echt=None):
 {trust}{body}
 <footer class="ft"><div class="w"><div class="cols"><div><div class="brand" style="color:#fff"><span class="mark">{d["mark"]}</span><span>{d["name"]}</span></div><p style="margin-top:16px;max-width:26em">{ft["about"]}</p></div>
 {"".join(f'<div><h4>{t}</h4><ul>{"".join(f"<li>{x}</li>" for x in xs)}</ul></div>' for t, xs in ft["cols"])}</div>
-<div class="bottom">{echt["bottom"] if echt else f'<span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels</span>'}</div></div></footer>
+<div class="bottom">{echt["bottom"] if echt else f'<span>© {d["name"]} · fiktiver Beispielbetrieb</span><span>Website-Vorschau von {agentur} · Fotos: Pexels · <a href="/impressum/" style="color:inherit">Impressum</a> · <a href="/datenschutz/" style="color:inherit">Datenschutz</a></span>'}</div></div></footer>
 <div class="mbar">{mbar}</div>{echt["scripts"] if echt else '<script src="/demo.js" defer></script>'}</body></html>"""
 
 

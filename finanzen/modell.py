@@ -19,8 +19,8 @@ PRODUKTE = ["web", "prog", "seo", "rec"]          # Art des Abschlusses
 G = {
     # Preise (Ø je Abschluss)
     "preis_web": 2200,      # Ø Website Start 1.490 / Wachstum 2.990, danach Pflege
-    "preis_pflege": 69,     # Ø Pflege & Hosting je Monat (49 / 89)
-    "preis_prog": 1190, "preis_prog_setup": 1490, "preis_seo": 520, "preis_rec": 790, "preis_rec_setup": 1490,
+    "preis_pflege": 79,     # Ø Pflege & Hosting je Monat (59 / 99)
+    "preis_prog": 1190, "preis_prog_setup": 1490, "preis_seo": 650, "preis_rec": 790, "preis_rec_setup": 1490,
     # Mix der Abschlüsse (vor dem Recruiting-Start wird dessen Anteil auf die anderen verteilt)
     "mix_web": 0.25, "mix_prog": 0.25, "mix_seo": 0.25, "mix_rec": 0.25,
     "rec_ab_monat": 8,      # Recruiting wird erst ab Monat 8 (Juni 2027) verkauft
@@ -105,11 +105,11 @@ PREISLISTE = [
     # Produkt, einmalig, monatlich, Std einmalig, Std/Monat, Hinweis
     ("Website Start", 1490, 0, 16, 0, "bis 5 Seiten, fertig in 2–3 Wochen"),
     ("Website Wachstum", 2990, 0, 28, 0, "bis 15 Seiten, Orts- und Karriereseiten"),
-    ("Pflege & Hosting Start", 0, 49, 0, 0.25, "12 Monate Laufzeit"),
-    ("Pflege & Hosting Wachstum", 0, 89, 0, 0.5, "12 Monate Laufzeit, inkl. 1 h Änderungen"),
-    ("SEO Lokal", 0, 390, 4, 5, "6 Monate Mindestlaufzeit"),
-    ("SEO Plus", 0, 690, 6, 8, "6 Monate Mindestlaufzeit"),
-    ("Google-Ads-Betreuung", 390, 290, 4, 2.5, "zzgl. Werbebudget, monatlich kündbar"),
+    ("Pflege & Hosting Start", 0, 59, 0, 0.25, "12 Monate Laufzeit"),
+    ("Pflege & Hosting Wachstum", 0, 99, 0, 0.5, "12 Monate Laufzeit, inkl. 1 h Änderungen"),
+    ("SEO Lokal", 0, 490, 4, 5, "6 Monate Mindestlaufzeit"),
+    ("SEO Plus", 0, 890, 6, 8, "6 Monate Mindestlaufzeit"),
+    ("Google-Ads-Betreuung", 490, 290, 4, 2.5, "zzgl. Werbebudget, monatlich kündbar"),
     ("Recruiting-Paket", 1490, 790, 10, 7, "zzgl. Werbebudget, 3 Monate Mindestlaufzeit"),
     ("Wachstumsprogramm", 1490, 1190, 28, 13, "12 Monate, Website + SEO Plus + Ads inklusive"),
 ]

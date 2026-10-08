@@ -15,7 +15,7 @@ START = {"pflege": _s["k_pflege"], "seo": _s["k_seo"], "ads": 0.0, "prog": _s["k
 
 A = {
     # Preise (Durchschnitt je Abschluss)
-    "p_web": 2600, "p_pflege": 79, "p_seo": 520, "p_ads": 290, "p_ads_setup": 390, "p_prog": 1190, "p_prog_setup": 1490,
+    "p_web": 2600, "p_pflege": 89, "p_seo": 650, "p_ads": 290, "p_ads_setup": 490, "p_prog": 1190, "p_prog_setup": 1490,
     "p_rec_setup": 1490, "p_rec": 790,
     # Mix der Abschlüsse
     "mix_web": 0.50, "mix_prog": 0.25, "mix_rec": 0.25,

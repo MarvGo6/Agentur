@@ -30,7 +30,7 @@ Berichte, Abrechnung und Kennzahlen laufen automatisiert oder werden von KI vorb
 Das Finanzmodell rechnet „von Hand“ und „automatisiert ab Kunde 5“; Recruiting wird erst ab Juni 2027 verkauft.
 
 **Preise (Quelle der Wahrheit: `content.py` → `PREISE`):** Website Start 1.490 €, Website Wachstum 2.990 €,
-Pflege 49/89 €/Monat, SEO Lokal 390 €, SEO Plus 690 €/Monat, Google Ads 390 € + 290 €/Monat,
+Pflege 59/99 €/Monat, SEO Lokal 490 €, SEO Plus 890 €/Monat, Google Ads 490 € + 290 €/Monat,
 Recruiting 1.490 € + 790 €/Monat, Wachstumsprogramm 1.490 € Einrichtung + 1.190 €/Monat (12 Monate).
 
 **Unverhandelbare Regeln:**

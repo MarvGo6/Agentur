@@ -73,11 +73,13 @@ async function inhalteErinnern() {
   return meldungen;
 }
 
-// Ü3: Löschfristen laut Datenschutz – Formularanfragen nach 90 Tagen, Prüfprotokolle nach 400 Tagen
+// Ü3: Löschfristen laut Datenschutz – Formularanfragen nach 90 Tagen, Prüfprotokolle nach 400 Tagen, Agentur-Anfragen ohne Auftrag nach 12 Monaten
 async function loeschen() {
   const vor = (tage: number) => new Date(Date.now() - tage * 864e5).toISOString();
   await db(`anfragen?eingang=lt.${vor(90)}`, { method: "DELETE", headers: { Prefer: "return=minimal" } }).catch(() => {});
   await db(`checks?zeit=lt.${vor(400)}`, { method: "DELETE", headers: { Prefer: "return=minimal" } }).catch(() => {});
+  // Anfragen über die Agentur-Website ohne Auftrag nach 12 Monaten löschen (Zusage in der Datenschutzerklärung)
+  await db(`agentur_anfragen?created_at=lt.${vor(365)}&status=not.in.(kunde,auftrag)`, { method: "DELETE", headers: { Prefer: "return=minimal" } }).catch(() => {});
 }
 
 // Datenschutz-Check: Was passiert beim ersten Aufruf, bevor jemand zugestimmt hat?

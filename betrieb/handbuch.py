@@ -45,7 +45,7 @@ LEISTUNGEN = [
   "ablauf": [("Woche 1", "Arbeitgeber-Check, Fotos, Gehaltsrahmen freigeben"), ("Woche 2", "Karriereseite + Kampagne live"), ("Woche 3–6", "Anzeigen nach Bewerbungsqualität anpassen")],
   "hinweis": "Pflicht des Kunden: Bewerber innerhalb von 48 Stunden zurückrufen – sonst verpufft die Kampagne."},
  {"titel": "Wachstumsprogramm", "preis": f"{eur(P['prog_setup'])} Einrichtung (inkl. Website) + {eur(P['programm'])}/Monat · 12 Monate", "dauer": "laufend", "aufwand": "12 h Einrichtung, 13 h/Monat",
-  "enthalten": ["Website Wachstum, Pflege, SEO Plus und Google-Ads-Betreuung", "Ein messbares Ziel, vorher schriftlich vereinbart (z. B. Anfragen/Monat)", "Monatliches Gespräch (30 Min.) mit Zahlen", "Quartalsplanung"],
+  "enthalten": ["Website Wachstum, Pflege, SEO Plus und Google-Ads-Betreuung", "Ein messbares Ziel, vorher schriftlich vereinbart (z. B. Anfragen/Monat)", "Monatliches Gespräch (30 Min.) mit Zahlen, optional", "Quartalsplanung"],
   "nicht": ["Werbebudget", "Ergebnisgarantie – bei deutlicher Planabweichung nach 6 Monaten Umwandlung in reine Pflege möglich"],
   "ablauf": [("Monat 1", "Website, Profil, Messung, erste Kampagnen"), ("Monat 2–6", "Inhalte, Bewertungen, Anzeigen nachschärfen"), ("Monat 7–12", "Ausbauen, was wirkt")]},
 ]

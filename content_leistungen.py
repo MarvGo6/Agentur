@@ -58,7 +58,7 @@ TIEFE = {
 # ---------------------------------------------------------------------------------------------- SEO
 "seo": {
  "seo": "Lokale SEO: bei Google Maps und ChatGPT gefunden werden",
- "kurz": "Lokale SEO für Betriebe: Google-Unternehmensprofil, Seiten pro Leistung und Ort, Bewertungen und Technik. Ab 390 € im Monat, Bericht in Anrufen und Anfragen.",
+ "kurz": "Lokale SEO für Betriebe: Google-Unternehmensprofil, Seiten pro Leistung und Ort, Bewertungen und Technik. Ab 490 € im Monat, Bericht in Anrufen und Anfragen.",
  "intro_h2": "Was lokale SEO ist und warum sie anders funktioniert",
  "intro": [
   "Bei lokalen Suchen wie „Friseur in der Nähe“ oder „Steuerberater Münster“ zeigt Google zuerst eine Karte mit drei Betrieben, darunter die normalen Ergebnisse. Lokale SEO sorgt dafür, dass Sie an beiden Stellen auftauchen. Sie ist der Teil der Suchmaschinenoptimierung, der sich um Ort, Nähe und Vertrauen dreht.",
@@ -214,7 +214,7 @@ TIEFE = {
 # ---------------------------------------------------------------------------------------------- Wachstumsprogramm
 "wachstum": {
  "seo": "Online-Marketing für lokale Betriebe: Website, SEO und Ads",
- "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads zusammen geplant, mit festem Ziel und Monatsgespräch. 1.490 € Einrichtung, 1.190 € im Monat.",
+ "kurz": "Wachstumsprogramm für lokale Betriebe: neue Website, lokale SEO und Google Ads zusammen geplant, mit festem Ziel und Monatsbericht, Gespräch auf Wunsch. 1.490 € Einrichtung, 1.190 € im Monat.",
  "intro_h2": "Warum die Bausteine zusammen besser wirken",
  "intro": [
   "Anzeigen bringen schnell Besucher. SEO bringt auf Dauer Besucher, ohne pro Klick zu zahlen. Die Website entscheidet, wie viele davon anfragen. Wer nur einen dieser Bausteine angeht, verschenkt oft die Wirkung der anderen: Gute Anzeigen auf eine schwache Seite kosten viel, eine gute Seite ohne Sichtbarkeit bringt wenig.",
@@ -238,7 +238,7 @@ TIEFE = {
  ],
  "kosten": {
   "text": "Ein Paket statt drei Rechnungen. Einzeln würden die enthaltenen Leistungen im ersten Jahr mehr kosten.",
-  "zeilen": [("Einrichtung inklusive Website Wachstum", eur(P["prog_setup"]) + " einmalig"), ("Programm (SEO Plus, Ads-Betreuung, Pflege, Monatsgespräch)", eur(P["programm"]) + " im Monat"),
+  "zeilen": [("Einrichtung inklusive Website Wachstum", eur(P["prog_setup"]) + " einmalig"), ("Programm (SEO Plus, Ads-Betreuung, Pflege, Monatsbericht, Gespräch auf Wunsch)", eur(P["programm"]) + " im Monat"),
              ("Laufzeit", "12 Monate"), ("Werbebudget", "separat, direkt an Google")],
   "hinweis": f"Zum Vergleich einzeln im ersten Jahr: Website Wachstum, Pflege, SEO Plus, Ads-Einrichtung und Ads-Betreuung ergeben {eur(P['web_wachstum'] + 12 * P['pflege_wachstum'] + 12 * P['seo_plus'] + P['ads_setup'] + 12 * P['ads'])}, im Programm sind es {eur(P['prog_setup'] + 12 * P['programm'])}.",
  },
@@ -252,7 +252,7 @@ TIEFE = {
  "faq": [
   ("Kann ich mit einem einzelnen Baustein starten und später wechseln?", "Ja. Viele starten mit einer Website oder SEO und wechseln später ins Programm. Was bereits gebaut ist, nutzen wir weiter."),
   ("Wer schreibt die Inhalte?", "Wir, auf Grundlage Ihrer Angaben. Sie geben alles frei, bevor es online geht."),
-  ("Wie viel Zeit brauche ich pro Monat?", "Etwa eine Stunde: das Monatsgespräch und ein paar Freigaben."),
+  ("Wie viel Zeit brauche ich pro Monat?", "Nach dem ersten Monat kaum Zeit: Sie bekommen jeden Monat einen Bericht. Ein 30-Minuten-Gespräch dazu gibt es, wenn Sie möchten. Ab und zu brauchen wir eine kurze Freigabe."),
  ],
 },
 }
