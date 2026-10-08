@@ -497,12 +497,12 @@ def kontakt():
             ("recruiting", "Mitarbeiter gewinnen (Recruiting-Paket)"), ("wachstum", "Wachstumsprogramm"), ("unklar", "Noch unklar")]
     sel = "".join(f'<option data-k="{k}">{t}</option>' for k, t in opts)
     body = f"""<section class="hero"><div class="wrap k-grid"><div class="k-intro"><p class="kicker">Kontakt</p><h1>Kostenlose <em>Ersteinschätzung.</em></h1><p class="lead">Schreiben Sie kurz, worum es geht. Wir melden uns innerhalb eines Werktags mit zwei Terminvorschlägen.</p></div>
-<div class="k-more"><ol class="steps next"><li><h2>Sie schicken die Anfrage</h2><p>Zwei Minuten. Name und E-Mail reichen.</p></li><li><h2>Wir schauen vorab</h2><p>Ihre Website und Ihr Google-Profil.</p></li><li><h2>20 Minuten Gespräch</h2><p>Per Telefon oder Video. Sie erfahren, wo Anfragen verloren gehen, auch wenn wir danach nicht zusammenarbeiten.</p></li></ol>
+<div class="k-more"><ol class="steps next"><li><h2>Sie schicken die Anfrage</h2><p>Zwei Minuten. Name, E-Mail und Telefon reichen.</p></li><li><h2>Wir schauen vorab</h2><p>Ihre Website und Ihr Google-Profil.</p></li><li><h2>20 Minuten Gespräch</h2><p>Per Telefon oder Video. Sie erfahren, wo Anfragen verloren gehen, auch wenn wir danach nicht zusammenarbeiten.</p></li></ol>
 <dl class="contact-alt"><div><dt>E-Mail</dt><dd><a href="mailto:{C['email']}">{C['email']}</a></dd></div><div><dt>Telefon</dt><dd>{PHONE}</dd></div><div><dt>Ansprechpartner</dt><dd>{PERSON}</dd></div></dl></div>
 <div class="form-wrap k-form"><form id="anfrage" data-to="{C['email']}" {f'data-sb="{C["supabase_url"]}" data-key="{C["supabase_key"]}"' if C.get("supabase_url") else ""}>
 <label>Ihr Name *<input name="name" required autocomplete="name"></label>
 <label>E-Mail *<input name="email" type="email" required autocomplete="email"></label>
-<label>Telefon (falls Sie einen Rückruf möchten)<input name="telefon" type="tel" autocomplete="tel"></label>
+<label>Telefon *<input name="telefon" type="tel" autocomplete="tel" required minlength="6"></label>
 <label>Betrieb und Ort<input name="betrieb" autocomplete="organization" placeholder="z. B. Malerbetrieb in Kassel"></label>
 <label>Worum geht es?<select name="thema">{sel}</select></label>
 <label>Nachricht (optional)<textarea name="nachricht" rows="3" placeholder="Was soll in sechs Monaten anders sein?"></textarea></label>
