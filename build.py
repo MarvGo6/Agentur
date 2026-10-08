@@ -704,7 +704,13 @@ def extras():
                           {"source": "/fonts/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]},
                           {"source": "/bilder/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]},  # Name = Pexels-ID + Breite, ändert sich nie
                           {"source": "/vorschau-bilder/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800"}]}]}
-    (DIST / "vercel.json").write_text(json.dumps(vercel, indent=2))
+    # Vercel liest vercel.json nur aus dem Projektordner, nicht aus dist/ -> dort mit Build-Einstellungen zusammen ablegen (und committen)
+    wurzel = {"buildCommand": "python3 build.py", "outputDirectory": "dist", "installCommand": "", "framework": None, **vercel}
+    alt = (ROOT / "vercel.json").read_text() if (ROOT / "vercel.json").exists() else ""
+    neu = json.dumps(wurzel, indent=2, ensure_ascii=False) + "\n"
+    if alt != neu:
+        (ROOT / "vercel.json").write_text(neu)
+        print("Hinweis: vercel.json aktualisiert – bitte committen, sonst gelten die neuen Header nicht.")
 
 
 if __name__ == "__main__":
