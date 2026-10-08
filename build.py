@@ -323,7 +323,7 @@ def leistungen():
             mehr = "".join(f"<p>{e(x)}</p>" for x in ps[1:]) + (ticks([e(x) for x in liste]) if liste else "")
             return (f'<article class="ka" id="a{i}"><span class="ka-n">{i + 1:02d}</span><h3>{e(h)}</h3><p>{e(ps[0])}</p>'
                     + (f'<details><summary>Weiterlesen</summary>{mehr}</details>' if mehr else "") + '</article>')
-        handys = "".join(f'<a href="/vorschau/{b_}/">{bild_handy(b_)}</a>' for b_ in ("pflegedienst", "barber", "steuerberater"))
+        handys = "".join(f'<a href="/vorschau/{b_}/">{bild_handy(b_)}</a>' for b_ in ("tierarzt", "barber", "steuerberater"))
         absch = ('<section id="details"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">So funktioniert es im Detail</h2><div class="kacheln' + (" k2" if len(t["abschnitte"]) % 2 == 0 and len(t["abschnitte"]) <= 4 else "") + '">'
                  + "".join(kachel(i, h, ps, liste) for i, (h, ps, liste) in enumerate(t["abschnitte"])) + '</div></div></section>'
                  + f'<section class="bsp"><div class="wrap grid2"><div><p class="kicker">Beispiele</p><h2 class="h2s">So sehen unsere Websites auf dem Handy aus.</h2><p>Drei von sieben Beispiel-Websites für erfundene Betriebe. Tippen Sie auf ein Bild, um die Seite selbst auszuprobieren.</p><a class="more" href="/beispiele/">Alle Beispiele ansehen</a></div><div class="bsp-r">{handys}</div></div></section>')
