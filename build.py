@@ -259,9 +259,11 @@ def bild_handy(slug):
             f'<img src="/vorschau-bilder/{slug}-m.webp" alt="Beispiel-Website {e(name)} auf dem Handy" width="390" height="780" loading="lazy" decoding="async"><i class="hi" aria-hidden="true"></i></div></div></div>')
 
 
-def leistung_bild(slug):
+def leistung_bild(slug, links=True):
     '''Anschauliches Bild je Leistung im Kopfbereich (Mockups aus HTML/CSS, keine erfundenen Kundendaten).'''
     if slug == "webentwicklung":
+        if not links:
+            return f'<div class="lb-show"><div class="lb-desk"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>brandt-bedachungen.de</span></div><img src="/vorschau-bilder/dachdecker-solar-d.webp" alt="" width="1440" height="900" loading="lazy" decoding="async"></div></div><div class="lb-phone">{bild_handy("friseur")}</div></div>'
         return f'<div class="lb-show"><a href="/vorschau/dachdecker-solar/" class="lb-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="lb-phone">{bild_handy("friseur")}</a></div>'
     if slug == "seo":
         return ('<div class="serp lb-mock" aria-hidden="true"><div class="serp-q">friseur in der nähe</div><div class="serp-map"><i style="left:22%;top:40%"></i><i class="me" style="left:52%;top:55%"></i><i style="left:74%;top:30%"></i></div>'
@@ -320,7 +322,8 @@ def leistungen():
         body = f"""<section class="hero lhero"><div class="wrap"><div class="grid"><div><p class="kicker">{l["titel"]}</p><h1>{l["h1"]}</h1><p class="lead">{l["lead"]}</p><div class="actions"><a class="btn" href="{href}">{l["cta"]} <span class="ar">→</span></a><a class="link" href="/preise/">Alle Preise</a></div></div>
 <div class="lb">{leistung_bild(l["slug"])}</div></div><dl class="eck" aria-label="Auf einen Blick">{glance}</dl></div></section>
 <section id="worum"><div class="wrap grid2 tief"><div><h2 class="h2s">{e(t["intro_h2"])}</h2></div><div class="prose"><p>{e(t["intro"][0])}</p>{"<details><summary>Weiterlesen</summary>" + "".join(f"<p>{e(x)}</p>" for x in t["intro"][1:]) + "</details>" if len(t["intro"]) > 1 else ""}<h3>Für wen sich das lohnt</h3><div class="fwl">{fuer}</div><p class="note">Beispiele nach Branche: {", ".join(f'<a href="/branchen/{b["slug"]}/">{b["titel"]}</a>' for b in BRANCHEN)}.</p></div></div></section>
-<section id="leistung"><div class="wrap grid2"><div><h2 class="h2s">Was Sie bekommen</h2>{ticks(l["punkte"])}</div><div><h2 class="h2s">So gehen wir vor</h2><ol class="steps">{steps}</ol></div></div></section>
+<section id="leistung"><div class="wrap"><h2 class="h2s" style="margin-bottom:24px">Was Sie bekommen</h2><ul class="haken">{"".join(f"<li>{x}</li>" for x in l["punkte"])}</ul>
+<h2 class="h2s" style="margin:clamp(48px,6vw,80px) 0 28px">So gehen wir vor</h2><ol class="tl tl{len(l["ablauf"])}">{"".join(f"<li><span class=d>Schritt {i}</span><h3>{a}</h3><p>{b}</p></li>" for i, (a, b) in enumerate(l["ablauf"], 1))}</ol></div></section>
 {absch}{kosten}
 <section id="fehler"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Typische Fehler, die wir vermeiden</h2><div class="fwg">{fehler}</div></div></section>
 <section id="messung"><div class="wrap grid2 tief"><h2 class="h2s">Was wir jeden Monat messen</h2><div><dl class="glance mess">{mess}</dl><p class="note">Sie bekommen jeden Monat einen kurzen Bericht in Klartext.</p></div></div></section>
@@ -384,9 +387,9 @@ def preise():
              ("Pflege & Hosting Wachstum", P["pflege_wachstum"], "Wie Start, plus 1 Stunde Änderungen pro Monat. 12 Monate Laufzeit, verlängert sich jährlich.")]
     rows = "".join(f"<tr><td><strong>{n}</strong></td><td>{d}</td><td class='r'>{eur(v)}/Monat</td></tr>" for n, v, d in monat)
     faq = [("Sind die Preise Endpreise?", "Ja. " + C["impressum"]["ust"]), ("Gibt es versteckte Kosten?", "Nein. Werbebudget für Anzeigen zahlen Sie direkt an Google oder Meta. Fremdkosten wie spezielle Buchungstools besprechen wir vorher."), ("Kann ich klein anfangen?", "Ja. Viele starten mit einer Website Start und ergänzen später SEO oder Anzeigen.")]
-    body = f"""<section class="hero"><div class="wrap"><p class="kicker">Preise</p><h1>Feste Preise. <em>Vorab.</em></h1><p class="lead">Sie wissen vorher, was es kostet. Ohne Stundenzettel, ohne Prozente vom Werbebudget.</p></div></section>
+    body = f"""<section class="hero lhero"><div class="wrap"><div class="grid"><div><p class="kicker">Preise</p><h1>Feste Preise. <em>Vorab.</em></h1><p class="lead">Sie wissen vorher, was es kostet. Ohne Stundenzettel, ohne Prozente vom Werbebudget.</p></div><div class="lb">{leistung_bild("webentwicklung")}</div></div></div></section>
 <section style="padding-top:0"><div class="wrap grid3">{web}</div></section>
-<section style="padding-top:0"><div class="wrap"><div class="feature-row"><div><p class="kicker">Recruiting</p><h2 class="h2s">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit Einblicken in den Arbeitsalltag, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis. Für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)"><small style="font:500 .9rem var(--sans);color:var(--ink-2)">ab </small>{eur(P["rec_basis"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)"><b>Basis</b> (1 Stelle): {eur(P["rec_basis_setup"])} Einrichtung + {eur(P["rec_basis"])} / Monat<br><b>Komplett</b>: {eur(P["rec_setup"])} Einrichtung + {eur(P["rec"])} / Monat<br>Werbebudget separat · nach 3 Monaten monatlich kündbar · Komplett mit Bewerbungs-Garantie und Stellenwechsel für 30 % der Einrichtung</p><a class="btn" href="/kontakt/?thema=recruiting">Recruiting-Paket besprechen <span class="ar">→</span></a></div></div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="feature-row"><div><p class="kicker">Recruiting</p><h2 class="h2s">Recruiting-Paket: Fachkräfte statt Stellenportale</h2><p>Karriereseite mit Einblicken in den Arbeitsalltag, Bewerbung in 60 Sekunden ohne Lebenslauf und Anzeigen im Umkreis. Für Pflege, Handwerk, Praxen und Kanzleien.</p><a class="more" href="/leistungen/recruiting/">Mehr zum Recruiting-Paket →</a></div><div><div class="amt" style="font:600 2.2rem var(--serif)"><small style="font:500 .9rem var(--sans);color:var(--ink-2)">ab </small>{eur(P["rec_basis"])}<small style="font:500 .9rem var(--sans);color:var(--ink-2)"> / Monat</small></div><p style="color:var(--ink-2)"><b>Basis</b> (1 Stelle): {eur(P["rec_basis_setup"])} Einrichtung + {eur(P["rec_basis"])} / Monat<br><b>Komplett</b>: {eur(P["rec_setup"])} Einrichtung + {eur(P["rec"])} / Monat<br>Werbebudget separat · nach 3 Monaten monatlich kündbar · Komplett mit Bewerbungs-Garantie und Stellenwechsel für 30 % der Einrichtung</p><a class="btn" href="/kontakt/?thema=recruiting">Recruiting-Paket besprechen <span class="ar">→</span></a></div><div class="pr-app">{leistung_bild("recruiting")}</div></div></div></section>
 <section><div class="wrap"><h2 class="h2s">Laufende Leistungen</h2><div class="tablewrap"><table><thead><tr><th>Leistung</th><th>Umfang</th><th class="r">Preis</th></tr></thead><tbody>{rows}</tbody></table></div></div></section>
 <section><div class="wrap"><div class="grid2 faq-mini"><div><h2 class="h2s">Fragen zu den Preisen</h2><p>Durchgerechnete Pakete finden Sie in den <a href="/beispiele/">Beispielen</a>.</p></div><div>{faq_html(faq)}</div></div></div></section>{cta("Welches Paket passt zu Ihnen?", "Wir empfehlen nur, was sich für Ihren Betrieb rechnet. Die Ersteinschätzung ist kostenlos.")}"""
     write("/preise/", "Preise für Website, SEO und Google Ads", "Website ab 1.790 €, SEO ab 490 €/Monat, Google Ads ab 290 €/Monat, Recruiting-Paket 790 €/Monat, Wachstumsprogramm 1.390 €/Monat plus Einrichtung. Feste Preise ohne Überraschungen.", body, prio=0.9, schema=faq_schema(faq), crumbs=[("/", "Start"), ("/preise/", "Preise")])
@@ -407,12 +410,15 @@ def ablauf():
 
 def faq_page():
     write("/faq/", "Häufige Fragen", "Antworten zu Laufzeiten, Preisen, Eigentum an der Website, Datenschutz und Zusammenarbeit.",
-          f'<section class="hero"><div class="wrap grid2"><div><p class="kicker">FAQ</p><h1>Häufige <em>Fragen.</em></h1><p class="lead">Ihre Frage ist nicht dabei? <a href="/kontakt/">Schreiben Sie uns.</a></p></div><div>{faq_html(FAQ)}</div></div></section>{cta()}',
+          f'<section class="hero"><div class="wrap grid2"><div><p class="kicker">FAQ</p><h1>Häufige <em>Fragen.</em></h1><p class="lead">Ihre Frage ist nicht dabei? <a href="/kontakt/">Schreiben Sie uns.</a></p><div class="faq-bild"><a href="/vorschau/tierarzt/">{bild_handy("tierarzt")}</a><a href="/vorschau/bestatter/">{bild_handy("bestatter")}</a></div><p class="note">Beispiel-Websites aus unserer Sammlung. <a href="/beispiele/">Alle ansehen</a></p></div><div>{faq_html(FAQ)}</div></div></section>{cta()}',
           prio=0.6, schema=faq_schema(FAQ), crumbs=[("/", "Start"), ("/faq/", "Häufige Fragen")])
 
 
+RG_BILD = {"was-kostet-eine-website": "webentwicklung", "lokale-seo-checkliste": "seo", "google-ads-fuer-handwerker": "google-ads", "google-unternehmensprofil": "seo"}
+
+
 def ratgeber():
-    cards = '<ul class="svc rg">' + "".join(f'<li><a href="/ratgeber/{r["slug"]}/"><span class="n">{r["min"]} Min.</span><span class="t">{r["titel"]}</span><span class="d">{r["kurz"]}</span><span class="a" aria-hidden="true">→</span></a></li>' for r in RATGEBER) + "</ul>"
+    cards = '<div class="rgk">' + "".join(f'<a class="rgk-i" href="/ratgeber/{r["slug"]}/"><div class="rgk-b">{leistung_bild(RG_BILD.get(r["slug"], "seo"), links=False)}</div><span class="n">{r["min"]} Min. Lesezeit</span><h3>{r["titel"]}</h3><p>{r["kurz"]}</p><span class="more">Lesen</span></a>' for r in RATGEBER) + "</div>"
     write("/ratgeber/", "Ratgeber", "Praxiswissen zu Websites, lokaler SEO, Google Ads und Google-Unternehmensprofil für kleine Betriebe.",
           f'<section class="hero"><div class="wrap"><p class="kicker">Ratgeber</p><h1>Wissen, das Sie <em>selbst umsetzen können.</em></h1><p class="lead">Ohne Fachchinesisch. Vieles davon schaffen Sie an einem Nachmittag.</p></div></section><section style="padding-top:0;border:0"><div class="wrap">{cards}</div></section>{cta()}',
           prio=0.7, crumbs=[("/", "Start"), ("/ratgeber/", "Ratgeber")])
@@ -423,7 +429,7 @@ def ratgeber():
                   "datePublished": date.today().isoformat(), "inLanguage": "de"}
         others = '<ul class="svc rg">' + "".join(f'<li><a href="/ratgeber/{o["slug"]}/"><span class="n">{o["min"]} Min.</span><span class="t">{o["titel"]}</span><span class="d">{o["kurz"]}</span><span class="a" aria-hidden="true">→</span></a></li>' for o in RATGEBER if o is not r) + "</ul>"
         body = f"""<section class="hero" style="padding-bottom:20px"><div class="wrap"><p class="kicker">Ratgeber · {r["min"]} Min. Lesezeit</p><h1 style="max-width:16em">{r["titel"]}</h1><p class="lead">{r["kurz"]}</p></div></section>
-<section style="padding-top:0"><div class="wrap"><article class="prose">{r["body"]}</article></div></section>
+<section style="padding-top:0"><div class="wrap rg-art"><article class="prose">{r["body"]}</article><aside class="rg-bild">{leistung_bild(RG_BILD.get(r["slug"], "seo"))}</aside></div></section>
 <section><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Weiterlesen</h2>{others}</div></section>{cta()}"""
         write(p, r["titel"], r["kurz"], body, prio=0.6, schema=schema, crumbs=[("/", "Start"), ("/ratgeber/", "Ratgeber"), (p, r["titel"])])
 
