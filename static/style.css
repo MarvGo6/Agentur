@@ -471,3 +471,4 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .prose .note,.tief .note{font-size:.92rem;color:var(--ink-2)}
 .glance.mess{border-top:1px solid var(--ink);padding-top:6px}
 @media (max-width:900px){.tief>.h2s,.tief>div>.h2s,.toc{position:static}.toc{display:none}.fwg{grid-template-columns:1fr}}
+.proof:has(>.proof-box:only-child){grid-template-columns:minmax(0,520px)}

@@ -228,6 +228,9 @@ def startseite():
           ("Tag 10", "Entwurf", "Die Startseite live im Browser. Sie testen auf Ihrem Handy und geben Feedback.", "Zweite Rate erst nach Ihrer Freigabe"),
           ("Tag 21", "Start", "Website online, Google-Profil überarbeitet, Messung aktiv.", "Website, Domain und Zugänge gehören Ihnen"),
           ("Jeden Monat", "Pflege & Bericht", f"Updates, Sicherheit und Technik laufen im Hintergrund, ohne Arbeit für Sie. Änderungswünsche schicken Sie kurz per E-Mail. Ein Ansprechpartner: {PERSON}.", "Bericht in Anrufen und Anfragen")]
+    # Kundenstimmen und Fallstudie sind ausgeblendet, bis es echte Inhalte gibt. VOR DER LIVESCHALTUNG einbinden (CLAUDE.md → Offene Punkte).
+    # Vorlage: <div class="proof-box"><p class="kicker">Kundenstimmen</p>…</div> und <div class="proof-box"><p class="kicker">Fallstudie</p>…</div>
+    belege = ""
     tlh = "".join(f'<li><span class="d">{d}</span><h3>{t}</h3><p>{x}</p><p class="usp">{u}</p></li>' for d, t, x, u in tl)
     body = f"""
 <section class="h-hero"><div class="wrap">
@@ -245,8 +248,7 @@ def startseite():
 <section><div class="wrap"><div class="sec-head"><span class="idx"><b>(04)</b> So arbeiten wir</span><h2>In drei Wochen online, <em>mit festem Zeitplan.</em></h2><p>Ihr Aufwand: rund eine Stunde im ersten Monat, dazu ein paar Fotos mit dem Handy. Danach haben Sie keine Arbeit damit, außer Sie möchten etwas ändern.</p></div>
 <ol class="tl tl5">{tlh}</ol>
 <div class="proof"><div class="proof-box"><p class="kicker">Prüfen Sie uns selbst</p><p>Diese Website ist so gebaut, wie wir Ihre bauen. Messen Sie die Ladezeit mit dem kostenlosen Werkzeug von Google.</p><a class="more" href="https://pagespeed.web.dev/analysis?url={DOMAIN}/" rel="noopener" target="_blank">Mit Google PageSpeed testen ↗</a></div>
-<div class="proof-box ph"><p class="kicker">Kundenstimmen</p><p>{todo("ECHTE GOOGLE-BEWERTUNGEN EINBINDEN")}</p><p class="small">Zwei bis drei Bewertungen mit Vorname, Ort und Sternen, verlinkt auf das Google-Profil.</p></div>
-<div class="proof-box ph"><p class="kicker">Fallstudie</p><p>{todo("ERSTES KUNDENPROJEKT EINBINDEN")}</p><p class="small">Vorher/Nachher und Anfragen nach drei Monaten, nur mit Freigabe des Kunden.</p></div></div>
+{belege}</div>
 {faq_mini(fq)}</div></section>
 {cta()}"""
     write("/", f"{NAME} – Websites & Google-Sichtbarkeit für lokale Betriebe", "Websites, lokale SEO und Google Ads für Handwerk, Kanzleien, Pflegedienste und Praxen in ganz Deutschland. Festpreis, erster Entwurf nach 7 Tagen.", body, prio=1.0, crumbs=[("/", "Start")])
