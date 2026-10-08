@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import date
 
 from content_leistungen import TIEFE
+from content_kosten import KOSTEN
 from content import PREISE, eur, REC_GARANTIE, LEISTUNGEN, BRANCHEN, BEISPIELE, KAPITEL, RATGEBER, FAQ
 from drawings import LOGO, FAVICON
 import vorschau
@@ -249,7 +250,8 @@ def startseite():
 <p class="kicker">Webagentur für lokale Betriebe · aus {ORT} für ganz Deutschland</p>
 <h1>Websites und Google-Sichtbarkeit für <em>lokale Betriebe.</em></h1>
 <div class="h-row"><p class="lead">Für Handwerk, Kanzleien, Pflegedienste und Praxen. Wir bauen Ihre Website, bringen Sie bei Google und in Maps nach vorn und zeigen Ihnen jeden Monat, wie viele Anfragen daraus entstehen.</p>
-<div class="actions"><a class="btn" href="{EINSCH}">Kostenlose Ersteinschätzung <span class="ar">→</span></a><a class="link" href="#vorschau">Beispiel-Websites ansehen</a></div></div></div>
+<div class="actions"><a class="btn" href="{EINSCH}">Kostenlose Ersteinschätzung <span class="ar">→</span></a><a class="link" href="#vorschau">Beispiel-Websites ansehen</a></div></div>
+<ul class="h-trust"><li><b>Erst Entwurf, dann Rest zahlen:</b> Die zweite Hälfte zahlen Sie erst, wenn Ihnen der Entwurf gefällt.</li><li><b>Festpreis</b> ab {eur(PREISE["web_start"])}, ohne Stundenzettel</li><li><b>Ihnen gehört alles:</b> Website, Domain und Zugänge</li></ul></div>
 <div class="h-stage"><div class="wrap"><div class="showcase"><a href="/vorschau/dachdecker-solar/" class="sc-desk">{frame("dachdecker-solar", eager=True)}</a><a href="/vorschau/friseur/" class="sc-phone">{frame("friseur", mobil=True, eager=True)}</a></div></div></div>
 </section>
 {customer_journey()}
@@ -358,8 +360,9 @@ def branchen():
         body = f"""<section class="hero"><div class="wrap grid"><div><p class="kicker">{b["titel"]}</p><h1>{b["seo_h1"]}</h1><p class="lead"><b class="claim">{b["claim"]}</b> {b["lead"]}</p><div class="actions"><a class="btn" href="{EINSCH}">{b["cta"]} <span class="ar">→</span></a><a class="link" href="/vorschau/{bsp["slug"]}/">Beispiel-Website ansehen</a></div></div><div class="showcase small"><a href="/vorschau/{bsp["slug"]}/" class="sc-desk">{frame(bsp["slug"], eager=True)}</a><a href="/vorschau/{bsp["slug"]}/" class="sc-phone">{frame(bsp["slug"], mobil=True, eager=True)}</a></div></div></section>
 <section><div class="wrap grid2"><div><h2 class="h2s">Kommt Ihnen das bekannt vor?</h2><ul class="ticks">{"".join(f"<li>{x}</li>" for x in b["probleme"])}</ul></div><div><h2 class="h2s">Was wir dagegen tun</h2>{ticks(b["loesung"])}</div></div></section>
 <section><div class="wrap grid2" style="align-items:start"><div class="bignum"><div class="num">{b["zahl"][0]}</div><p>{b["zahl"][1]}</p></div><div><p class="kicker">Beispiel-Website · erfundener Betrieb</p><h2 class="h2s">{bsp["name"]}</h2><p>{bsp["teaser"]}</p><p><strong>{eur(paket_summe(bsp))}</strong> im ersten Jahr.</p><div class="actions"><a class="btn ghost" href="/vorschau/{bsp["slug"]}/">Beispiel-Website öffnen</a><a class="link" href="/beispiele/{bsp["slug"]}/">Kundenweg &amp; Preis</a></div></div></div></section>
-<section style="padding-top:0;border:0"><div class="wrap"><p class="promise"><b>Fachkräfte gesucht?</b> Mit dem Recruiting-Paket kommen Bewerbungen über Ihre eigene Karriereseite statt über teure Portale. <a href="/leistungen/recruiting/">Zum Recruiting-Paket</a></p></div></section>{cta(btn=b["cta"])}"""
-        write(p, b["seo_h1"], b["lead"], body, prio=0.8, crumbs=[("/", "Start"), ("/branchen/", "Branchen"), (p, b["titel"])])
+{{KOSTENLINK}}<section style="padding-top:0;border:0"><div class="wrap"><p class="promise"><b>Fachkräfte gesucht?</b> Mit dem Recruiting-Paket kommen Bewerbungen über Ihre eigene Karriereseite statt über teure Portale. <a href="/leistungen/recruiting/">Zum Recruiting-Paket</a></p></div></section>{cta(btn=b["cta"])}"""
+        body = body.replace("{KOSTENLINK}", f'<section style="padding-top:0;border:0"><div class="wrap"><p class="promise"><b>Was kostet das?</b> Website für {b["titel"]} ab {eur(PREISE["web_start"])} Festpreis, Pflege ab {PREISE["pflege_start"]} € im Monat. <a href="/ratgeber/website-kosten-{b["slug"]}/">Alle Kosten für {b["titel"]} im Überblick</a></p></div></section>')
+        write(p, f'{b["seo_h1"]} – ab {eur(PREISE["web_start"])}', f'{b["lead"]} Festpreis ab {eur(PREISE["web_start"])}.', body, prio=0.8, crumbs=[("/", "Start"), ("/branchen/", "Branchen"), (p, b["titel"])])
 
 
 def beispiele():
@@ -434,7 +437,7 @@ RG_BILD = {"was-kostet-eine-website": "webentwicklung", "lokale-seo-checkliste":
 def ratgeber():
     cards = '<div class="rgk">' + "".join(f'<a class="rgk-i" href="/ratgeber/{r["slug"]}/"><div class="rgk-b">{leistung_bild(RG_BILD.get(r["slug"], "seo"), links=False)}</div><span class="n">{r["min"]} Min. Lesezeit</span><h3>{r["titel"]}</h3><p>{r["kurz"]}</p><span class="more">Lesen</span></a>' for r in RATGEBER) + "</div>"
     write("/ratgeber/", "Ratgeber", "Praxiswissen zu Websites, lokaler SEO, Google Ads und Google-Unternehmensprofil für kleine Betriebe.",
-          f'<section class="hero"><div class="wrap"><p class="kicker">Ratgeber</p><h1>Wissen, das Sie <em>selbst umsetzen können.</em></h1><p class="lead">Ohne Fachchinesisch. Vieles davon schaffen Sie an einem Nachmittag.</p></div></section><section style="padding-top:0;border:0"><div class="wrap">{cards}</div></section>{cta()}',
+          f'<section class="hero"><div class="wrap"><p class="kicker">Ratgeber</p><h1>Wissen, das Sie <em>selbst umsetzen können.</em></h1><p class="lead">Ohne Fachchinesisch. Vieles davon schaffen Sie an einem Nachmittag.</p></div></section><section style="padding-top:0;border:0"><div class="wrap">{cards}</div></section><section><div class="wrap"><h2 class="h2s" style="margin-bottom:24px">Kosten nach Branche</h2><ul class="svc rg">{"".join(f'<li><a href="/ratgeber/website-kosten-{b["slug"]}/"><span class="n">Kosten</span><span class="t">Website für {b["titel"]}</span><span class="d">Festpreis, Beispielrechnung und was extra kostet.</span><span class="a" aria-hidden="true">→</span></a></li>' for b in BRANCHEN if b["slug"] in KOSTEN)}</ul></div></section>{cta()}',
           prio=0.7, crumbs=[("/", "Start"), ("/ratgeber/", "Ratgeber")])
     for r in RATGEBER:
         p = f"/ratgeber/{r['slug']}/"
@@ -443,9 +446,50 @@ def ratgeber():
                   "datePublished": date.today().isoformat(), "inLanguage": "de"}
         others = '<ul class="svc rg">' + "".join(f'<li><a href="/ratgeber/{o["slug"]}/"><span class="n">{o["min"]} Min.</span><span class="t">{o["titel"]}</span><span class="d">{o["kurz"]}</span><span class="a" aria-hidden="true">→</span></a></li>' for o in RATGEBER if o is not r) + "</ul>"
         body = f"""<section class="hero" style="padding-bottom:20px"><div class="wrap"><p class="kicker">Ratgeber · {r["min"]} Min. Lesezeit</p><h1 style="max-width:16em">{r["titel"]}</h1><p class="lead">{r["kurz"]}</p></div></section>
-<section style="padding-top:0"><div class="wrap rg-art"><article class="prose">{r["body"]}</article><aside class="rg-bild">{leistung_bild(RG_BILD.get(r["slug"], "seo"))}</aside></div></section>
+<section style="padding-top:0"><div class="wrap rg-art"><article class="prose">{r["body"]}{("<h2>Kosten nach Branche</h2><ul>" + "".join(f'<li><a href="/ratgeber/website-kosten-{b["slug"]}/">Was kostet eine Website für {b["titel"]}?</a></li>' for b in BRANCHEN if b["slug"] in KOSTEN) + "</ul>") if r["slug"] == "was-kostet-eine-website" else ""}</article><aside class="rg-bild">{leistung_bild(RG_BILD.get(r["slug"], "seo"))}</aside></div></section>
 <section><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Weiterlesen</h2>{others}</div></section>{cta()}"""
         write(p, r["titel"], r["kurz"], body, prio=0.6, schema=schema, crumbs=[("/", "Start"), ("/ratgeber/", "Ratgeber"), (p, r["titel"])])
+
+
+def kosten_ratgeber():
+    """Ein Kosten-Ratgeber je Branche: eigene Festpreise, Beispielpaket, Fremdkosten ohne erfundene Beträge."""
+    namen = {"web_start": ("Website Start", "bis 5 Seiten", PREISE["pflege_start"]), "web_wachstum": ("Website Wachstum", "bis 15 Seiten", PREISE["pflege_wachstum"])}
+    for b in BRANCHEN:
+        k = KOSTEN.get(b["slug"])
+        if not k:
+            continue
+        bsp = next(x for x in BEISPIELE if x["slug"] == b["beispiel"])
+        pk, umfang, pflege = namen[k["paket"]]
+        p = f"/ratgeber/website-kosten-{b['slug']}/"
+        titel = f"Was kostet eine Website für {b['titel']}? Preise 2026"
+        kurz = f"Festpreise für {b['titel']}: {pk} {eur(PREISE[k['paket']])}, Pflege {pflege} € im Monat. Was enthalten ist, was extra kostet und eine Beispielrechnung."
+        zeilen = "".join(f"<tr><th scope=row>{e(n)}</th><td class='r'>{eur(v)}</td></tr>" for n, v in bsp["paket"])
+        hinweis = f'<p class="note">{e(bsp["paket_hinweis"])}</p>' if bsp.get("paket_hinweis") else ""
+        faq = [k["frage"], ("Sind das Endpreise?", "Ja. " + C["impressum"]["ust"]), ("Wem gehört die Website?", "Ihnen. Domain, Inhalte und Dateien gehören Ihnen, auch wenn Sie die Zusammenarbeit beenden.")]
+        body = f"""<section class="hero" style="padding-bottom:20px"><div class="wrap"><p class="kicker">Ratgeber · Kosten für {b["titel"]}</p><h1 style="max-width:16em">{titel}</h1><p class="lead">{kurz}</p></div></section>
+<section style="padding-top:0"><div class="wrap rg-art"><article class="prose">
+<h2>Die kurze Antwort</h2>
+<div class="tablewrap"><table class="kosten"><tbody>
+<tr><th scope=row>Website Start ({namen["web_start"][1]})</th><td class='r'>{eur(PREISE["web_start"])} einmalig</td></tr>
+<tr><th scope=row>Website Wachstum ({namen["web_wachstum"][1]})</th><td class='r'>{eur(PREISE["web_wachstum"])} einmalig</td></tr>
+<tr><th scope=row>Pflege &amp; Hosting</th><td class='r'>{PREISE["pflege_start"]} € bzw. {PREISE["pflege_wachstum"]} € im Monat</td></tr>
+<tr><th scope=row>Zahlung</th><td class='r'>Hälfte bei Auftrag, Rest erst nach Ihrer Freigabe</td></tr>
+</tbody></table></div>
+<p><b>Unsere Empfehlung für {b["titel"]}: {pk}.</b> {e(k["warum"])}</p>
+<h2>Was die Website für {b["titel"]} können sollte</h2>
+{ticks(b["loesung"])}
+<h2>Was zusätzlich kosten kann</h2>
+<ul>{"".join(f"<li>{e(x)}</li>" for x in k["fremd"])}</ul>
+<p>Teurer wird es durch: {", ".join(e(x) for x in k["teurer"])}. Das klären wir vorher und schreiben es ins Angebot.</p>
+<h2>Beispielrechnung erstes Jahr</h2>
+<p>So haben wir es für unseren Beispielbetrieb „{e(bsp["name"])}“ gerechnet (erfundener Betrieb, echte Preise):</p>
+<div class="tablewrap"><table class="kosten"><tbody>{zeilen}<tr><th scope=row><b>Summe erstes Jahr</b></th><td class='r'><b>{eur(paket_summe(bsp))}</b></td></tr></tbody></table></div>{hinweis}
+<p><a href="/beispiele/{bsp["slug"]}/">Beispiel-Website und Kundenweg ansehen</a> · <a href="/branchen/{b["slug"]}/">Mehr zu Websites für {b["titel"]}</a> · <a href="/ratgeber/was-kostet-eine-website/">Baukasten, Freelancer oder Agentur im Vergleich</a></p>
+</article><aside class="rg-bild"><a href="/vorschau/{bsp["slug"]}/">{bild_handy(bsp["slug"])}</a></aside></div></section>
+<section><div class="wrap">{faq_mini(faq)}</div></section>{cta(f"Was kostet es für Ihren Betrieb?", "In 20 Minuten klären wir, welches Paket passt, und Sie bekommen einen Festpreis. Kostenlos und unverbindlich.")}"""
+        schema = [{"@context": "https://schema.org", "@type": "Article", "headline": titel, "description": kurz, "author": {"@type": "Organization", "name": NAME},
+                   "publisher": {"@type": "Organization", "name": NAME}, "inLanguage": "de"}, faq_schema(faq)]
+        write(p, titel, kurz, body, prio=0.6, schema=schema, crumbs=[("/", "Start"), ("/ratgeber/", "Ratgeber"), (p, f"Kosten für {b['titel']}")])
 
 
 def kontakt():
@@ -666,7 +710,7 @@ def extras():
 if __name__ == "__main__":
     shutil.rmtree(DIST, ignore_errors=True)
     DIST.mkdir()
-    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kontakt, rechtliches, vorschauseiten, intern):
+    for f in (startseite, leistungen, branchen, beispiele, preise, ablauf, faq_page, ratgeber, kosten_ratgeber, kontakt, rechtliches, vorschauseiten, intern):
         f()
     extras()
     n = len(list(DIST.rglob("*.html")))
