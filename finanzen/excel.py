@@ -345,5 +345,5 @@ for ws in wb.worksheets:
             if c.font is None or c.font.name != F:
                 c.font = Font(name=F, bold=c.font.bold if c.font else False, italic=c.font.italic if c.font else False,
                               color=c.font.color if c.font else None, size=c.font.size if c.font else 11)
-wb.save("Finanzmodell.xlsx")
+import os; wb.save(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Finanzmodell.xlsx"))
 print("gespeichert")
