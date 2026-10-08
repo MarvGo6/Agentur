@@ -203,3 +203,14 @@ create policy admin_alles on agentur_anfragen for all to authenticated using (is
 alter table agentur_anfragen add column if not exists kampagne text check (char_length(kampagne) <= 200);  -- utm_source / utm_campaign, ohne Kennung
 alter table agentur_anfragen add column if not exists gclid text check (char_length(gclid) <= 200);        -- nur mit Einwilligung „Google Ads“ (Offline-Conversions)
 grant insert (kampagne, gclid) on agentur_anfragen to anon;
+
+-- ---------------------------------------------------------------- Terminbuchung (Migration terminbuchung)
+alter table websites add column if not exists buchung_url text;        -- Buchungsseite des Betriebs, täglich geprüft (checks.art = 'links', details.typ = 'buchung')
+alter table websites add column if not exists buchung_anbieter text;
+create or replace function public.klick_zaehlen(w uuid, k text) returns void   -- Klicks auf „Termin buchen“ → messwerte.buchung_klicks
+language sql security definer set search_path = public as $$
+  insert into messwerte (website_id, datum, kennzahl, wert) values (w, current_date, k, 1)
+  on conflict (website_id, datum, kennzahl) do update set wert = messwerte.wert + 1;
+$$;
+revoke all on function public.klick_zaehlen(uuid, text) from public, anon, authenticated;
+grant execute on function public.klick_zaehlen(uuid, text) to service_role;

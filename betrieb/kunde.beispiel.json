@@ -17,5 +17,6 @@
   "recruiting": { "aktiv": true, "stellen": ["Dachdecker:in (m/w/d)", "Azubi Dachdecker"] },
   "rechtliches": { "impressum": "[PRÜFEN]", "datenschutz": "vorlage-v3" },
   "tracking": { "statistik": "plausible", "search_console": true },
+  "buchung": { "art": "rueckruf" },
   "sections": ["stats", "services", "split", "steps", "quotes", "faq", "contact"]
 }

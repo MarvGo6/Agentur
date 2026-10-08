@@ -1,5 +1,6 @@
 // Ü2 Zentrale Formular-Funktion für alle Kunden-Websites.
 // POST {schluessel, name, kontakt, nachricht, thema?, seite?, felder?, cf_token?, firma2 (Honigtopf, muss leer sein)}
+// POST {schluessel, ereignis: "buchung"} → zählt Klicks auf „Termin buchen“ (ohne Personendaten)
 // → speichert in "anfragen" (Löschung nach 90 Tagen, siehe monitor), leitet per E-Mail an den Betrieb weiter,
 // bei fehlendem Mailversand: Push an dich + Aufgabe. Antwort immer JSON mit CORS.
 import { db, einfuegen, aendern, einstellung, push, aufgabe, mail, json, CORS } from "./db.ts";
@@ -12,6 +13,11 @@ Deno.serve(async (req) => {
   const b: any = await req.json().catch(() => null);
   if (!b) return json({ fehler: "ungültige Daten" }, 400, CORS);
   if (b.firma2) return json({ ok: true }, 200, CORS);                    // Spam-Bot: still verwerfen
+  if (b.ereignis === "buchung") {                                         // Klick auf „Termin buchen“: nur zählen (messwerte.buchung_klicks je Tag)
+    const w = (await db(`websites?select=id&formular_schluessel=eq.${encodeURIComponent(kurz(b.schluessel, 64))}`))[0];
+    if (w) await db("rpc/klick_zaehlen", { method: "POST", body: JSON.stringify({ w: w.id, k: "buchung_klicks" }) }).catch(() => {});
+    return json({ ok: true }, 200, CORS);
+  }
   const name = kurz(b.name, 120), kontakt = kurz(b.kontakt, 160), nachricht = kurz(b.nachricht, 4000);
   if (!kontakt || (!nachricht && !b.felder)) return json({ fehler: "Bitte Kontakt und Nachricht angeben." }, 400, CORS);
 

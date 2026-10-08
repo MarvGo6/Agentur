@@ -1,5 +1,5 @@
 // Überwachung und Fristen.
-//   ohne Parameter (täglich): Erreichbarkeit + Antwortzeit aller Websites, montags PageSpeed (Handy), Domain-Ablauf,
+//   ohne Parameter (täglich): Erreichbarkeit + Antwortzeit aller Websites, Terminbuchung (buchung_url), montags PageSpeed (Handy), Domain-Ablauf,
 //                             Vertragslaufzeiten (F3), Erinnerung Inhalte-Formular (E1), Löschfristen (Ü3).
 //   ?art=erreichbar (alle 10 Min.): nur Erreichbarkeit, speichert nur Ausfälle, meldet jeden Ausfall einmal pro Tag.
 //   ?art=datenschutz (monatlich): Cookies und Drittanbieter beim ersten Aufruf ohne Einwilligung.
@@ -9,7 +9,7 @@ import { db, einfuegen, erlaubt, push, laden, pagespeed, json, aufgabe, tag } fr
 const plusMonate = (d: string, m: number) => { const x = new Date(d + "T00:00:00Z"); x.setUTCMonth(x.getUTCMonth() + m); return tag(x); };
 const de = (d: string) => d.split("-").reverse().join(".");
 
-async function websites() { return await db("websites?select=id,domain,status,kunde_id,domain_ablauf&status=in.(live,vorschau)&domain=not.is.null"); }
+async function websites() { return await db("websites?select=id,domain,status,kunde_id,domain_ablauf,buchung_url,buchung_anbieter&status=in.(live,vorschau)&domain=not.is.null"); }
 
 async function erreichbarkeit(nurFehler: boolean, mitPsi: boolean) {
   const heute = tag(), probleme: string[] = [], ergebnis: any[] = [];
@@ -34,6 +34,13 @@ async function erreichbarkeit(nurFehler: boolean, mitPsi: boolean) {
     if (!nurFehler && w.domain_ablauf && w.domain_ablauf <= plusMonate(heute, 1) &&
         await aufgabe(`Domain ${w.domain} läuft am ${de(w.domain_ablauf)} ab – Verlängerung prüfen`, `domain:${w.domain}:${w.domain_ablauf}`, { website_id: w.id, kunde_id: w.kunde_id, prioritaet: 1, quelle: "frist" }))
       probleme.push(`Domain ${w.domain} läuft bald ab`);
+    if (!nurFehler && w.buchung_url) {                                  // Terminbuchung des Betriebs erreichbar? (403/429 = Schutz gegen Bots, kein Ausfall)
+      const bu = await laden(w.buchung_url);
+      const ok = bu.ok || [401, 403, 405, 429].includes(bu.status);
+      await einfuegen("checks", { website_id: w.id, art: "links", ok, wert: bu.ms, details: { typ: "buchung", status: bu.status, url: w.buchung_url } });
+      if (!ok && await aufgabe(`${w.domain}: Terminbuchung (${w.buchung_anbieter || "Buchungsseite"}) nicht erreichbar (Status ${bu.status || "–"})`, `buchung:${w.domain}:${heute}`, { website_id: w.id, kunde_id: w.kunde_id, prioritaet: 1 }))
+        probleme.push(`${w.domain}: Terminbuchung nicht erreichbar`);
+    }
     ergebnis.push({ domain: w.domain, erreichbar: r.ok, ms: r.ms, psi });
   }
   return { probleme, ergebnis };

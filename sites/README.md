@@ -19,7 +19,22 @@ Jede Änderung an `kunden/**` läuft als Pull Request durch die Action **Kunden-
 `team[{name, rolle}]`, `bewertungen[{text, name, quelle}]` (nur echte, mit Erlaubnis), `vertrauen{bewertung, bewertungen, quelle, siegel[]}`,
 `formular{schluessel}` (aus der Steuerzentrale → Websites), `recruiting{aktiv, stellen[], text, vorteile[]}`,
 `rechtliches{impressum{inhaber|vertreten, rechtsform, register, ust_id|ust_hinweis, kammer}}`,
-`tracking{dienste[]}` (nur mit Einwilligungs-Baustein, siehe `betrieb/bausteine/einwilligung.js`).
+`tracking{dienste[]}` (nur mit Einwilligungs-Baustein, siehe `betrieb/bausteine/einwilligung.js`),
+`buchung{art, anbieter, url, text, leistungen{slug: url}, testbuchung, datenschutz}` (Terminbuchung, siehe unten).
+
+## Terminbuchung
+Wir bauen kein eigenes Buchungssystem. Wir binden das Programm an, das der Betrieb nutzt (oder richten eins auf seinen Namen ein).
+Die Termine landen so im Kalender des Betriebs, den Abgleich mit Google/Outlook macht das Buchungsprogramm.
+| `art` | Wirkung |
+|---|---|
+| `link` | Knopf „Termin buchen“ (Kopf, Startbereich, Handy-Leiste, Kontakt) führt zur Buchungsseite. Kein Cookie-Banner nötig. Mit `leistungen{slug: url}` je Leistung eigener Link (z. B. Leistung vorausgewählt). |
+| `eingebettet` | Buchungsfenster im Abschnitt „Online-Termin“, lädt erst nach Klick bzw. Einwilligung (Einwilligungs-Baustein wird automatisch aktiv), CSP erlaubt nur diesen Anbieter. |
+| `rueckruf` | Kein Online-Termin: Formular „Rückruf vereinbaren“ mit Wunschzeit, landet wie jede Anfrage per E-Mail beim Betrieb. |
+
+Typisch: Friseur/Barber → Salon- oder Kassensoftware bzw. Treatwell (`link`), Kanzlei → Microsoft Bookings im Konto der Kanzlei oder ein EU-Buchungsdienst (`link`/`eingebettet`), Tierarzt → Termin-Baustein der Praxissoftware, Pflegedienst/Bestatter/Dachdecker → `rueckruf`.
+**Vor dem Livegang:** einen Testtermin buchen, der Betrieb bestätigt, dass er im Kalender angekommen ist, stornieren, dann `buchung.testbuchung` = Datum. Ohne Eintrag blockiert die Abnahme-Prüfung.
+**Danach automatisch:** Livegang trägt den Link in `websites.buchung_url` ein, die Überwachung prüft ihn täglich (Aufgabe + Push bei Ausfall), Klicks auf „Termin buchen“ zählen als `messwerte.buchung_klicks` (ohne Cookies) und erscheinen im Monatsbericht.
+Datenschutz: Der Generator ergänzt den Abschnitt „Online-Terminbuchung“. Ob der Anbieter Auftragsverarbeiter ist (AV-Vertrag mit dem Betrieb) oder selbst verantwortlich (z. B. Portale), im Einzelfall prüfen und ggf. mit `buchung.datenschutz` ergänzen [PRÜFEN].
 Muster: `kunden/_muster/kunde.json` (erfunden, besteht die Prüfung).
 
 ## KI-Läufe (Claude, Modell `claude-opus-5-5`)

@@ -37,6 +37,12 @@ def main():
     if d.get("domain"): k["domain"] = d["domain"].replace("https://", "").replace("http://", "").strip("/")
     if d.get("team"): k["team"] = [{"name": z.split(",")[0].strip(), "rolle": ",".join(z.split(",")[1:]).strip()} for z in zeilen(d["team"])]
     if d.get("stellen"): k["recruiting"] = {**k.get("recruiting", {}), "aktiv": True, "stellen": zeilen(d["stellen"])}
+    if d.get("buchung_art") == "programm":        # Terminbuchung: Link aus dem Formular, Testbuchung trägst du nach dem Test ein
+        k["buchung"] = {**k.get("buchung", {}), "art": k.get("buchung", {}).get("art", "link"), "anbieter": d.get("buchung_programm") or "[PRÜFEN]", "url": d.get("buchung_link") or "[PRÜFEN]"}
+    elif d.get("buchung_art") == "rueckruf":
+        k["buchung"] = {"art": "rueckruf"}
+    elif d.get("buchung_art") == "neu":
+        k["_buchung_einrichten"] = "Kunde möchte Online-Buchung ohne Programm: passendes Programm empfehlen und auf seinen Namen einrichten. Kalender: " + (d.get("buchung_kalender") or "[PRÜFEN]")
     angaben = {k_: v for k_, v in d.items() if v and k_ not in ("bestaetigung",)}
     angaben["branche"] = k.get("branche") or "[aus den Leistungen ableiten]"
     inhalt, info = ki.texte(angaben)

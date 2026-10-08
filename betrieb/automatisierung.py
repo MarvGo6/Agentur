@@ -45,6 +45,7 @@ A = [
  ("E2", "KI-Texte", "Claude schreibt Startseite, Leistungs- und Ortsseiten, FAQ, Seitentitel aus Formular + Vorschau. Unbelegtes = [PRÜFEN], du prüfst", "Claude API", "5 h je Website", 8, "ca. 1–3 € je Website", "gebaut – Claude-Schlüssel fehlt", 1),
  ("E3", "Build- & Vorschau-Pipeline", "Repo <i>lotwerk-sites</i>: jede Änderung = Pull Request → Build → Vorschau-Link zur Freigabe", "GitHub Actions, Vercel", "4 h je Website", 12, "in Vercel Pro enthalten", "läuft", 0),
  ("E4", "Abnahme-Prüfung", "Bei jedem PR: Lighthouse, Barrierefreiheit, tote Links, Cookie-Check, Schema, kein [PRÜFEN] → Ergebnis im PR + <i>checks</i>", "GitHub Actions, Lighthouse, axe", "2 h je Website", 6, "0 €", "läuft", 0),
+ ("E6", "Terminbuchung", "Buchungsprogramm des Betriebs als Knopf oder eingebettet (Zwei-Klick), sonst Rückruf-Formular; Abnahme blockiert ohne Testbuchung; tägliche Prüfung der Buchungsseite; Klicks als Kennzahl im Bericht", "Generator, Supabase-Funktionen <i>formular</i> + <i>monitor</i>", "0,5 h je Website", 4, "0 €", "läuft", 1),
  ("E5", "Livegang per Knopf", "Domain anlegen, DNS setzen, SSL prüfen, Weiterleitungen, Website in die Überwachung", "Vercel-API, Cloudflare-API", "1 h je Website", 6, "0 €", "gebaut – Vercel-Token fehlt", 1),
  # Betrieb
  ("Ü1", "Überwachung", "Täglich Erreichbarkeit, montags PageSpeed; Ausbau: alle 5 Min. Erreichbarkeit, SSL-Ablauf, monatlicher Cookie-Check → Push + Aufgabe", "Supabase-Funktion <i>monitor</i>", "Pflege 0,25 → 0,1 h", 3, "0 €", "läuft", 1),

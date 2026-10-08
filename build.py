@@ -555,10 +555,17 @@ def intern():
 <fieldset><legend>3 · Was Sie auszeichnet</legend>{text("besonderheiten", "Was unterscheidet Sie von anderen?", "z. B. Meisterbetrieb seit 1987, Spezialisierung (bitte nur Belegbares)", 4)}
 {text("team", "Team (Namen und Rollen, nur mit Einverständnis)", "", 3)}{feld("google_profil", "Link zu Ihrem Google-Profil", "url", ph="https://g.page/…")}
 <label class="check"><input type="checkbox" name="bewertungen_zitieren" value="ja"> <span>Wir dürfen Google-Bewertungen auf der Website zitieren.</span></label></fieldset>
-<fieldset><legend>4 · Fotos und Logo</legend><p class="in-muted">15–30 Fotos sind ideal: Team, Arbeiten, Räume, Fahrzeuge. Logo gern als SVG oder PDF. Höchstens 15 MB pro Datei.</p>
+<fieldset><legend>4 · Termine und Buchung</legend><label>Wie sollen Kunden Termine bekommen?<select name="buchung_art"><option value="">Bitte wählen</option>
+<option value="programm">Wir haben schon ein Buchungsprogramm (z. B. Salon-, Kassen- oder Praxissoftware, Treatwell, Microsoft Bookings)</option>
+<option value="neu">Wir möchten Online-Buchung, haben aber noch kein Programm</option><option value="rueckruf">Lieber Rückruf statt Online-Buchung</option>
+<option value="keine">Keine Termine, nur Anfragen</option></select></label>
+<div class="in-two">{feld("buchung_programm", "Welches Programm?", ph="z. B. Treatwell, Shore, Microsoft Bookings")}{feld("buchung_link", "Link zu Ihrer Buchungsseite", "url", ph="https://…")}</div>
+{text("buchung_kalender", "In welchem Kalender sollen die Termine landen?", "z. B. Google-Kalender, Outlook, Kalender in der Praxissoftware")}
+{text("buchung_leistungen", "Welche Leistungen sollen online buchbar sein? Wie lange dauern sie?", "z. B. Herrenschnitt 30 Min., Erstgespräch 20 Min.")}</fieldset>
+<fieldset><legend>5 · Fotos und Logo</legend><p class="in-muted">15–30 Fotos sind ideal: Team, Arbeiten, Räume, Fahrzeuge. Logo gern als SVG oder PDF. Höchstens 15 MB pro Datei.</p>
 <label class="btn ghost in-file">Dateien auswählen<input id="in-upload" type="file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/svg+xml,application/pdf"></label><ul id="in-dateien" class="in-list"></ul>
 {text("farben", "Farben oder Wünsche zur Gestaltung", "z. B. Firmenfarbe Dunkelblau, Websites, die Ihnen gefallen")}</fieldset>
-<fieldset><legend>5 · Zugänge und Freigabe</legend>{feld("domain", "Ihre Domain (falls vorhanden)", ph="betrieb.de")}{feld("domain_anbieter", "Bei welchem Anbieter liegt die Domain?", ph="z. B. IONOS, Strato")}
+<fieldset><legend>6 · Zugänge und Freigabe</legend>{feld("domain", "Ihre Domain (falls vorhanden)", ph="betrieb.de")}{feld("domain_anbieter", "Bei welchem Anbieter liegt die Domain?", ph="z. B. IONOS, Strato")}
 {feld("alte_website", "Bisherige Website", "url")}{text("stellen", "Nur bei Recruiting: offene Stellen, Gehaltsrahmen, Arbeitszeiten, Vorteile")}
 {feld("ansprechpartner", "Wer gibt Inhalte frei und ist Ansprechpartner?", req=True)}</fieldset>
 <label class="check"><input type="checkbox" name="bestaetigung" value="ja" required> <span>Die Angaben stimmen, und wir haben die Rechte an den hochgeladenen Fotos.</span></label>

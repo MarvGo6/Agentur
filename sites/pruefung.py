@@ -5,6 +5,7 @@ Aufruf:  python3 sites/pruefung.py kunden/<slug>/dist [--json bericht.json]
 Prüft statisch: [PRÜFEN]-Reste, genau eine H1, Titel/Beschreibung vorhanden und eindeutig, Impressum + Datenschutz verlinkt,
 keine externen Skripte/Schriften/Styles/iframes ohne Einwilligung, interne Links erreichbar, Alt-Texte, LocalBusiness-Schema.
 Prüft im Browser (Playwright, Handy 390 px): kein seitliches Scrollen, keine JS-Fehler, keine Cookies, keine Anfragen an Dritte.
+Terminbuchung (kunde.json → buchung): Link gesetzt und erreichbar, Testbuchung eingetragen (buchung.testbuchung = Datum).
 Optional Lighthouse (wenn „npx lighthouse“ verfügbar): Ziel ≥ 90 in allen Kategorien.
 Exit-Code 1 bei schweren Fehlern – blockiert Livegang und Pull Request.
 """
@@ -119,9 +120,35 @@ def lighthouse(base):
         return [(HINWEIS, "/", "Lighthouse nicht verfügbar – läuft in der GitHub Action")], None
 
 
+def terminbuchung(dist: Path):
+    """Buchung muss vor dem Livegang einmal echt getestet sein: Termin buchen → kommt im Kalender des Betriebs an → stornieren."""
+    kj = dist.parent / "kunde.json"
+    if not kj.exists():
+        return []
+    b = json.loads(kj.read_text(encoding="utf-8")).get("buchung") or {}
+    if b.get("art") not in ("link", "eingebettet"):
+        return []
+    url, funde = (b.get("url") or "").strip(), []
+    if not url.startswith("https://"):
+        return [(SCHWER, "/", "Terminbuchung: Link zur Buchungsseite fehlt oder ist nicht https")]
+    for name, u in [("Buchungsseite", url)] + [(f"Buchung {s}", x) for s, x in (b.get("leistungen") or {}).items()]:
+        try:
+            import urllib.request
+            with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (Lotwerk-Pruefung)"}), timeout=15) as r:
+                if r.status >= 400: funde.append((SCHWER, "/", f"{name} antwortet mit Status {r.status}"))
+        except Exception as ex:
+            code = getattr(ex, "code", None)
+            funde.append((SCHWER, "/", f"{name} antwortet mit Status {code}") if code and code >= 400 and code not in (401, 403, 405, 429)
+                         else (HINWEIS, "/", f"{name} nicht prüfbar ({str(ex)[:60]}) – bitte im Browser öffnen"))
+    if not b.get("testbuchung"):
+        funde.append((SCHWER, "/", "Terminbuchung nicht getestet: einen Termin buchen, im Kalender des Betriebs bestätigen lassen, stornieren – dann in kunde.json buchung.testbuchung = Datum"))
+    return funde
+
+
 def pruefen(dist):
     dist = Path(dist)
     funde, pfade = statisch(dist)
+    funde += terminbuchung(dist)
     s, base = server(dist)
     try:
         funde += browser(base, pfade)

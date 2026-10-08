@@ -75,7 +75,9 @@ def main():
         print(f"DNS beim Domain-Anbieter setzen:  A  @  {VERCEL_IP}   ·   CNAME  www  {VERCEL_CNAME}")
     if os.environ.get("SUPABASE_SERVICE_KEY"):                  # 4) Überwachung: Website auf live
         import ki
-        ki.db(f"websites?domain=eq.{domain}", "PATCH", {"status": "live", "live_seit": date.today().isoformat(), "vercel_projekt_id": dep.get("projectId")}, "return=minimal")
+        ki.db(f"websites?domain=eq.{domain}", "PATCH", {"status": "live", "live_seit": date.today().isoformat(), "vercel_projekt_id": dep.get("projectId"),
+                   "buchung_url": (k.get("buchung") or {}).get("url") if (k.get("buchung") or {}).get("art") in ("link", "eingebettet") else None,
+                   "buchung_anbieter": (k.get("buchung") or {}).get("anbieter")}, "return=minimal")
         print("Überwachung: Website auf „live“ gesetzt.")
     print("Fertig. Nach der DNS-Umstellung prüft die Überwachung die Seite alle 10 Minuten.")
 

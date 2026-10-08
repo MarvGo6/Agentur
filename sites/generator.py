@@ -29,6 +29,37 @@ def kfoto(pfad, alt, cls="foto"):
 V.foto = kfoto  # Bausteine aus vorschau.py nutzen ab jetzt die Kunden-Fotos
 
 
+def buchung(k):
+    """Terminbuchung aus kunde.json → "buchung": art = link (Knopf zur Buchungsseite des Betriebs), eingebettet (Buchungsfenster
+    auf der Seite, lädt erst nach Klick/Einwilligung) oder rueckruf (Formular mit Wunschzeit). Ohne Eintrag: keine Buchung."""
+    b = dict(k.get("buchung") or {})
+    if b.get("art") not in ("link", "eingebettet", "rueckruf"):
+        return None
+    b.setdefault("text", "Rückruf vereinbaren" if b["art"] == "rueckruf" else "Termin buchen")
+    b["url"] = (b.get("url") or "").strip() or P
+    b.setdefault("anbieter", P if b["art"] != "rueckruf" else "")
+    return b
+
+
+def buchung_ziel(k, slug=None):
+    """(Text, Ziel) für den Haupt-Knopf: Buchungsseite (je Leistung ggf. eigener Link), Buchungsbereich oder Kontakt."""
+    b = buchung(k)
+    if not b or b["art"] == "rueckruf":
+        return (e(b["text"]) if b else e(k.get("cta", "Anfrage senden"))), "#kontakt"
+    if b["art"] == "eingebettet":
+        return e(b["text"]), "#termin"
+    return e(b["text"]), e((b.get("leistungen") or {}).get(slug) or b["url"])
+
+
+def dienste(k):
+    """Zustimmungspflichtige Dienste: aus tracking.dienste plus eingebettete Terminbuchung."""
+    d = list((k.get("tracking") or {}).get("dienste") or [])
+    b = buchung(k)
+    if b and b["art"] == "eingebettet":
+        d.append({"id": "buchung", "name": f'Online-Terminbuchung ({b["anbieter"]})', "zweck": "Zeigt freie Termine und nimmt Ihre Buchung entgegen.", "anbieter": b["anbieter"]})
+    return d
+
+
 def tel_link(t):
     return "tel:" + re.sub(r"[^\d+]", "", t or "")
 
@@ -37,11 +68,15 @@ def formular(k, vorschau):
     f = k.get("formular", {})
     themen = f.get("themen") or [l["titel"] for l in k.get("leistungen", [])][:5]
     opt = "".join(f'<label><input type="radio" name="thema" value="{e(t)}"{" checked" if i == 0 else ""}> {e(t)}</label>' for i, t in enumerate(themen))
+    b = buchung(k)
+    zeit = ('<label>Wann erreichen wir Sie am besten?<select name="Rückruf gewünscht"><option>Vormittags</option><option>Mittags</option><option>Nachmittags</option><option>Abends</option></select></label>'
+            if b and b["art"] == "rueckruf" else "")
     hinweis = "Vorschau – dieses Formular sendet nichts." if vorschau else "Ihre Angaben verwenden wir nur für die Antwort auf Ihre Anfrage. Mehr in der <a href=\"/datenschutz/\">Datenschutzerklärung</a>."
-    return f'''<h3>{e(f.get("titel", "Anfrage senden"))}</h3><p class="ok">{e(f.get("text", "Wir melden uns innerhalb von 24 Stunden."))}</p>
+    titel = f.get("titel") or (b["text"] if b and b["art"] == "rueckruf" else "Anfrage senden")
+    return f'''<h3>{e(titel)}</h3><p class="ok">{e(f.get("text", "Wir melden uns innerhalb von 24 Stunden."))}</p>
 <form class="lw-form" data-schluessel="{e(f.get("schluessel", ""))}" data-ziel="{SB}/functions/v1/formular"{" data-vorschau" if vorschau else ""}>
 {f'<div class="opt">{opt}</div>' if opt else ""}<div class="row"><label>Name<input name="name" autocomplete="name" required></label><label>Telefon oder E-Mail<input name="kontakt" autocomplete="email" required></label></div>
-<label>Ihre Nachricht<textarea name="nachricht" rows="4" required></textarea></label>
+{zeit}<label>Ihre Nachricht<textarea name="nachricht" rows="4" required></textarea></label>
 <label class="hp" aria-hidden="true">Firma<input name="firma2" tabindex="-1" autocomplete="off"></label>
 <button class="btn">Anfrage senden</button><p class="ok" role="status">{hinweis}</p></form>'''
 
@@ -54,6 +89,11 @@ def kontakt_block(k, vorschau, h2=None):
         info.append(("clock", "Öffnungszeiten", " · ".join(fi["oeffnungszeiten"])))
     rows = "".join(f'<div style="display:flex;gap:14px;margin:16px 0"><div class="ic" style="width:44px;height:44px;border-radius:12px;background:var(--soft);color:var(--brand);display:grid;place-items:center;flex:none"><span style="width:22px;height:22px;display:block">{V.ic(i)}</span></div><div><b>{t}</b><br><span class="muted">{x}</span></div></div>' for i, t, x in info)
     head = V.head({"eb": "Kontakt", "h2": h2 or k.get("kontakt_h2", "Schreiben Sie uns"), "p": k.get("kontakt_text", "")})
+    b = buchung(k)
+    if b and b["art"] in ("link", "eingebettet"):
+        t, ziel = buchung_ziel(k)
+        rows = (f'<div class="card" style="padding:22px;margin:18px 0"><b>Lieber direkt einen Termin?</b><p class="muted" style="margin:6px 0 14px">Freie Zeiten sehen und sofort buchen'
+                f'{" bei " + e(b["anbieter"]) if b["art"] == "link" else ""}.</p><a class="btn" href="{ziel}">{t}</a></div>') + rows
     return V.sec("tint", f'<div class="g2" style="align-items:start"><div>{head}{rows}</div><div class="form">{formular(k, vorschau)}</div></div>', "kontakt")
 
 
@@ -82,7 +122,7 @@ def schema(k, url):
     return json.dumps({x: y for x, y in s.items() if y}, ensure_ascii=False)
 
 
-def seite(k, pfad, titel, beschreibung, body_sections, hero, vorschau, extra_schema=None, schlicht=False):
+def seite(k, pfad, titel, beschreibung, body_sections, hero, vorschau, extra_schema=None, schlicht=False, slug=None):
     vl, vars_, fonts = basis(k)
     fi = k["firma"]
     domain = k.get("domain") or "example.de"
@@ -94,23 +134,23 @@ def seite(k, pfad, titel, beschreibung, body_sections, hero, vorschau, extra_sch
         "mark": e((k.get("marke") or {}).get("mark") or fi["name"][:1]), "art": vl["art"], "fonts": fonts, "vars": vars_,
         "strip": [x for x in [f'<a href="{tel_link(fi.get("telefon"))}" style="color:inherit"><b>{e(fi.get("telefon") or P)}</b></a>',
                               e(" · ".join((fi.get("oeffnungszeiten") or [])[:1])), e(k.get("strip_text", ""))] if x],
-        "nav": [(e(t), h) for t, h in nav], "cta": (e(k.get("cta", "Anfrage senden")), "#kontakt"),
+        "nav": [(e(t), h) for t, h in nav], "cta": buchung_ziel(k, slug),
         "hero": hero, "sections": body_sections, "trust": [e(s) for s in (k.get("vertrauen") or {}).get("siegel", [])],
         "hero_foto": (k["hero"]["foto"]["datei"], k["hero"]["foto"]["alt"]) if (k.get("hero") or {}).get("foto") else None,
         "footer": {"about": e(k.get("ueber_kurz", fi.get("claim", ""))), "cols": [
             ("Kontakt", [e(x) for x in [(fi.get("adresse") or {}).get("strasse"), " ".join(filter(None, [(fi.get("adresse") or {}).get("plz"), (fi.get("adresse") or {}).get("ort")])), fi.get("telefon"), fi.get("email")] if x]),
             ("Leistungen", [f'<a href="/leistungen/{l["slug"]}/" style="color:inherit">{e(l["titel"])}</a>' for l in leist[:6]]),
             ("Rechtliches", ['<a href="/impressum/" style="color:inherit">Impressum</a>', '<a href="/datenschutz/" style="color:inherit">Datenschutz</a>'] +
-             (['<a href="#" data-einwilligung style="color:inherit">Datenschutz-Einstellungen</a>'] if (k.get("tracking") or {}).get("dienste") else []))]},
-        "mbar": [("Anrufen", tel_link(fi.get("telefon"))), (e(k.get("cta", "Anfrage")), "#kontakt")],
+             (['<a href="#" data-einwilligung style="color:inherit">Datenschutz-Einstellungen</a>'] if dienste(k) else []))]},
+        "mbar": [("Anrufen", tel_link(fi.get("telefon"))), buchung_ziel(k, slug)],
     }
     lds = [schema(k, f"https://{domain}/")] + ([json.dumps(extra_schema, ensure_ascii=False)] if extra_schema else [])
     robots = "noindex,nofollow" if vorschau else "index,follow"
     head = (f'<title>{e(titel)}</title><meta name="description" content="{e(beschreibung)}"><meta name="robots" content="{robots}">'
             f'<link rel="canonical" href="{url}"><meta property="og:title" content="{e(titel)}"><meta property="og:description" content="{e(beschreibung)}"><meta property="og:url" content="{url}"><meta property="og:locale" content="de_DE">'
             + "".join(f'<script type="application/ld+json">{x}</script>' for x in lds))
-    dienste = (k.get("tracking") or {}).get("dienste")
-    scripts = ('<script src="/kunde.js" defer></script>' + (f'<script>window.LW_DIENSTE={json.dumps(dienste, ensure_ascii=False)};</script><script src="/einwilligung.js" defer></script>' if dienste else ""))
+    dl = dienste(k)
+    scripts = ('<script src="/kunde.js" defer></script>' + (f'<script>window.LW_DIENSTE={json.dumps(dl, ensure_ascii=False)};</script><script src="/einwilligung.js" defer></script>' if dl else ""))
     bar = f'<div class="demo-bar">Vorschau für {e(fi["name"])} – erstellt von {AGENTUR["name"]} aus öffentlich verfügbaren Angaben. Noch nicht veröffentlicht.</div>' if vorschau else ""
     bottom = f'<span>© {date.today().year} {e(fi["name"])}</span><span><a href="/impressum/" style="color:inherit">Impressum</a> · <a href="/datenschutz/" style="color:inherit">Datenschutz</a></span>'
     h = V.page(d, AGENTUR["name"], "/", echt={"head": head, "bar": bar, "bottom": bottom, "scripts": scripts, "schlicht": schlicht})
@@ -118,7 +158,7 @@ def seite(k, pfad, titel, beschreibung, body_sections, hero, vorschau, extra_sch
     return h.replace(alt, neu) if alt != neu else h        # Akzentfarbe der Vorlage auch in Grafiken durch die Kundenfarbe ersetzen
 
 
-def hero_dict(k, h1=None, lead=None, eb=None):
+def hero_dict(k, h1=None, lead=None, eb=None, slug=None):
     h = k.get("hero") or {}
     fi = k["firma"]
     chips = [e(c) for c in h.get("chips", [])]
@@ -126,7 +166,7 @@ def hero_dict(k, h1=None, lead=None, eb=None):
     if v.get("bewertung") and v.get("bewertungen"):
         chips.insert(0, f'<span class="stars">★★★★★</span> <b>{str(v["bewertung"]).replace(".", ",")}</b> · {v["bewertungen"]} Google-Bewertungen')
     return {"eb": e(eb or h.get("eb", "")), "h1": e(h1 or h.get("h1") or P), "lead": e(lead or h.get("lead") or P),
-            "ctas": [(e(k.get("cta", "Anfrage senden")), "#kontakt"), ("Anrufen", tel_link(fi.get("telefon")))], "chips": chips, "floats": ""}
+            "ctas": [buchung_ziel(k, slug), ("Anrufen", tel_link(fi.get("telefon")))], "chips": chips, "floats": ""}
 
 
 def startseite(k, vorschau):
@@ -155,8 +195,18 @@ def startseite(k, vorschau):
     return einfuegen_kontakt(html_, k, vorschau)
 
 
+def termin_block(k):
+    """Eingebettetes Buchungsfenster: lädt erst nach Klick („Inhalt laden“) bzw. Einwilligung – vorher keine Daten an den Anbieter."""
+    b = buchung(k)
+    if not b or b["art"] != "eingebettet":
+        return ""
+    head = V.head({"eb": "Online-Termin", "h2": e(b.get("h2", "Freien Termin finden")), "p": e(b.get("hinweis", ""))})
+    return V.sec("", f'{head}<div class="lw-extern" data-dienst="buchung" data-src="{e(b["url"])}" data-titel="Terminbuchung" style="min-height:520px;border-radius:16px;overflow:hidden"></div>'
+                     f'<p class="muted" style="margin-top:12px">Lieber in einem neuen Fenster? <a href="{e(b["url"])}" rel="noopener">Buchungsseite öffnen</a></p>', "termin")
+
+
 def einfuegen_kontakt(html_, k, vorschau, h2=None):
-    return html_.replace('<footer class="ft">', kontakt_block(k, vorschau, h2) + '<footer class="ft">', 1)
+    return html_.replace('<footer class="ft">', termin_block(k) + kontakt_block(k, vorschau, h2) + '<footer class="ft">', 1)
 
 
 def leistungsseite(k, l, vorschau, ort=None):
@@ -173,7 +223,7 @@ def leistungsseite(k, l, vorschau, ort=None):
     svc = {"@context": "https://schema.org", "@type": "Service", "name": titel, "provider": {"@type": k.get("schema_typ", "LocalBusiness"), "name": k["firma"]["name"]},
            "areaServed": ort or (k.get("einzugsgebiet") or None)}
     return einfuegen_kontakt(seite(k, f'/leistungen/{l["slug"]}/' + (f'{slugify(ort)}/' if ort else ""), seo_t, desc, secs,
-                                   hero_dict(k, h1=titel, lead=l.get("kurz"), eb=e(k["firma"]["name"])), vorschau, svc, schlicht=True), k, vorschau, f'{e(l["titel"])} anfragen')
+                                   hero_dict(k, h1=titel, lead=l.get("kurz"), eb=e(k["firma"]["name"]), slug=l["slug"]), vorschau, svc, schlicht=True, slug=l["slug"]), k, vorschau, f'{e(l["titel"])} anfragen')
 
 
 def karriere(k, vorschau):
@@ -199,16 +249,25 @@ def recht(k, art, vorschau):
                "<h2>Verbraucherstreitbeilegung</h2><p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>"
         titel = "Impressum"
     else:
-        dienste = (k.get("tracking") or {}).get("dienste") or []
+        dl, b = dienste(k), buchung(k)
+        termin = ""
+        if b and b["art"] in ("link", "eingebettet"):
+            termin = (f"<h2>Online-Terminbuchung</h2><p>Termine buchen Sie über {e(b['anbieter'])}. "
+                      + ("Über „" + e(b["text"]) + "“ gelangen Sie zur Buchungsseite des Anbieters. " if b["art"] == "link" else
+                         "Das Buchungsfenster auf dieser Seite lädt erst, wenn Sie „Inhalt laden“ anklicken oder zugestimmt haben (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). ")
+                      + f"Ihre Angaben zur Buchung werden dort verarbeitet, um den Termin zu vergeben (Art. 6 Abs. 1 lit. b DSGVO); ergänzend gelten die Datenschutzhinweise von {e(b['anbieter'])}. "
+                      + (f"{e(b['datenschutz'])} " if b.get("datenschutz") else "")
+                      + "Wir zählen nur, wie oft der Buchungsknopf angeklickt wird, ohne Cookies und ohne Angaben zu Ihrer Person.</p>")
         body = (f"<h2>1. Verantwortlicher</h2><p>{e(fi['name'])}, {e(a.get('strasse') or P)}, {e(' '.join(filter(None, [a.get('plz'), a.get('ort')])) or P)}, {e(fi.get('email') or P)}</p>"
                 "<h2>2. Hosting</h2><p>Diese Website wird bei Vercel Inc. gehostet. Beim Aufruf werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, aufgerufene Seite) "
                 "verarbeitet, um die Website auszuliefern und abzusichern (Art. 6 Abs. 1 lit. f DSGVO). Mit Vercel besteht ein Vertrag zur Auftragsverarbeitung; die Übermittlung in die USA "
                 "stützt sich auf das EU-US Data Privacy Framework.</p>"
                 "<h2>3. Kontaktformular</h2><p>Wenn Sie uns über das Formular schreiben, verarbeiten wir Ihre Angaben, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). "
                 "Die Anfrage wird über unseren Dienstleister (Supabase, Server in der EU) an uns weitergeleitet und dort nach spätestens 90 Tagen gelöscht.</p>"
-                "<h2>4. Cookies</h2><p>" + ("Wir setzen keine Cookies und binden keine Dienste ein, die Ihr Gerät auslesen. Schriften werden von unserem eigenen Server geladen." if not dienste else
+                + termin +
+                "<h2>4. Cookies</h2><p>" + ("Wir setzen keine Cookies und binden keine Dienste ein, die Ihr Gerät auslesen. Schriften werden von unserem eigenen Server geladen." if not dl else
                 "Technisch notwendige Speicherung: Ihre Datenschutz-Einstellung (lokal in Ihrem Browser). Folgende Dienste laden wir nur nach Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG); "
-                "Sie können sie jederzeit über „Datenschutz-Einstellungen“ im Fußbereich widerrufen:</p><ul>" + "".join(f"<li><b>{e(x['name'])}</b> ({e(x.get('anbieter', ''))}): {e(x.get('zweck', ''))}</li>" for x in dienste) + "</ul><p>") + "</p>"
+                "Sie können sie jederzeit über „Datenschutz-Einstellungen“ im Fußbereich widerrufen:</p><ul>" + "".join(f"<li><b>{e(x['name'])}</b> ({e(x.get('anbieter', ''))}): {e(x.get('zweck', ''))}</li>" for x in dl) + "</ul><p>") + "</p>"
                 "<h2>5. Ihre Rechte</h2><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, "
                 "sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.</p>" + (f"<p>{e(rt['datenschutz_zusatz'])}</p>" if rt.get("datenschutz_zusatz") else ""))
         titel = "Datenschutzerklärung"
@@ -224,9 +283,13 @@ def slugify(s):
 
 KUNDE_JS = """(function(){document.querySelectorAll('.lw-form').forEach(function(f){f.addEventListener('submit',function(ev){ev.preventDefault();
 var s=f.querySelector('[role=status]'),b=f.querySelector('button');if(f.hasAttribute('data-vorschau')){s.textContent='Vorschau – nichts gesendet.';return}
-var d={schluessel:f.dataset.schluessel,seite:location.pathname};new FormData(f).forEach(function(v,k){d[k]=v});b.disabled=true;s.textContent='Wird gesendet …';
+var d={schluessel:f.dataset.schluessel,seite:location.pathname},x={};new FormData(f).forEach(function(v,k){if(/^(name|kontakt|nachricht|thema|firma2)$/.test(k))d[k]=v;else x[k]=v});if(Object.keys(x).length)d.felder=x;b.disabled=true;s.textContent='Wird gesendet …';
 fetch(f.dataset.ziel,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.fehler);
-f.reset();s.textContent='Danke! Ihre Anfrage ist angekommen. Wir melden uns schnell.';})}).catch(function(e){s.textContent=(e&&e.message)||'Senden fehlgeschlagen – bitte rufen Sie uns an.'}).finally(function(){b.disabled=false})})})})();"""
+f.reset();s.textContent='Danke! Ihre Anfrage ist angekommen. Wir melden uns schnell.';})}).catch(function(e){s.textContent=(e&&e.message)||'Senden fehlgeschlagen – bitte rufen Sie uns an.'}).finally(function(){b.disabled=false})})})})();
+(function(){var B=window.LW_BUCHUNG;if(!B||!B.url)return;   // Klicks auf „Termin buchen“ zählen: nur Anzahl je Tag, keine Cookies, keine Personendaten
+function z(){try{navigator.sendBeacon(B.ziel,new Blob([JSON.stringify({schluessel:B.schluessel,ereignis:'buchung',seite:location.pathname})],{type:'text/plain'}))}catch(e){}}
+document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a,.lw-ph button');if(!a)return;var h=a.getAttribute('href')||'';
+if((h&&h.indexOf(B.url)===0)||(!h&&a.closest('[data-dienst=buchung]')))z()},true)})();"""
 
 
 def bauen(ordner, vorschau=False):
@@ -259,8 +322,12 @@ def bauen(ordner, vorschau=False):
         shutil.copy(ROOT / "static" / "fonts" / f"{datei}.woff2", out / "fonts")
     if (ordner / "fotos").exists():
         shutil.copytree(ordner / "fotos", out / "fotos")
-    (out / "kunde.js").write_text(KUNDE_JS)
-    if (k.get("tracking") or {}).get("dienste"):
+    b = buchung(k)
+    zaehlen = b and b["art"] in ("link", "eingebettet") and b["url"].startswith("https://") and not vorschau
+    vorspann = ("window.LW_BUCHUNG=" + json.dumps({"url": "https://" + b["url"].split("/")[2], "ziel": f"{SB}/functions/v1/formular",
+                                                   "schluessel": (k.get("formular") or {}).get("schluessel", "")}) + ";\n") if zaehlen else ""
+    (out / "kunde.js").write_text(vorspann + KUNDE_JS)
+    if dienste(k):
         shutil.copy(ROOT / "betrieb" / "bausteine" / "einwilligung.js", out / "einwilligung.js")
     farbe = (k.get("marke") or {}).get("farben", {}).get("brand", "#111")
     (out / "favicon.svg").write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="{farbe}"/></svg>')
@@ -272,7 +339,7 @@ def bauen(ordner, vorschau=False):
         heute = date.today().isoformat()
         (out / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
                                          "".join(f"<url><loc>https://{dom}{p}</loc><lastmod>{heute}</lastmod></url>" for p in seiten if p not in ("/impressum/", "/datenschutz/")) + "</urlset>")
-    csp = f"default-src 'self'; connect-src 'self' {SB}; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self' https://www.google.com https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'"
+    csp = f"default-src 'self'; connect-src 'self' {SB}; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self' https://www.google.com https://www.youtube-nocookie.com{(" https://" + b["url"].split("/")[2]) if b and b["art"] == "eingebettet" and b["url"].startswith("https://") else ""}; base-uri 'self'; form-action 'self'"
     hdr = [{"key": "Content-Security-Policy", "value": csp}, {"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
            {"key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()"}] + ([{"key": "X-Robots-Tag", "value": "noindex, nofollow"}] if vorschau else [])
     (out / "vercel.json").write_text(json.dumps({"cleanUrls": True, "trailingSlash": True, "headers": [{"source": "/(.*)", "headers": hdr},
