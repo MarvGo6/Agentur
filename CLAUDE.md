@@ -30,5 +30,4 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 - Website-Platzhalter: Telefon, Standort, Name, Anschrift (`config.json` → `impressum`); AGB-Entwurf `/agb/` anwaltlich prüfen (Zahlungsziel/Abrechnung ergänzen).
 - Tracking: IDs in `config.json` → `tracking` eintragen, wenn Konten stehen (Anleitung `betrieb/TRACKING.md`).
 - Entscheiden: Umsatzsteuer (Kleinunternehmer endet laut Plan Aug/Sep 27 – Steuerberater) und Weg ab Juli 2027 (allein mit System oder Team), siehe Firmenübersicht Kap. 13.
-- Recruiting-Garantie festlegen: Anzahl Bewerbungen in 6 Wochen und Mindest-Werbebudget (`content.py` → `REC_GARANTIE`, steht als [PRÜFEN] auf Website/AGB).
 - Testdaten löschen (anfragen „TEST Claude“, inhalte_formulare „TEST …“, Speicher „inhalte“).

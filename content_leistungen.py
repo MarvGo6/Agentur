@@ -1,7 +1,7 @@
 """Ausführliche Inhalte der Leistungsseiten (/leistungen/<slug>/).
 Aufbau je Seite: Suchintention zuerst beantworten, dann Für-wen, Vorgehen im Detail, Kosten, typische Fehler, Messung, Fragen.
 Regeln: keine erfundenen Zahlen oder Ergebnisse; Preise kommen aus content.PREISE; kurze Sätze, keine Werbefloskeln."""
-from content import PREISE as P, eur, REC_GARANTIE_TEXT, REC_WECHSEL_TEXT
+from content import PREISE as P, eur, REC_GARANTIE, REC_GARANTIE_TEXT, REC_WECHSEL_TEXT, REC_WECHSEL_PREIS
 
 TIEFE = {
 # ---------------------------------------------------------------------------------------------- Google Ads
@@ -192,7 +192,7 @@ TIEFE = {
   "text": "Einrichtung und Betreuung zum Festpreis, das Werbebudget zahlen Sie direkt an Meta bzw. Google.",
   "zeilen": [("Einrichtung (Karriereseite, Kurzbewerbung, Kampagnen)", eur(P["rec_setup"]) + " einmalig"), ("Betreuung", eur(P["rec"]) + " im Monat"),
              ("Werbebudget", "meist 300–800 € im Monat je Stelle, legen Sie fest"), ("Laufzeit", "3 Monate, danach monatlich kündbar"),
-             ("Stelle besetzt", "kostenloser Wechsel auf die nächste offene Stelle"), ("Bewerbungs-Garantie", "zu wenige Bewerbungen in den ersten Wochen: nächster Monat kostenlos")],
+             ("Stelle besetzt", f"Wechsel auf die nächste Stelle: {REC_WECHSEL_PREIS} € für neue Werbemittel (30 % der Einrichtung)"), ("Bewerbungs-Garantie", f"weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen in {REC_GARANTIE['wochen']} Wochen: nächster Monat kostenlos (ab {REC_GARANTIE['budget']} Werbebudget im Monat)")],
   "hinweis": "Zum Vergleich: Viele Stellenportale berechnen pro Anzeige und Laufzeit, Personalvermittler oft einen Anteil des Jahresgehalts. Bei uns zahlen Sie einen festen Betrag, egal wie viele Bewerbungen kommen.",
  },
  "fehler": [

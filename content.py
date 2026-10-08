@@ -9,11 +9,14 @@ PREISE = {
     "rec_setup": 1490, "rec": 790,
 }
 
-# Recruiting: Bewerbungs-Garantie und Stellenwechsel. Anzahl und Mindestbudget legt der Inhaber fest.
-REC_GARANTIE = {"wochen": 6, "bewerbungen": "[PRÜFEN: Anzahl]", "budget": "[PRÜFEN: Mindestbudget]"}
+# Recruiting: Bewerbungs-Garantie und Stellenwechsel (festgelegt vom Inhaber am 08.10.2026)
+REC_GARANTIE = {"wochen": 6, "bewerbungen": "10", "budget": "1.000 €"}
+REC_WECHSEL_ANTEIL = 0.3   # Stellenwechsel: neue Werbemittel für 30 % der Einrichtung
 REC_GARANTIE_TEXT = (f"Kommen in den ersten {REC_GARANTIE['wochen']} Wochen weniger als {REC_GARANTIE['bewerbungen']} Bewerbungen, ist der nächste Monat Betreuung kostenlos. "
                      f"Voraussetzung: mindestens {REC_GARANTIE['budget']} Werbebudget im Monat und Rückruf bei Bewerbern innerhalb von 48 Stunden.")
-REC_WECHSEL_TEXT = "Stelle schon besetzt? Dann wechseln wir für die restliche Laufzeit auf Ihre nächste offene Stelle, ohne neue Einrichtungsgebühr."
+REC_WECHSEL_PREIS = round(1490 * REC_WECHSEL_ANTEIL)   # 30 % von PREISE["rec_setup"]
+REC_WECHSEL_TEXT = (f"Stelle schon besetzt? Dann wechseln wir für die restliche Laufzeit auf Ihre nächste offene Stelle. "
+                    f"Sie zahlen nur die neuen Werbemittel: 30 % der Einrichtung, also {REC_WECHSEL_PREIS} € statt 1.490 €.")
 
 
 def eur(v):
@@ -50,9 +53,9 @@ LEISTUNGEN = [
   "eckdaten": [("Preis", "1.490 € Einrichtung + 790 € / Monat"), ("Werbebudget", "meist 300–800 € / Monat je Stelle"), ("Laufzeit", "3 Monate, danach monatlich"), ("Bewerbung", "in 60 Sekunden, ohne Lebenslauf")],
   "lead": "Viele Pflegekräfte, Gesellen und Fachangestellte suchen gar nicht aktiv. Sie scrollen abends durch ihr Handy. Dort erreichen wir sie: mit einer Karriereseite, die zeigt, wie es bei Ihnen wirklich ist, einer Bewerbung ohne Lebenslauf und Anzeigen im Umkreis.",
   "punkte": ["Karriereseite mit Gehaltsrahmen, Team und Einblicken in den Alltag", "Bewerbung in 60 Sekunden, ohne Lebenslauf und Anschreiben", "Stellen erscheinen in Google Jobs (strukturierte Daten)", "Anzeigen auf Instagram, Facebook und Google im Umkreis von 20–30 km", "Jede Bewerbung sofort per E-Mail oder WhatsApp an Sie", "Monatlicher Bericht: Bewerbungen, Kosten je Bewerbung, Einstellungen",
-             "Stelle besetzt? Kostenloser Wechsel auf die nächste offene Stelle", "Bewerbungs-Garantie: zu wenige Bewerbungen, nächster Monat kostenlos"],
+             f"Stelle besetzt? Wechsel auf die nächste Stelle für {REC_WECHSEL_PREIS} € (30 % der Einrichtung)", "Bewerbungs-Garantie: zu wenige Bewerbungen, nächster Monat kostenlos"],
   "ablauf": [("Arbeitgeber-Check", "Was macht Ihren Betrieb attraktiv? Gehalt, Dienstplan, Team, Fahrzeug: Wir sammeln die Argumente."), ("Karriereseite", "Eine Seite pro Stelle, mit Fotos aus Ihrem Betrieb und Kurzbewerbung."), ("Kampagnen", "Anzeigen im Umkreis, abgestimmt auf die Zielgruppe und mit eigenem Budget."), ("Nachfassen", "Wer schnell zurückruft, gewinnt. Jede Bewerbung kommt sofort per E-Mail oder WhatsApp bei Ihnen an.")],
-  "preis": "Einrichtung 1.490 € einmalig, Betreuung 790 € im Monat zzgl. Werbebudget. Monatlich kündbar nach drei Monaten. Mit Bewerbungs-Garantie und kostenlosem Stellenwechsel.",
+  "preis": "Einrichtung 1.490 € einmalig, Betreuung 790 € im Monat zzgl. Werbebudget. Monatlich kündbar nach drei Monaten. Mit Bewerbungs-Garantie und günstigem Stellenwechsel (30 % der Einrichtung).",
   "faq": [("Für welche Berufe funktioniert das?", "Besonders gut für Pflege, Handwerk, Praxen und Kanzleien, also überall, wo Fachkräfte knapp sind und regional gesucht werden."), ("Wie viel Werbebudget brauche ich?", "Meist reichen 300 bis 800 € im Monat pro Stelle. Wir legen das vorher gemeinsam fest."), ("Was ist, wenn niemand Passendes kommt?", "Wir sehen nach zwei bis vier Wochen, wie viele und welche Bewerbungen kommen, und passen Ansprache, Umkreis und Stellenprofil an. Dazu gilt unsere Bewerbungs-Garantie: " + REC_GARANTIE_TEXT),
           ("Und wenn die Stelle schnell besetzt ist?", REC_WECHSEL_TEXT + " So nutzen Sie die gebuchten Monate weiter, statt für eine besetzte Stelle zu zahlen.")]},
  {"slug": "wachstum", "key": "wachstum", "titel": "Wachstumsprogramm", "kurz": "Website, SEO und Anzeigen zusammen geplant, mit einem Ziel und einem Monatsgespräch.",
@@ -300,6 +303,6 @@ FAQ = [
  ("Schreiben Sie auch die Texte?", "Ja. Sie erzählen, wir schreiben. Fachliche Inhalte geben Sie frei."),
  ("Setzen Sie Cookies und Tracking ein?", "So wenig wie möglich. Wir messen Anfragen datenschutzfreundlich und verzichten wo möglich auf Cookie-Banner."),
  ("Garantieren Sie Ergebnisse?", "Wir garantieren saubere Arbeit, klare Ziele und nachvollziehbare Berichte. Rankings und Anfragen kann niemand seriös garantieren."),
- ("Helfen Sie auch bei der Mitarbeitersuche?", "Ja, mit dem Recruiting-Paket: Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis. Einrichtung 1.490 €, danach 790 € im Monat. Mit Bewerbungs-Garantie und kostenlosem Wechsel auf die nächste Stelle, sobald eine besetzt ist."),
+ ("Helfen Sie auch bei der Mitarbeitersuche?", "Ja, mit dem Recruiting-Paket: Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis. Einrichtung 1.490 €, danach 790 € im Monat. Mit Bewerbungs-Garantie, und ist eine Stelle besetzt, wechseln wir für 30 % der Einrichtung auf die nächste."),
  ("Wie läuft die Abrechnung?", "Einmalige Leistungen zur Hälfte bei Start, zur Hälfte bei Freischaltung. Monatliche Leistungen per Rechnung zum Monatsanfang."),
 ]
