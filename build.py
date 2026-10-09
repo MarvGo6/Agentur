@@ -370,10 +370,10 @@ def leistungen():
 {SEO_EXTRA if l["slug"] == "seo" else ""}<section id="leistung"><div class="wrap"><h2 class="h2s" style="margin-bottom:24px">Was Sie bekommen</h2><ul class="haken">{"".join(f"<li>{x}</li>" for x in l["punkte"])}</ul>
 <h2 class="h2s" style="margin:clamp(48px,6vw,80px) 0 28px">So gehen wir vor</h2><ol class="tl tl{len(l["ablauf"])}">{"".join(f"<li><span class=d>Schritt {i}</span><h3>{a}</h3><p>{b}</p></li>" for i, (a, b) in enumerate(l["ablauf"], 1))}</ol></div></section>
 {absch}{kosten}
-<section id="fehler"><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Typische Fehler, die wir vermeiden</h2><div class="fwg">{fehler}</div></div></section>
-<section id="messung"><div class="wrap grid2 tief"><h2 class="h2s">Was wir jeden Monat messen</h2><div><dl class="glance mess">{mess}</dl><p class="note">Sie bekommen jeden Monat einen kurzen Bericht in Klartext.</p></div></div></section>
+<section id="fehler"><div class="wrap grid2 fm"><div><h2 class="h2s" style="margin-bottom:22px">Typische Fehler, die wir vermeiden</h2><div class="fwl">{fehler}</div></div>
+<div id="messung"><h2 class="h2s" style="margin-bottom:22px">Was wir jeden Monat messen</h2><dl class="glance mess">{mess}</dl><p class="note">Sie bekommen jeden Monat einen kurzen Bericht in Klartext.</p></div></div></section>
 <section id="fragen"><div class="wrap">{faq_mini(faq)}</div></section>
-<section><div class="wrap"><h2 class="h2s" style="margin-bottom:28px">Passt gut dazu</h2>{svc_liste(others)}</div></section>{cta(f"{l['titel']} für Ihren Betrieb?", "Wir sehen uns Ihre Ausgangslage an und sagen Ihnen, ob sich das für Sie lohnt. Kostenlos und unverbindlich.", l["cta"], href)}"""
+<section class="passt"><div class="wrap"><h2 class="h2s" style="margin-bottom:22px">Passt gut dazu</h2>{svc_liste(others)}</div></section>{cta(f"{l['titel']} für Ihren Betrieb?", "Wir sehen uns Ihre Ausgangslage an und sagen Ihnen, ob sich das für Sie lohnt. Kostenlos und unverbindlich.", l["cta"], href)}"""
         write(p, t["seo"], t["kurz"], body, prio=0.8, schema=[faq_schema(faq), dienst],
               crumbs=[("/", "Start"), ("/leistungen/", "Leistungen"), (p, l["titel"])])
 

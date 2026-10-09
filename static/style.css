@@ -667,3 +667,10 @@ table.kosten td{font-weight:500;padding:12px 0;border-bottom:1px solid var(--lin
 .dran-g figcaption{margin-top:10px;font-size:.82rem;color:var(--ink-2)}
 @media (max-width:900px){.vgl-grid{grid-template-columns:1fr}.vgl-pfeil{min-height:0;height:36px;transform:rotate(90deg);width:36px;margin:6px auto}}
 .dran-g .ohne{fill:none;stroke:var(--line-2);stroke-width:2.5}.dran-g .mk{stroke:var(--line-2);stroke-dasharray:2 3}
+
+/* Leistungsseiten: weniger Leerraum zwischen den Abschnitten */
+.lhero ~ section{padding:clamp(44px,5.5vw,80px) 0}
+.lhero ~ section.bsp{padding:clamp(36px,4vw,64px) 0}
+.fm{align-items:start}.fm .mess{border-top:1px solid var(--ink)}
+.passt .svc a{padding:18px 0}.passt .svc .t{font-size:clamp(1.25rem,2vw,1.7rem)}
+#fragen .faq-mini{margin-top:0;padding-top:0;border-top:0}
