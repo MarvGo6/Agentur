@@ -12,6 +12,45 @@
     programm: ['Wachstumsprogramm', 1490, 1390, 12, 0, 3], recruiting: ['Recruiting Komplett', 1490, 790, 1, 0, 1],
     recruiting_basis: ['Recruiting Basis', 990, 490, 1, 0, 1, 'recruiting']  // 7. Wert: Produkt in der Datenbank
   };
+  var BESCHR = {  // Kurzbeschreibung je Produkt für das Vertragsdokument (wie auf der Website)
+    web_start: 'Website mit bis zu 5 Seiten, Texte und Struktur, Google-Unternehmensprofil eingerichtet, Kontakt- oder Buchungsformular.',
+    web_wachstum: 'Website mit bis zu 15 Seiten: eigene Seiten je Leistung und Ort, Karriere- oder Bewerbungsbereich, Ratgeber-Bereich, Anruf- und Formularmessung.',
+    pflege_start: 'Hosting, Updates, Sicherheit, Datensicherung und kleine Änderungen.',
+    pflege_wachstum: 'Wie Pflege Start, zusätzlich 1 Stunde Änderungen pro Monat.',
+    seo_lokal: 'Google-Profil, Verzeichnisse, Technik, 1 neue Seite oder Erweiterung pro Monat, monatliches Reporting.',
+    seo_plus: 'Wie SEO Lokal, zusätzlich 2–3 Inhalte pro Monat und Bewertungsablauf.',
+    ads: 'Einrichtung und Betreuung der Google-Ads-Kampagnen inkl. Zielseite und Messung, monatlicher Bericht. Werbebudget zahlt der Kunde direkt an Google.',
+    programm: 'Website Wachstum, Pflege, SEO Plus und Google-Ads-Betreuung mit gemeinsamem Ziel und Monatsbericht. Werbebudget separat.',
+    recruiting: 'Karriereseiten für mehrere Stellen, Kurzbewerbung, Anzeigen auf Instagram, Facebook und Google, wöchentliche Optimierung, Stellenwechsel für 30 % der Einrichtung. Werbebudget separat.',
+    recruiting_basis: 'Karriereseite für 1 Stelle, Kurzbewerbung, Anzeigen auf Instagram und Facebook, monatliche Anpassung. Werbebudget separat.'
+  };
+  function laufzeit(p) {
+    if (!p[2]) return 'einmalige Leistung';
+    if (!p[3]) return 'monatlich kündbar';
+    return p[3] + (p[3] === 1 ? ' Monat' : ' Monate') + ' Mindestlaufzeit, ' + (p[4] ? 'danach Verlängerung um je ' + p[4] + ' Monate, ' : 'danach monatlich kündbar, ') + 'Kündigungsfrist ' + p[5] + (p[5] === 1 ? ' Monat' : ' Monate') + (p[4] ? ' zum Laufzeitende' : '');
+  }
+  function vertragHtml(k, keys, start, extra) {
+    var A = {}; try { A = JSON.parse(app.dataset.anbieter || '{}'); } catch (e) {}
+    var ein = 0, mon = 0;
+    var zeilen = keys.map(function (key) { var p = PRODUKTE[key]; ein += p[1]; mon += p[2];
+      return '<tr><td><b>' + x(p[0]) + '</b><br><span class=m>' + x(BESCHR[key] || '') + '</span><br><span class=m>Laufzeit: ' + x(laufzeit(p)) + '</span></td><td class=r>' + (p[1] ? eur(p[1]) : '–') + '</td><td class=r>' + (p[2] ? eur(p[2]) : '–') + '</td></tr>'; }).join('');
+    var css = 'body{font:11pt/1.5 Arial,sans-serif;color:#111;max-width:760px;margin:30px auto;padding:0 24px}h1{font-size:18pt;margin:0 0 4px}h2{font-size:12pt;margin:22px 0 6px}.m{color:#555;font-size:9.5pt}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #ccc;padding:7px 6px;vertical-align:top;text-align:left}.r{text-align:right;white-space:nowrap}.parteien{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:16px 0}.box{border:1px solid #ccc;padding:10px 12px}.hinweis{background:#fff4e5;border:1px solid #f0b46a;padding:8px 12px;font-size:9.5pt;margin:12px 0}.sig{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px}.sig div{border-top:1px solid #111;padding-top:6px;font-size:9.5pt}@media print{.hinweis{break-inside:avoid}}';
+    return '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Auftrag ' + x(k.firma) + '</title><style>' + css + '</style></head><body>' +
+      '<div class="hinweis">Entwurf aus der Steuerzentrale. Vor dem ersten Einsatz anwaltlich prüfen lassen (zusammen mit den AGB). Platzhalter in eckigen Klammern ausfüllen.</div>' +
+      '<h1>Auftrag über Leistungen</h1><p class=m>Datum: ' + new Date().toLocaleDateString('de-DE') + ' · Leistungsbeginn: ' + datum(start) + '</p>' +
+      '<div class="parteien"><div class="box"><b>Auftragnehmer</b><br>' + x(A.name || 'Lotwerk') + '<br>' + x(A.inhaber || '') + '<br>' + x(A.strasse || '') + '<br>' + x(A.ort || '') + '<br>' + x(A.email || '') + '</div>' +
+      '<div class="box"><b>Auftraggeber</b><br>' + x(k.firma) + '<br>' + x(k.ansprechpartner || '[Ansprechpartner]') + '<br>[Straße Hausnummer]<br>[PLZ Ort]<br>' + x(k.email || '[E-Mail]') + (k.telefon ? '<br>' + x(k.telefon) : '') + '</div></div>' +
+      '<h2>1. Leistungen</h2><table><tr><th>Leistung</th><th class=r>einmalig</th><th class=r>monatlich</th></tr>' + zeilen +
+      '<tr><td><b>Summe</b></td><td class=r><b>' + eur(ein) + '</b></td><td class=r><b>' + eur(mon) + '</b></td></tr></table><p class=m>' + x(A.ust || '') + '</p>' +
+      '<h2>2. Zahlung</h2><p>Einmalige Leistungen: 50 % bei Auftrag, 50 % nach Freigabe des Entwurfs durch den Auftraggeber. Monatliche Leistungen: [PRÜFEN: Abrechnungsweise, z. B. monatlich im Voraus per SEPA-Lastschrift]. Rechnungen sind innerhalb von 14 Tagen ohne Abzug fällig [PRÜFEN]. Werbebudgets für Google oder Meta zahlt der Auftraggeber direkt an die Plattform.</p>' +
+      '<h2>3. Laufzeit und Kündigung</h2><p>Die Laufzeit gilt je Leistung wie in Abschnitt 1 angegeben und beginnt mit dem Leistungsbeginn. Kündigungen bedürfen der Textform (z. B. E-Mail).</p>' +
+      '<h2>4. Mitwirkung</h2><p>Der Auftraggeber stellt Inhalte, Fotos und Zugänge innerhalb von 7 Tagen nach Auftrag bereit (Inhalte-Formular) und benennt eine Person für Freigaben. Verzögerungen verschieben den Zeitplan entsprechend.</p>' +
+      '<h2>5. Nutzungsrechte</h2><p>Nach vollständiger Zahlung erhält der Auftraggeber die zeitlich und räumlich unbeschränkten Nutzungsrechte an Website, Texten und Gestaltung. Domain und Inhalte gehören dem Auftraggeber. Bei Vertragsende werden alle Dateien übergeben.</p>' +
+      '<h2>6. Datenschutz</h2><p>Soweit der Auftragnehmer personenbezogene Daten im Auftrag verarbeitet (z. B. Formularanfragen, Bewerbungen), schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO als Anlage zu diesem Auftrag. [PRÜFEN: Vorlage AV-Vertrag]</p>' +
+      '<h2>7. Allgemeine Geschäftsbedingungen</h2><p>Ergänzend gelten die AGB des Auftragnehmers in der bei Auftrag gültigen Fassung (' + x(location.origin) + '/agb/).</p>' +
+      (extra ? '<h2>8. Besondere Vereinbarungen</h2><p>' + x(extra).replace(/\n/g, '<br>') + '</p>' : '') +
+      '<div class="sig"><div>Ort, Datum, Unterschrift Auftraggeber</div><div>Ort, Datum, Unterschrift Auftragnehmer</div></div></body></html>';
+  }
   var STATUS = ['neu', 'vorschau', 'kontaktiert', 'termin', 'angebot', 'gewonnen', 'verloren', 'pausiert'];
   var TAET = ['vertrieb', 'umsetzung', 'pflege', 'seo', 'ads', 'recruiting', 'verwaltung'];
 
@@ -163,7 +202,7 @@
             '<p class="in-muted">' + x([k.ansprechpartner, k.email, k.telefon].filter(Boolean).join(' · ')) + '</p>' +
             '<ul class="in-list">' + (k.vertraege || []).map(function (v) { return '<li>' + x((PRODUKTE[v.produkt] || [v.produkt])[0]) + ' · ' + eur(v.monatlich) + '/Monat' + (Number(v.einmalig) ? ' + ' + eur(v.einmalig) + ' einmalig' : '') + ' · ab ' + datum(v.start) + (v.mindestlaufzeit_monate ? ' · ' + v.mindestlaufzeit_monate + ' Monate' : '') + (v.ende ? ' · beendet ' + datum(v.ende) : '') + '</li>'; }).join('') + '</ul>' +
             '<form class="in-form in-inline" data-form="vertrag" data-kunde="' + k.id + '"><select name="produkt">' + opt + '</select><input name="start" type="date" value="' + heute() + '"><button class="btn ghost">Vertrag hinzufügen</button></form>' +
-            '<div class="in-row"><button class="btn ghost" data-a="inhalte" data-kunde="' + k.id + '" data-firma="' + x(k.firma) + '">Inhalte-Link erzeugen</button></div>' +
+            '<div class="in-row"><button class="btn ghost" data-a="inhalte" data-kunde="' + k.id + '" data-firma="' + x(k.firma) + '">Inhalte-Link erzeugen</button><button class="btn ghost" data-a="vertragsdoc" data-kunde="' + k.id + '">Vertrag vorbereiten</button></div><div class="in-vd" id="vd-' + k.id + '" hidden></div>' +
             forms.map(function (f) { return '<p class="in-muted">Inhalte-Formular: ' + (f.eingereicht_am ? '✓ eingegangen ' + datum(f.eingereicht_am) + ' · ' + (f.dateien || []).length + ' Dateien' : 'offen, Frist ' + datum(f.frist)) + ' · <a href="/inhalte/?t=' + x(f.token) + '" target="_blank" rel="noopener">Link</a></p>'; }).join('') +
             '</article>';
         }).join('');
@@ -229,6 +268,25 @@
         var ok = await api('rpc/ist_admin', { method: 'POST', body: {} });
         if (!ok) { S = {}; sichere(); return anmeldung('Angemeldet, aber kein Admin-Zugang. Nur die hinterlegte Inhaber-Adresse wird freigeschaltet.'); }
         return zeige((location.hash || '').slice(1) && ANSICHT[location.hash.slice(1)] ? location.hash.slice(1) : 'cockpit');
+      }
+      if (a === 'vertragsdoc') {
+        var box = document.getElementById('vd-' + b.dataset.kunde); if (!box) return;
+        if (!box.hidden) { box.hidden = true; return; }
+        var kd = (CACHE.kunden || []).find(function (q) { return q.id === b.dataset.kunde; }) || {};
+        var vorhanden = (kd.vertraege || []).filter(function (v) { return !v.ende; }).map(function (v) { return v.produkt; });
+        box.innerHTML = '<p><b>Leistungen für den Vertrag</b></p><div class="in-vd-l">' + Object.keys(PRODUKTE).map(function (key) {
+          return '<label class="check"><input type="checkbox" value="' + key + '"' + (vorhanden.indexOf(key) >= 0 ? ' checked' : '') + '> <span>' + x(PRODUKTE[key][0]) + ' · ' + (PRODUKTE[key][1] ? eur(PRODUKTE[key][1]) + ' einmalig' : '') + (PRODUKTE[key][1] && PRODUKTE[key][2] ? ' + ' : '') + (PRODUKTE[key][2] ? eur(PRODUKTE[key][2]) + '/Monat' : '') + '</span></label>'; }).join('') +
+          '</div><label>Leistungsbeginn <input type="date" name="vd-start" value="' + heute() + '"></label><label>Besondere Vereinbarungen (optional)<textarea name="vd-extra" rows="3"></textarea></label>' +
+          '<div class="in-row"><button class="btn" data-a="vertragoeffnen" data-kunde="' + b.dataset.kunde + '">Vertrag öffnen (Drucken / PDF)</button></div>';
+        box.hidden = false; return;
+      }
+      if (a === 'vertragoeffnen') {
+        var bx = document.getElementById('vd-' + b.dataset.kunde), kk = (CACHE.kunden || []).find(function (q) { return q.id === b.dataset.kunde; }) || {};
+        var keys = [].slice.call(bx.querySelectorAll('input[type=checkbox]:checked')).map(function (i) { return i.value; });
+        if (!keys.length) return meldung('Bitte mindestens eine Leistung wählen.');
+        var w = window.open('', '_blank'); if (!w) return meldung('Bitte Pop-ups für diese Seite erlauben.');
+        w.document.open(); w.document.write(vertragHtml(kk, keys, bx.querySelector('[name=vd-start]').value, bx.querySelector('[name=vd-extra]').value)); w.document.close();
+        setTimeout(function () { w.focus(); w.print(); }, 300); return;
       }
       if (a === 'logout') { S = {}; sichere(); return anmeldung(); }
       if (a === 'erledigt') { await aendere('aufgaben', id, { erledigt_am: new Date().toISOString() }); meldung('Erledigt'); return zeige(); }

@@ -675,7 +675,7 @@ HEADERS = {"X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origi
 
 def intern():
     """Steuerzentrale (nur Admins, Supabase-Anmeldung) und Inhalte-Formular für Kunden – beide nicht in der Sitemap, noindex."""
-    write("/intern/", "Steuerzentrale", "Interner Bereich.", '<section class="in-wrap"><div class="wrap" id="app"><noscript>Bitte JavaScript aktivieren.</noscript></div></section>',
+    write("/intern/", "Steuerzentrale", "Interner Bereich.", f'<section class="in-wrap"><div class="wrap" id="app" data-anbieter="{e(json.dumps(dict(C["impressum"], name=NAME), ensure_ascii=False))}"><noscript>Bitte JavaScript aktivieren.</noscript></div></section>',
           noindex=True, js="intern.js")
     feld = lambda n, l, typ="text", req=False, ph="": f'<label>{l}<input name="{n}" type="{typ}"{" required" if req else ""} placeholder="{e(ph)}"></label>'
     text = lambda n, l, ph="", rows=3: f'<label>{l}<textarea name="{n}" rows="{rows}" placeholder="{e(ph)}"></textarea></label>'
