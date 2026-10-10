@@ -29,27 +29,61 @@
     if (!p[3]) return 'monatlich kündbar';
     return p[3] + (p[3] === 1 ? ' Monat' : ' Monate') + ' Mindestlaufzeit, ' + (p[4] ? 'danach Verlängerung um je ' + p[4] + ' Monate, ' : 'danach monatlich kündbar, ') + 'Kündigungsfrist ' + p[5] + (p[5] === 1 ? ' Monat' : ' Monate') + (p[4] ? ' zum Laufzeitende' : '');
   }
-  function vertragHtml(k, keys, start, extra) {
+  function vertragHtml(k, keys, start, extra, meta) {
     var A = {}; try { A = JSON.parse(app.dataset.anbieter || '{}'); } catch (e) {}
-    var ein = 0, mon = 0;
-    var zeilen = keys.map(function (key) { var p = PRODUKTE[key]; ein += p[1]; mon += p[2];
-      return '<tr><td><b>' + x(p[0]) + '</b><br><span class=m>' + x(BESCHR[key] || '') + '</span><br><span class=m>Laufzeit: ' + x(laufzeit(p)) + '</span></td><td class=r>' + (p[1] ? eur(p[1]) : '–') + '</td><td class=r>' + (p[2] ? eur(p[2]) : '–') + '</td></tr>'; }).join('');
-    var css = 'body{font:11pt/1.5 Arial,sans-serif;color:#111;max-width:760px;margin:30px auto;padding:0 24px}h1{font-size:18pt;margin:0 0 4px}h2{font-size:12pt;margin:22px 0 6px}.m{color:#555;font-size:9.5pt}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #ccc;padding:7px 6px;vertical-align:top;text-align:left}.r{text-align:right;white-space:nowrap}.parteien{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:16px 0}.box{border:1px solid #ccc;padding:10px 12px}.hinweis{background:#fff4e5;border:1px solid #f0b46a;padding:8px 12px;font-size:9.5pt;margin:12px 0}.sig{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px}.sig div{border-top:1px solid #111;padding-top:6px;font-size:9.5pt}@media print{.hinweis{break-inside:avoid}}';
-    return '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Auftrag ' + x(k.firma) + '</title><style>' + css + '</style></head><body>' +
-      '<div class="hinweis">Entwurf aus der Steuerzentrale. Vor dem ersten Einsatz anwaltlich prüfen lassen (zusammen mit den AGB). Platzhalter in eckigen Klammern ausfüllen.</div>' +
-      '<h1>Auftrag über Leistungen</h1><p class=m>Datum: ' + new Date().toLocaleDateString('de-DE') + ' · Leistungsbeginn: ' + datum(start) + '</p>' +
-      '<div class="parteien"><div class="box"><b>Auftragnehmer</b><br>' + x(A.name || 'Lotwerk') + '<br>' + x(A.inhaber || '') + '<br>' + x(A.strasse || '') + '<br>' + x(A.ort || '') + '<br>' + x(A.email || '') + '</div>' +
-      '<div class="box"><b>Auftraggeber</b><br>' + x(k.firma) + '<br>' + x(k.ansprechpartner || '[Ansprechpartner]') + '<br>[Straße Hausnummer]<br>[PLZ Ort]<br>' + x(k.email || '[E-Mail]') + (k.telefon ? '<br>' + x(k.telefon) : '') + '</div></div>' +
-      '<h2>1. Leistungen</h2><table><tr><th>Leistung</th><th class=r>einmalig</th><th class=r>monatlich</th></tr>' + zeilen +
-      '<tr><td><b>Summe</b></td><td class=r><b>' + eur(ein) + '</b></td><td class=r><b>' + eur(mon) + '</b></td></tr></table><p class=m>' + x(A.ust || '') + '</p>' +
-      '<h2>2. Zahlung</h2><p>Einmalige Leistungen: 50 % bei Auftrag, 50 % nach Freigabe des Entwurfs durch den Auftraggeber. Monatliche Leistungen: [PRÜFEN: Abrechnungsweise, z. B. monatlich im Voraus per SEPA-Lastschrift]. Rechnungen sind innerhalb von 14 Tagen ohne Abzug fällig [PRÜFEN]. Werbebudgets für Google oder Meta zahlt der Auftraggeber direkt an die Plattform.</p>' +
-      '<h2>3. Laufzeit und Kündigung</h2><p>Die Laufzeit gilt je Leistung wie in Abschnitt 1 angegeben und beginnt mit dem Leistungsbeginn. Kündigungen bedürfen der Textform (z. B. E-Mail).</p>' +
-      '<h2>4. Mitwirkung</h2><p>Der Auftraggeber stellt Inhalte, Fotos und Zugänge innerhalb von 7 Tagen nach Auftrag bereit (Inhalte-Formular) und benennt eine Person für Freigaben. Verzögerungen verschieben den Zeitplan entsprechend.</p>' +
-      '<h2>5. Nutzungsrechte</h2><p>Nach vollständiger Zahlung erhält der Auftraggeber die zeitlich und räumlich unbeschränkten Nutzungsrechte an Website, Texten und Gestaltung. Domain und Inhalte gehören dem Auftraggeber. Bei Vertragsende werden alle Dateien übergeben.</p>' +
-      '<h2>6. Datenschutz</h2><p>Soweit der Auftragnehmer personenbezogene Daten im Auftrag verarbeitet (z. B. Formularanfragen, Bewerbungen), schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO als Anlage zu diesem Auftrag. [PRÜFEN: Vorlage AV-Vertrag]</p>' +
-      '<h2>7. Allgemeine Geschäftsbedingungen</h2><p>Ergänzend gelten die AGB des Auftragnehmers in der bei Auftrag gültigen Fassung (' + x(location.origin) + '/agb/).</p>' +
-      (extra ? '<h2>8. Besondere Vereinbarungen</h2><p>' + x(extra).replace(/\n/g, '<br>') + '</p>' : '') +
-      '<div class="sig"><div>Ort, Datum, Unterschrift Auftraggeber</div><div>Ort, Datum, Unterschrift Auftragnehmer</div></div></body></html>';
+    meta = meta || {}; var am = meta.datum ? new Date(meta.datum) : new Date();
+    var nr = 'LW-' + am.toISOString().slice(0, 10).replace(/-/g, '') + '-' + String(meta.id || Math.random().toString(16).slice(2)).slice(0, 4).toUpperCase();
+    var lz = function (t) { return x(t).replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>'); };
+    var ein = 0, mon = 0, pos = 0, F = location.origin + '/fonts/';
+    var zeilen = keys.map(function (key) { var p = PRODUKTE[key]; if (!p) return ''; ein += p[1]; mon += p[2]; pos++;
+      return '<tr><td class="pos">' + pos + '</td><td><strong>' + x(p[0]) + '</strong><span class="d">' + x(BESCHR[key] || '') + '</span><span class="d lz">' + x(laufzeit(p)) + '</span></td><td class="n">' + (p[1] ? eur(p[1]) : '') + '</td><td class="n">' + (p[2] ? eur(p[2]) : '') + '</td></tr>'; }).join('');
+    var absender = [A.name || 'Lotwerk', A.inhaber, A.strasse, A.ort].filter(Boolean).join(' · ');
+    var css = '@font-face{font-family:T;src:url(' + F + 'intertight.woff2) format("woff2");font-weight:100 900}@font-face{font-family:S;src:url(' + F + 'instrument.woff2) format("woff2")}' +
+      '@page{size:A4;margin:22mm 20mm 24mm}*{box-sizing:border-box}html{background:#e9e7e2}body{margin:0;font:400 9.6pt/1.55 T,Arial,sans-serif;color:#1b1b19;font-variant-numeric:tabular-nums}' +
+      '.blatt{background:#fff;width:210mm;min-height:297mm;margin:12mm auto;padding:20mm 20mm 26mm;box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 30px rgba(0,0,0,.08);position:relative}' +
+      '.kopf{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:6mm;border-bottom:.6pt solid #1b1b19}.marke{font:600 17pt/1 T;letter-spacing:-.04em}.marke i{display:inline-block;width:5pt;height:5pt;border-radius:50%;background:#e84300;margin-left:1.5pt}' +
+      '.kopf .abs{text-align:right;font-size:7.8pt;line-height:1.5;color:#5b5953}' +
+      '.adr{display:grid;grid-template-columns:1fr 64mm;gap:10mm;margin:8mm 0 8mm}.adr .zeile{font-size:7pt;color:#8a877f;border-bottom:.4pt solid #d8d5cc;padding-bottom:1.5mm;margin-bottom:3mm}.adr .an{font-size:10pt;line-height:1.5}' +
+      '.meta{font-size:8.4pt;border-collapse:collapse;width:100%}.meta td{padding:1.2mm 0;border-bottom:.4pt solid #e3e0d8}.meta td:first-child{color:#8a877f}.meta td:last-child{text-align:right}' +
+      'h1{font:400 27pt/1 S,Georgia,serif;letter-spacing:-.01em;margin:0 0 1.5mm}.unter{color:#5b5953;margin:0 0 6mm;font-size:10.5pt}' +
+      'h2{break-after:avoid;font:600 9.6pt/1.3 T;margin:6.5mm 0 1.6mm;display:flex;gap:4mm}h2 b{font-weight:500;color:#e84300;width:5mm}p{margin:0 0 2mm}.t{padding-left:9mm}' +
+      'table.lst{width:100%;border-collapse:collapse;margin:3mm 0 1mm}.lst th{font:500 7.4pt T;text-transform:uppercase;letter-spacing:.08em;color:#8a877f;text-align:left;padding:0 0 2mm;border-bottom:.6pt solid #1b1b19}.lst th.n{text-align:right}' +
+      '.lst td{padding:2.2mm 0;border-bottom:.4pt solid #e3e0d8;vertical-align:top}.lst td.pos{width:9mm;color:#8a877f}.lst td.n{text-align:right;white-space:nowrap;width:26mm}.lst .d{display:block;color:#5b5953;font-size:8.4pt;margin-top:.8mm}.lst .lz{color:#8a877f}' +
+      '.lst tr.sum td{border-bottom:0;border-top:.9pt solid #1b1b19;font-weight:600;padding-top:2.5mm}.klein{font-size:8pt;color:#8a877f}' +
+      '.unt{display:grid;grid-template-columns:1fr 1fr;gap:16mm;margin-top:16mm;break-inside:avoid}.unt div{border-top:.6pt solid #1b1b19;padding-top:2mm;font-size:8pt;color:#5b5953;min-height:14mm}' +
+      '.fuss{position:absolute;left:20mm;right:20mm;bottom:10mm;font-size:7pt;color:#8a877f;display:flex;justify-content:space-between;border-top:.4pt solid #e3e0d8;padding-top:2mm}' +
+      '.felder{display:grid;grid-template-columns:1fr 1fr;gap:6mm 10mm;margin:7mm 0}.feld{border-bottom:.6pt solid #1b1b19;min-height:11mm;font-size:7.4pt;color:#8a877f;display:flex;align-items:flex-end;padding-bottom:1mm}.felder .voll{grid-column:1/-1}.lst tr{break-inside:avoid}.lst tr.sum{break-before:avoid}' +
+      '.iban{display:grid;grid-template-columns:repeat(22,1fr);gap:0;border:.6pt solid #1b1b19;height:9mm;margin-top:1mm}.iban span{border-right:.4pt solid #d8d5cc}.iban span:nth-child(4n){border-right-color:#1b1b19}.iban span:last-child{border:0}' +
+      '.ph{background:#fff3c4}.hinweisleiste{max-width:210mm;margin:10mm auto 0;font-size:8.5pt;color:#5b5953;display:flex;gap:6mm;justify-content:space-between}' +
+      '@media print{html{background:#fff}.blatt{margin:0;width:auto;min-height:0;padding:0;box-shadow:none}.blatt+.blatt{break-before:page}.fuss{display:none}.hinweisleiste{display:none}.ph{background:none}}';
+    var fuss = '<div class="fuss"><span>' + x(absender) + '</span><span>' + x(A.email || '') + '</span></div>';
+    var kopf = '<div class="kopf"><div class="marke">' + x(A.name || 'Lotwerk') + '<i></i></div><div class="abs">' + lz(A.inhaber || '') + '<br>' + lz(A.strasse || '') + '<br>' + lz(A.ort || '') + '<br>' + x(A.email || '') + (A.telefon ? '<br>' + lz(A.telefon) : '') + '</div></div>';
+    var seite1 = '<section class="blatt">' + kopf +
+      '<div class="adr"><div><div class="zeile">' + lz(absender) + '</div><div class="an">' + x(k.firma || '') + '<br>' + (k.ansprechpartner ? x(k.ansprechpartner) : lz('[Ansprechpartner]')) + '<br>' + lz('[Straße Hausnummer]') + '<br>' + lz('[PLZ Ort]') + '</div></div>' +
+      '<table class="meta"><tr><td>Auftrag Nr.</td><td>' + nr + '</td></tr><tr><td>Datum</td><td>' + am.toLocaleDateString('de-DE') + '</td></tr><tr><td>Leistungsbeginn</td><td>' + datum(start) + '</td></tr><tr><td>Ihr Kontakt</td><td>' + x(A.email || '') + '</td></tr></table></div>' +
+      '<h1>Auftrag</h1><p class="unter">über Leistungen für ' + x(k.firma || '') + '</p>' +
+      '<p>Mit diesem Auftrag beauftragt der Auftraggeber ' + x(A.name || 'Lotwerk') + ' mit den folgenden Leistungen. Es gelten die Bedingungen auf diesen Seiten und ergänzend die Allgemeinen Geschäftsbedingungen.</p>' +
+      '<h2><b>1</b>Leistungen und Preise</h2><table class="lst"><tr><th></th><th>Leistung</th><th class="n">einmalig</th><th class="n">monatlich</th></tr>' + zeilen +
+      '<tr class="sum"><td></td><td>Summe</td><td class="n">' + eur(ein) + '</td><td class="n">' + eur(mon) + '</td></tr></table><p class="klein">' + x(A.ust || '') + '</p>' +
+      '<h2><b>2</b>Zahlung per Lastschrift</h2><p class="t">Alle Beträge zieht der Auftragnehmer per SEPA-Lastschrift ein (Mandat in der Anlage). Einmalige Leistungen: 50 % bei Auftrag, 50 % nach Freigabe des Entwurfs durch den Auftraggeber. Monatliche Leistungen: jeweils im Voraus zum Monatsanfang. Jeder Einzug wird mit der Rechnung mindestens 5 Kalendertage vorher angekündigt. Werbebudgets für Google oder Meta zahlt der Auftraggeber direkt an die Plattform.</p>' +
+      '<h2><b>3</b>Laufzeit und Kündigung</h2><p class="t">Die Laufzeit gilt je Leistung wie unter 1 angegeben und beginnt mit dem Leistungsbeginn. Kündigungen sind in Textform möglich, zum Beispiel per E-Mail.</p>' +
+      '<h2><b>4</b>Mitwirkung</h2><p class="t">Der Auftraggeber stellt Inhalte, Fotos und Zugänge innerhalb von 7 Tagen nach Auftrag über das Inhalte-Formular bereit und benennt eine Person für Freigaben. Verzögerungen verschieben den Zeitplan entsprechend.</p>' +
+      '<h2><b>5</b>Nutzungsrechte</h2><p class="t">Nach vollständiger Zahlung erhält der Auftraggeber die zeitlich und räumlich unbeschränkten Nutzungsrechte an Website, Texten und Gestaltung. Domain und Inhalte gehören dem Auftraggeber. Bei Vertragsende werden alle Dateien übergeben.</p>' +
+      '<h2><b>6</b>Datenschutz</h2><p class="t">Soweit der Auftragnehmer personenbezogene Daten im Auftrag verarbeitet, etwa Formularanfragen oder Bewerbungen, schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO als weitere Anlage. ' + lz('[PRÜFEN: Vorlage AV-Vertrag]') + '</p>' +
+      '<h2><b>7</b>Geschäftsbedingungen</h2><p class="t">Ergänzend gelten die AGB des Auftragnehmers in der bei Auftrag gültigen Fassung, abrufbar unter ' + x(location.host) + '/agb/.</p>' +
+      (extra ? '<h2><b>8</b>Besondere Vereinbarungen</h2><p class="t">' + x(extra).replace(/\n/g, '<br>') + '</p>' : '') +
+      '<div class="unt"><div>Ort, Datum<br><br>Unterschrift Auftraggeber</div><div>Ort, Datum<br><br>Unterschrift ' + x(A.name || 'Lotwerk') + '</div></div>' + fuss + '</section>';
+    var seite2 = '<section class="blatt">' + kopf +
+      '<p class="klein" style="margin-top:9mm">Anlage zu Auftrag ' + nr + '</p><h1 style="font-size:24pt">SEPA-Lastschriftmandat</h1><p class="unter">für wiederkehrende Zahlungen</p>' +
+      '<table class="meta" style="width:100%"><tr><td>Zahlungsempfänger</td><td>' + x(absender) + '</td></tr><tr><td>Gläubiger-Identifikationsnummer</td><td>' + (A.glaeubiger_id ? x(A.glaeubiger_id) : lz('[Gläubiger-ID, bei der Bundesbank beantragen]')) + '</td></tr><tr><td>Mandatsreferenz</td><td>' + nr + '</td></tr></table>' +
+      '<p style="margin-top:7mm">Ich ermächtige ' + x(A.name || 'Lotwerk') + ', Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an, die von ' + x(A.name || 'Lotwerk') + ' auf mein Konto gezogenen Lastschriften einzulösen.</p>' +
+      '<p class="klein">Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.</p>' +
+      '<div class="felder"><div class="feld voll">Kontoinhaber (Vorname, Name bzw. Firma)</div><div class="feld voll">Straße, Hausnummer, PLZ, Ort</div>' +
+      '<div class="voll"><div class="klein">IBAN</div><div class="iban">' + new Array(23).join('<span></span>') + '</div></div><div class="feld">BIC</div><div class="feld">Kreditinstitut</div></div>' +
+      '<div class="unt"><div>Ort, Datum</div><div>Unterschrift Kontoinhaber</div></div>' + fuss + '</section>';
+    return '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Auftrag ' + nr + ' – ' + x(k.firma || '') + '</title><style>' + css + '</style></head><body>' +
+      '<div class="hinweisleiste"><span>Gelb markiert: noch ausfüllen. Vor dem ersten Einsatz zusammen mit den AGB anwaltlich prüfen lassen.</span><span>Drucken oder „Als PDF speichern“: Strg/Cmd + P</span></div>' +
+      seite1 + seite2 + '</body></html>';
   }
   var STATUS = ['neu', 'vorschau', 'kontaktiert', 'termin', 'angebot', 'gewonnen', 'verloren', 'pausiert'];
   var TAET = ['vertrieb', 'umsetzung', 'pflege', 'seo', 'ads', 'recruiting', 'verwaltung'];
@@ -303,14 +337,14 @@
         if (!keys.length) return meldung('Bitte mindestens eine Leistung wählen.');
         var st = bx.querySelector('[name=vd-start]').value || heute(), ex = bx.querySelector('[name=vd-extra]').value;
         var w = window.open('', '_blank');
-        await neu('vertragsdokumente', { kunde_id: kk.id, produkte: keys, start: st, vereinbarungen: ex || null });
-        if (w) { w.document.open(); w.document.write(vertragHtml(kk, keys, st, ex)); w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 300); }
+        var gesp = await neu('vertragsdokumente', { kunde_id: kk.id, produkte: keys, start: st, vereinbarungen: ex || null }), g0 = (gesp && gesp[0]) || {};
+        if (w) { w.document.open(); w.document.write(vertragHtml(kk, keys, st, ex, { id: g0.id, datum: g0.erstellt_am })); w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 300); }
         meldung('Vertragsdokument beim Kunden gespeichert'); return zeige();
       }
       if (a === 'vdansehen') {
         var dk = (CACHE.vdoks || []).find(function (q) { return q.id === id; }), kn = dk && (CACHE.kunden || []).find(function (q) { return q.id === dk.kunde_id; });
         if (!dk) return; var w2 = window.open('', '_blank'); if (!w2) return meldung('Bitte Pop-ups für diese Seite erlauben.');
-        w2.document.open(); w2.document.write(vertragHtml(kn || {}, dk.produkte, dk.start, dk.vereinbarungen)); w2.document.close(); return;
+        w2.document.open(); w2.document.write(vertragHtml(kn || {}, dk.produkte, dk.start, dk.vereinbarungen, { id: dk.id, datum: dk.erstellt_am })); w2.document.close(); return;
       }
       if (a === 'vduebernehmen') {
         var du = (CACHE.vdoks || []).find(function (q) { return q.id === id; }); if (!du) return;

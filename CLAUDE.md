@@ -27,7 +27,7 @@ Gründer: Marvin (GitHub MarvGo6), allein bis 10.000 € MRR. Sprache überall: 
 - Schlüssel fehlen: Claude (`anthropic_key` + GitHub-Secret `ANTHROPIC_API_KEY`), `SUPABASE_SERVICE_KEY` (GitHub-Secret), `places_key`, `psi_key`, `resend_key` + `mail_absender`.
 - Google Business Profile API und Google-Ads-Token beantragen (B1, B3, B4, B6).
 - Supabase Auth: Site URL auf `https://lotwork.vercel.app/intern/` setzen.
-- Rechnungen/Lastschrift (Lexware Office, GoCardless) bewusst später.
+- Rechnungen/Lastschrift (Lexware Office, GoCardless) bewusst später. Abrechnung = SEPA-Lastschrift (AGB, FAQ, Vertragsdokument). Gläubiger-ID bei der Bundesbank beantragen und in `config.json` → `impressum.glaeubiger_id` eintragen (steht dann im Mandat).
 - Website-Platzhalter: Telefon, Standort, Name, Anschrift (`config.json` → `impressum`); AGB-Entwurf `/agb/` anwaltlich prüfen (Zahlungsziel/Abrechnung ergänzen).
 - Tracking: IDs in `config.json` → `tracking` eintragen, wenn Konten stehen (Anleitung `betrieb/TRACKING.md`).
 - Entscheiden: Umsatzsteuer (Kleinunternehmer endet laut Plan Aug/Sep 27 – Steuerberater) und Weg ab Juli 2027 (allein mit System oder Team), siehe Firmenübersicht Kap. 13.

@@ -302,5 +302,5 @@ FAQ = [
  ("Setzen Sie Cookies und Tracking ein?", "Nur dort, wo es nötig ist. Wir messen Anfragen ohne Cookies. Ein Cookie-Banner braucht Ihre Website erst, wenn Dienste wie die Google-Ads-Messung oder eine eingebettete Karte dazukommen."),
  ("Garantieren Sie Ergebnisse?", "Wir garantieren saubere Arbeit, klare Ziele und nachvollziehbare Berichte. Rankings und Anfragen kann niemand seriös garantieren."),
  ("Helfen Sie auch bei der Mitarbeitersuche?", "Ja, mit dem Recruiting-Paket: Karriereseite, Bewerbung in 60 Sekunden und Anzeigen im Umkreis. Recruiting Basis für eine Stelle ab 990 € Einrichtung und 490 € im Monat, Recruiting Komplett für 1.490 € Einrichtung und 790 € im Monat. Monatlich kündbar, und ist in Komplett eine Stelle besetzt, wechseln wir für 30 % der Einrichtung auf die nächste."),
- ("Wie läuft die Abrechnung?", "Einmalige Leistungen: die Hälfte bei Auftrag, die zweite Hälfte erst nach Ihrer Freigabe des Entwurfs. Monatliche Leistungen per Rechnung zum Monatsanfang."),
+ ("Wie läuft die Abrechnung?", "Einmalige Leistungen: die Hälfte bei Auftrag, die zweite Hälfte erst nach Ihrer Freigabe des Entwurfs. Monatliche Leistungen monatlich im Voraus per SEPA-Lastschrift."),
 ]
