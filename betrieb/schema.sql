@@ -225,3 +225,16 @@ create table if not exists links (
 alter table links enable row level security;
 create policy admin_alles on links for all to authenticated using (ist_admin()) with check (ist_admin());
 grant select, insert, update on links to authenticated;
+
+-- Vertragsdokumente (Steuerzentrale → Kunden → „Vertrag vorbereiten“): Auftrag zum Drucken/PDF, beim Kunden gespeichert,
+-- Status entwurf/versendet/unterschrieben/abgelehnt; „Als Verträge übernehmen“ legt die Zeilen in vertraege an.
+create table if not exists vertragsdokumente (
+  id uuid primary key default gen_random_uuid(),
+  kunde_id uuid not null references kunden on delete cascade,
+  erstellt_am timestamptz not null default now(),
+  produkte text[] not null, start date not null, vereinbarungen text,
+  status text not null default 'entwurf' check (status in ('entwurf','versendet','unterschrieben','abgelehnt')),
+  status_am timestamptz, uebernommen boolean not null default false
+);
+alter table vertragsdokumente enable row level security;
+-- create policy admin_alles on vertragsdokumente for all to authenticated using (ist_admin()) with check (ist_admin());

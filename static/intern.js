@@ -190,19 +190,36 @@
     },
 
     kunden: async function () {
-      var r = await Promise.all([api('kunden?select=id,firma,ansprechpartner,email,telefon,status,seit,vertraege(id,produkt,einmalig,monatlich,start,mindestlaufzeit_monate,ende)&order=firma'),
-        api('inhalte_formulare?select=id,titel,token,frist,eingereicht_am,kunde_id,dateien&order=angelegt.desc')]);
-      CACHE.kunden = r[0];
+      var r = await Promise.all([api('kunden?select=id,firma,ansprechpartner,email,telefon,status,seit,vertraege(id,produkt,einmalig,monatlich,start,mindestlaufzeit_monate,verlaengerung_monate,kuendigungsfrist_monate,ende)&order=firma'),
+        api('inhalte_formulare?select=id,titel,token,frist,eingereicht_am,kunde_id,dateien&order=angelegt.desc'),
+        api('vertragsdokumente?select=id,kunde_id,erstellt_am,produkte,start,vereinbarungen,status,status_am,uebernommen&order=erstellt_am.desc')]);
+      CACHE.kunden = r[0]; CACHE.vdoks = r[2];
       var opt = Object.keys(PRODUKTE).map(function (k) { return '<option value="' + k + '">' + PRODUKTE[k][0] + '</option>'; }).join('');
+      var VDST = ['entwurf', 'versendet', 'unterschrieben', 'abgelehnt'];
       return '<form class="in-form in-inline" data-form="kunde"><input name="firma" placeholder="Firma" required><input name="ansprechpartner" placeholder="Ansprechpartner"><input name="email" type="email" placeholder="E-Mail"><input name="telefon" placeholder="Telefon"><button class="btn">Kunde anlegen</button></form>' +
         r[0].map(function (k) {
-          var mtl = (k.vertraege || []).filter(function (v) { return !v.ende; }).reduce(function (s, v) { return s + Number(v.monatlich || 0); }, 0);
+          var aktiv = (k.vertraege || []).filter(function (v) { return !v.ende; });
+          var mtl = aktiv.reduce(function (s, v) { return s + Number(v.monatlich || 0); }, 0), ein = aktiv.reduce(function (s, v) { return s + Number(v.einmalig || 0); }, 0);
           var forms = r[1].filter(function (f) { return f.kunde_id === k.id; });
-          return '<article class="in-card"><div class="in-row in-between"><h3>' + x(k.firma) + ' <span class="in-muted">' + x(k.status) + ' · seit ' + datum(k.seit) + '</span></h3><b>' + eur(mtl) + '/Monat</b></div>' +
+          var doks = r[2].filter(function (d) { return d.kunde_id === k.id; });
+          var vt = (k.vertraege || []).slice().sort(function (a, b) { return (a.ende ? 1 : 0) - (b.ende ? 1 : 0) || (a.start < b.start ? 1 : -1); });
+          return '<article class="in-card"><div class="in-row in-between"><h3>' + x(k.firma) + ' <span class="in-muted">' + x(k.status) + ' · seit ' + datum(k.seit) + '</span></h3><b>' + eur(mtl) + '/Monat' + (ein ? ' · ' + eur(ein) + ' einmalig' : '') + '</b></div>' +
             '<p class="in-muted">' + x([k.ansprechpartner, k.email, k.telefon].filter(Boolean).join(' · ')) + '</p>' +
-            '<ul class="in-list">' + (k.vertraege || []).map(function (v) { return '<li>' + x((PRODUKTE[v.produkt] || [v.produkt])[0]) + ' · ' + eur(v.monatlich) + '/Monat' + (Number(v.einmalig) ? ' + ' + eur(v.einmalig) + ' einmalig' : '') + ' · ab ' + datum(v.start) + (v.mindestlaufzeit_monate ? ' · ' + v.mindestlaufzeit_monate + ' Monate' : '') + (v.ende ? ' · beendet ' + datum(v.ende) : '') + '</li>'; }).join('') + '</ul>' +
+            '<h4 class="in-h4">Verträge (' + aktiv.length + ' aktiv)</h4>' +
+            (vt.length ? '<table class="in-vt"><tr><th>Leistung</th><th>einmalig</th><th>monatlich</th><th>ab</th><th>Laufzeit</th><th></th></tr>' + vt.map(function (v) {
+              var p = PRODUKTE[v.produkt] || [v.produkt, 0, 0, v.mindestlaufzeit_monate, v.verlaengerung_monate, v.kuendigungsfrist_monate];
+              return '<tr' + (v.ende ? ' class="in-aus"' : '') + '><td>' + x(p[0]) + '</td><td>' + (Number(v.einmalig) ? eur(v.einmalig) : '–') + '</td><td>' + (Number(v.monatlich) ? eur(v.monatlich) : '–') + '</td><td>' + datum(v.start) + '</td><td>' +
+                x(laufzeit([p[0], 0, Number(v.monatlich), v.mindestlaufzeit_monate, v.verlaengerung_monate, v.kuendigungsfrist_monate])) + '</td><td>' +
+                (v.ende ? 'beendet ' + datum(v.ende) : '<button class="in-link" data-a="vertragende" data-id="' + v.id + '">beenden</button>') + '</td></tr>'; }).join('') + '</table>' : '<p class="in-muted">Noch keine Verträge.</p>') +
             '<form class="in-form in-inline" data-form="vertrag" data-kunde="' + k.id + '"><select name="produkt">' + opt + '</select><input name="start" type="date" value="' + heute() + '"><button class="btn ghost">Vertrag hinzufügen</button></form>' +
-            '<div class="in-row"><button class="btn ghost" data-a="inhalte" data-kunde="' + k.id + '" data-firma="' + x(k.firma) + '">Inhalte-Link erzeugen</button><button class="btn ghost" data-a="vertragsdoc" data-kunde="' + k.id + '">Vertrag vorbereiten</button></div><div class="in-vd" id="vd-' + k.id + '" hidden></div>' +
+            '<h4 class="in-h4">Vertragsdokumente</h4>' +
+            (doks.length ? '<ul class="in-list">' + doks.map(function (d) {
+              var su = d.produkte.reduce(function (a, key) { var p = PRODUKTE[key] || [key, 0, 0]; a[0] += p[1]; a[1] += p[2]; return a; }, [0, 0]);
+              return '<li><b>Auftrag vom ' + datum(d.erstellt_am) + '</b> · ' + x(d.produkte.map(function (key) { return (PRODUKTE[key] || [key])[0]; }).join(', ')) + ' · ' + eur(su[0]) + ' einmalig + ' + eur(su[1]) + '/Monat · Beginn ' + datum(d.start) +
+                '<div class="in-row"><select data-a="vdstatus" data-id="' + d.id + '">' + VDST.map(function (st) { return '<option' + (st === d.status ? ' selected' : '') + '>' + st + '</option>'; }).join('') + '</select>' +
+                '<button class="btn ghost" data-a="vdansehen" data-id="' + d.id + '">Ansehen / Drucken</button>' +
+                (d.uebernommen ? '<span class="in-muted">✓ als Verträge übernommen</span>' : '<button class="btn ghost" data-a="vduebernehmen" data-id="' + d.id + '">Als Verträge übernehmen</button>') + '</div></li>'; }).join('') + '</ul>' : '<p class="in-muted">Noch kein Vertragsdokument.</p>') +
+            '<div class="in-row"><button class="btn ghost" data-a="vertragsdoc" data-kunde="' + k.id + '">Vertrag vorbereiten</button><button class="btn ghost" data-a="inhalte" data-kunde="' + k.id + '" data-firma="' + x(k.firma) + '">Inhalte-Link erzeugen</button></div><div class="in-vd" id="vd-' + k.id + '" hidden></div>' +
             forms.map(function (f) { return '<p class="in-muted">Inhalte-Formular: ' + (f.eingereicht_am ? '✓ eingegangen ' + datum(f.eingereicht_am) + ' · ' + (f.dateien || []).length + ' Dateien' : 'offen, Frist ' + datum(f.frist)) + ' · <a href="/inhalte/?t=' + x(f.token) + '" target="_blank" rel="noopener">Link</a></p>'; }).join('') +
             '</article>';
         }).join('');
@@ -277,16 +294,34 @@
         box.innerHTML = '<p><b>Leistungen für den Vertrag</b></p><div class="in-vd-l">' + Object.keys(PRODUKTE).map(function (key) {
           return '<label class="check"><input type="checkbox" value="' + key + '"' + (vorhanden.indexOf(key) >= 0 ? ' checked' : '') + '> <span>' + x(PRODUKTE[key][0]) + ' · ' + (PRODUKTE[key][1] ? eur(PRODUKTE[key][1]) + ' einmalig' : '') + (PRODUKTE[key][1] && PRODUKTE[key][2] ? ' + ' : '') + (PRODUKTE[key][2] ? eur(PRODUKTE[key][2]) + '/Monat' : '') + '</span></label>'; }).join('') +
           '</div><label>Leistungsbeginn <input type="date" name="vd-start" value="' + heute() + '"></label><label>Besondere Vereinbarungen (optional)<textarea name="vd-extra" rows="3"></textarea></label>' +
-          '<div class="in-row"><button class="btn" data-a="vertragoeffnen" data-kunde="' + b.dataset.kunde + '">Vertrag öffnen (Drucken / PDF)</button></div>';
+          '<div class="in-row"><button class="btn" data-a="vertragoeffnen" data-kunde="' + b.dataset.kunde + '">Beim Kunden speichern und öffnen</button></div>';
         box.hidden = false; return;
       }
       if (a === 'vertragoeffnen') {
         var bx = document.getElementById('vd-' + b.dataset.kunde), kk = (CACHE.kunden || []).find(function (q) { return q.id === b.dataset.kunde; }) || {};
         var keys = [].slice.call(bx.querySelectorAll('input[type=checkbox]:checked')).map(function (i) { return i.value; });
         if (!keys.length) return meldung('Bitte mindestens eine Leistung wählen.');
-        var w = window.open('', '_blank'); if (!w) return meldung('Bitte Pop-ups für diese Seite erlauben.');
-        w.document.open(); w.document.write(vertragHtml(kk, keys, bx.querySelector('[name=vd-start]').value, bx.querySelector('[name=vd-extra]').value)); w.document.close();
-        setTimeout(function () { w.focus(); w.print(); }, 300); return;
+        var st = bx.querySelector('[name=vd-start]').value || heute(), ex = bx.querySelector('[name=vd-extra]').value;
+        var w = window.open('', '_blank');
+        await neu('vertragsdokumente', { kunde_id: kk.id, produkte: keys, start: st, vereinbarungen: ex || null });
+        if (w) { w.document.open(); w.document.write(vertragHtml(kk, keys, st, ex)); w.document.close(); setTimeout(function () { w.focus(); w.print(); }, 300); }
+        meldung('Vertragsdokument beim Kunden gespeichert'); return zeige();
+      }
+      if (a === 'vdansehen') {
+        var dk = (CACHE.vdoks || []).find(function (q) { return q.id === id; }), kn = dk && (CACHE.kunden || []).find(function (q) { return q.id === dk.kunde_id; });
+        if (!dk) return; var w2 = window.open('', '_blank'); if (!w2) return meldung('Bitte Pop-ups für diese Seite erlauben.');
+        w2.document.open(); w2.document.write(vertragHtml(kn || {}, dk.produkte, dk.start, dk.vereinbarungen)); w2.document.close(); return;
+      }
+      if (a === 'vduebernehmen') {
+        var du = (CACHE.vdoks || []).find(function (q) { return q.id === id; }); if (!du) return;
+        for (var n = 0; n < du.produkte.length; n++) { var pp = PRODUKTE[du.produkte[n]]; if (!pp) continue;
+          await neu('vertraege', { kunde_id: du.kunde_id, produkt: pp[6] || du.produkte[n], start: du.start, einmalig: pp[1], monatlich: pp[2], mindestlaufzeit_monate: pp[3], verlaengerung_monate: pp[4], kuendigungsfrist_monate: pp[5] }); }
+        await aendere('vertragsdokumente', id, { uebernommen: true, status: du.status === 'entwurf' ? 'unterschrieben' : du.status, status_am: new Date().toISOString() });
+        meldung(du.produkte.length + ' Verträge angelegt'); return zeige();
+      }
+      if (a === 'vertragende') {
+        if (!confirm('Vertrag zum heutigen Tag beenden?')) return;
+        await aendere('vertraege', id, { ende: heute() }); meldung('Vertrag beendet'); return zeige();
       }
       if (a === 'logout') { S = {}; sichere(); return anmeldung(); }
       if (a === 'erledigt') { await aendere('aufgaben', id, { erledigt_am: new Date().toISOString() }); meldung('Erledigt'); return zeige(); }
@@ -313,6 +348,7 @@
     var el = ev.target, id = el.dataset.id;
     try {
       if (el.dataset.a === 'status') { var d = { status: el.value }; if (el.value === 'kontaktiert') d.kontaktiert_am = heute(); await aendere('interessenten', id, d); meldung('Status: ' + el.value); }
+      if (el.dataset.a === 'vdstatus') { await aendere('vertragsdokumente', id, { status: el.value, status_am: new Date().toISOString() }); meldung('Status: ' + el.value); }
       if (el.dataset.a === 'schritt') { await aendere('interessenten', id, { naechster_schritt: el.value || null }); meldung('Gespeichert'); }
     } catch (e) { meldung('Fehler: ' + e.message); }
   });
@@ -328,7 +364,7 @@
       if (art === 'zeit') await neu('zeiten', d);
       if (art === 'link') await neu('links', d);
       if (art === 'vertrag') {
-        var p = PRODUKTE[d.produkt];
+        var p = PRODUKTE[d.produkt]; meldung(p[0] + ' wird angelegt …');
         await neu('vertraege', { kunde_id: f.dataset.kunde, produkt: p[6] || d.produkt, start: d.start, einmalig: p[1], monatlich: p[2], mindestlaufzeit_monate: p[3], verlaengerung_monate: p[4], kuendigungsfrist_monate: p[5] });
       }
       meldung('Gespeichert'); zeige();
